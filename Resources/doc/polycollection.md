@@ -108,7 +108,7 @@ PolyCollection so we know what kind of object must be created for new data.
 
 In our examples we assume that each FormType has been registered with the container.
 
-**Note:** The FormType must set both a data_class and model_class option for the
+**Note:** The Collection FormTypes must set both a data_class and model_class option for the
 PolyCollection to know which type to use when it encounters an object.
 
 ```php
@@ -140,7 +140,7 @@ class InvoiceType extends BaseType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class'  => 'Infinite\\InvoiceBundle\\Entity\\Invoice));
+        $resolver->setDefaults(array('data_class'  => 'Infinite\\InvoiceBundle\\Entity\\Invoice'));
     }
 
     public function getName()
@@ -222,4 +222,4 @@ class InvoiceProductType extends InvoiceLineType
 Rendering the form
 ------------------
 
-Still a work in progress.
+Coming Soon. Still a work in progress.
