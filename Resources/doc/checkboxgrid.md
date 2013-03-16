@@ -16,7 +16,7 @@ This:
 
 Becomes this:
 
-![Rendered checkbox grid](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.png)
+![Rendered checkbox grid](https://raw.github.com/infinite-networks/InfiniteFormBundle/master/Resources/doc/checkboxgrid.png)
 
 Introduction
 ------------
