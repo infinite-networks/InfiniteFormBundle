@@ -56,8 +56,10 @@ class EntitySearchTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($object, $this->class);
         }
 
+        $ids = $this->om->getClassMetadata(get_class($object))->getIdentifierValues($object);
+
         return array(
-            'id' => reset($this->om->getClassMetadata(get_class($object))->getIdentifierValues($object)),
+            'id' => reset($ids),
             'name' => $this->accessor->getValue($object, $this->nameField),
         );
     }
