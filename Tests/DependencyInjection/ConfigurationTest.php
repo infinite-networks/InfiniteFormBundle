@@ -33,7 +33,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected static function getBundleDefaultConfig()
     {
         return array(
-            'polycollection' => true
+            'checkbox_grid' => true,
+            'polycollection' => true,
         );
     }
 }

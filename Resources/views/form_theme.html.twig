@@ -1,0 +1,32 @@
+{#
+
+(c) Infinite Networks <http://www.infinite.net.au>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+{% block infinite_form_checkbox_grid_widget %}
+<table>
+    <thead>
+        <tr>
+            <th scope="col"></th>
+        {% for h in form.vars.headers.remainingViews %}
+            <th scope="col">{{ h.label }}</th>
+        {% endfor %}
+        </tr>
+    </thead>
+    {% for row in form %}
+        {{ form_widget(row) }}
+    {% endfor %}
+</table>
+{% endblock %}
+
+{% block infinite_form_checkbox_row_widget %}
+    <tr>
+        <th scope="row">{{ form.vars.label }}</th>
+    {% for cell in form %}
+        <td>{{ form_widget(cell) }}</td>
+    {% endfor %}
+    </tr>
+{% endblock %}

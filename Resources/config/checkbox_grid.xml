@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+(c) Infinite Networks <http://www.infinite.net.au>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="infinite_form.form_type.checkbox_grid_type" class="Infinite\FormBundle\Form\Type\CheckboxGridType">
+            <tag name="form.type" alias="infinite_form_checkbox_grid" />
+        </service>
+
+        <service id="infinite_form.form_type.checkbox_row_type" class="Infinite\FormBundle\Form\Type\CheckboxRowType">
+            <tag name="form.type" alias="infinite_form_checkbox_row" />
+        </service>
+
+        <service id="infinite_form.form_type.entity_checkbox_grid_type" class="Infinite\FormBundle\Form\Type\EntityCheckboxGridType">
+            <argument type="service" id="doctrine" />
+            <tag name="form.type" alias="infinite_form_entity_checkbox_grid" />
+        </service>
+    </services>
+</container>

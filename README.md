@@ -29,3 +29,16 @@ all 4 types of `InvoiceLine` inside the same collection.
 
 For more information see [PolyCollection Documentation](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md)
 
+CheckboxGrid
+-------------
+
+The CheckboxGrid form type allows editing many-to-many relationships with
+a grid of checkboxes. It has handy shortcuts for Doctrine entities but can
+also be used with arrays of regular objects.
+
+For example, a company might sell multiple products, and operate in
+different areas. Any of its salesmen could sell any combination of products
+in areas. The salesman form needs a table of checkboxes where the rows are
+products and the columns are areas (or vice versa!)
+
+For more information see [CheckboxGrid Documentation)(https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md)

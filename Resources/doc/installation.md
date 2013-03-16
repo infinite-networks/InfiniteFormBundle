@@ -22,3 +22,13 @@ public function registerBundles()
     );
 }
 ```
+
+For the default rendering of the checkbox grid, include the form theme in
+your config.yml:
+
+``` yaml
+twig:
+    form:
+        resources:
+            - 'InfiniteFormBundle::form_theme.html.twig'
+```
