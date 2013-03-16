@@ -41,4 +41,4 @@ different areas. Any of its salesmen could sell any combination of products
 in areas. The salesman form needs a table of checkboxes where the rows are
 products and the columns are areas (or vice versa!)
 
-For more information see [CheckboxGrid Documentation)(https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md)
+For more information see [CheckboxGrid Documentation](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md)
