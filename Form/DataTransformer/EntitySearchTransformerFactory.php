@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * A quick class to create EntitySearchTransformers from options.
- * Some forms will have multiply entity searches at once and we need at least one transformer for each different class.
+ * Some forms will have multiple entity searches at once and we need at least one transformer for each different class.
  */
 class EntitySearchTransformerFactory
 {

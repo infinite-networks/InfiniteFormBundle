@@ -52,18 +52,10 @@ class AttachmentTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (!is_array($value) || !array_key_exists('meta', $value)) {
-            throw new TransformationFailedException('Error in form submission');
-        }
-
         /** @var UploadedFile $file */
         $file = isset($value['file']) ? $value['file'] : null;
         $meta = $value['meta'];
         $removed = !empty($value['removed']);
-
-        if ($meta === '') {
-            $meta = null;
-        }
 
         /** @var AttachmentInterface $data */
         $data = null;

@@ -7,7 +7,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyPath;
 
 class EntitySearchTransformer implements DataTransformerInterface
 {
@@ -27,7 +26,7 @@ class EntitySearchTransformer implements DataTransformerInterface
 
         if (!class_exists($options['class'])) {
             throw new \InvalidArgumentException(sprintf(
-                'Class "%s" not found in EntitySearchTransformer::setOptions',
+                'Class "%s" not found in EntitySearchTransformer::__construct',
                 $options['class']
             ));
         }
@@ -58,27 +57,19 @@ class EntitySearchTransformer implements DataTransformerInterface
         }
 
         return array(
-            'id' => $object->getId(),
-            'name' => $this->accessor->getValue($object, $this->nameField)
+            'id' => reset($this->om->getClassMetadata(get_class($object))->getIdentifierValues($object)),
+            'name' => $this->accessor->getValue($object, $this->nameField),
         );
     }
 
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
-            return null;
-        }
-
         if (!isset($value['id'])) {
             $value['id'] = '';
         }
 
         if (!isset($value['name'])) {
             $value['name'] = '';
-        }
-
-        if (!is_string($value['id']) || !is_string($value['name'])) {
-            return null;
         }
 
         $repository = $this->om->getRepository($this->class);

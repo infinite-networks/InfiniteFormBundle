@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AttachmentType extends AbstractType
 {
@@ -42,12 +43,12 @@ class AttachmentType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        // Legacy reasons. Use $view->vars['data'] instead!
         $view->vars['attachment'] = $form->getData();
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        // Sometimes the metadata child isn't getting its value set properly ... bug?
         $view->children['meta']->vars['value'] = $view->vars['value']['meta'];
     }
 
@@ -61,11 +62,11 @@ class AttachmentType extends AbstractType
         return 'field';
     }
 
-    public function getDefaultOptions(array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        return array(
-            'class' => 'Infinite\FormBundle\Entity\Attachment', // Abstract - *must* be overridden
+        $resolver->setRequired(array('class'));
+        $resolver->setDefaults(array(
             'secret' => $this->defaultSecret,
-        );
+        ));
     }
 }

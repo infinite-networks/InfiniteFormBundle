@@ -1,0 +1,180 @@
+<?php
+
+/*
+ * (c) Infinite Networks <http://www.infinite.net.au>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Infinite\FormBundle\Tests\CheckboxGrid;
+
+use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformer;
+use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
+use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
+use Symfony\Component\Form\Forms;
+
+class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
+{
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    private $em;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->em = $this->getMock('Doctrine\\Common\\Persistence\\ObjectManager');
+    }
+
+    public function testClassRequired()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->makeTransformer(array('class' => null));
+    }
+
+    public function testValidClassRequired()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->makeTransformer(array('class' => 'Infinite\\FormBundle\\ThisClassDoesNotExist'));
+    }
+
+    public function testCorrectClassRequired()
+    {
+        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\UnexpectedTypeException');
+        $this->makeTransformer()->transform('omglol');
+    }
+
+    public function testTransform()
+    {
+        $fruit = new Fruit;
+        $fruit->id = 42;
+        $fruit->name = 'watermelon';
+
+        $this->expectsGetClassMetadata();
+
+        $transformer = $this->makeTransformer();
+        $data = $transformer->transform($fruit);
+
+        $this->assertEquals(42, $data['id']);
+        $this->assertEquals('watermelon', $data['name']);
+    }
+
+    public function testReverseTransformById()
+    {
+        $fruit = new Fruit;
+        $fruit->id = 23;
+        $fruit->name = 'coconut';
+
+        $this->expectsGetRepository()->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo('23'))
+            ->will($this->returnValue($fruit));
+
+        $transformer = $this->makeTransformer();
+        $recoveredFruit = $transformer->reverseTransform(array('id' => '23', 'name' => ''));
+
+        $this->assertSame($fruit, $recoveredFruit);
+    }
+
+    public function testReverseTransformByName()
+    {
+        $fruit = new Fruit;
+        $fruit->id = 34;
+        $fruit->name = 'pear';
+
+        $this->expectsGetRepository()->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo(array('name' => 'pear')))
+            ->will($this->returnValue($fruit));
+
+        $transformer = $this->makeTransformer();
+        $recoveredFruit = $transformer->reverseTransform(array('id' => '', 'name' => 'pear'));
+
+        $this->assertSame($fruit, $recoveredFruit);
+    }
+
+    public function testEmptyReverseTransform()
+    {
+        $this->assertNull($this->makeTransformer()->reverseTransform(array('id' => '', 'name' => '')));
+    }
+
+    public function testOverrideNameField()
+    {
+        $fruit = new Fruit;
+        $fruit->id = 48;
+        $fruit->name = 'feijoa';
+
+        $this->expectsGetClassMetadata();
+
+        $transformer = $this->makeTransformer(array('name' => 'id'));
+        $data = $transformer->transform($fruit);
+
+        $this->assertEquals(48, $data['id']);
+        $this->assertEquals(48, $data['name']);
+
+        $this->expectsGetRepository()->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo(array('id' => '48')))
+            ->will($this->returnValue($fruit));
+
+        $recoveredFruit = $transformer->reverseTransform(array('id' => '', 'name' => '48'));
+
+        $this->assertSame($recoveredFruit, $fruit);
+    }
+
+    public function testObjectNotFoundById()
+    {
+        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+
+        $this->expectsGetRepository()->expects($this->once())
+            ->method('find')
+            ->with($this->equalTo('99'))
+            ->will($this->returnValue(null));
+
+        $transformer = $this->makeTransformer();
+        $transformer->reverseTransform(array('id' => '99', 'name' => 'foo'));
+    }
+
+    public function testObjectNotFoundByName()
+    {
+        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+
+        $this->expectsGetRepository()->expects($this->once())
+            ->method('findOneBy')
+            ->with($this->equalTo(array('name' => 'foo')))
+            ->will($this->returnValue(null));
+
+        $transformer = $this->makeTransformer();
+        $transformer->reverseTransform(array('id' => '', 'name' => 'foo'));
+    }
+
+    private function expectsGetClassMetadata()
+    {
+        $mockMetadata = $this->getMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
+        $mockMetadata->expects($this->once())
+            ->method('getIdentifierValues')
+            ->will($this->returnCallback(function ($obj) { return array($obj->id); }));
+
+        $this->em->expects($this->once())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($mockMetadata));
+    }
+
+    private function expectsGetRepository()
+    {
+        $mockRepository = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($mockRepository));
+
+        return $mockRepository;
+    }
+
+    private function makeTransformer($options = array())
+    {
+        return new EntitySearchTransformer($this->em, $options + array(
+            'class' => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
+        ));
+    }
+}

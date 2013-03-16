@@ -7,15 +7,27 @@
  * file that was distributed with this source code.
  */
 
-namespace Infinite\FormBundle\Tests\Attachment;
+namespace Infinite\FormBundle\Tests\Attachment\Attachments;
 
+use Doctrine\ORM\Mapping as ORM;
 use Infinite\FormBundle\Attachment\Attachment as BaseAttachment;
 
-class Attachment extends BaseAttachment
+/**
+ * @ORM\Entity
+ */
+class StandardAttachment extends BaseAttachment
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     * @ORM\Id
+     * @var int
+     */
+    protected $id;
+
     public function getId()
     {
-        return 1;
+        return $this->id;
     }
 
     public function getAdditionalFormData()

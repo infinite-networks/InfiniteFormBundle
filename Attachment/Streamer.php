@@ -4,7 +4,6 @@ namespace Infinite\FormBundle\Attachment;
 
 use Infinite\FormBundle\Attachment\Sanitiser;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Streamer
@@ -47,7 +46,7 @@ class Streamer
             ));
         }
 
-        if (null !== $request and null !== $disposition) {
+        if (null !== $request and null === $disposition) {
             // If this is a safe MIME type, display inline ...
             $disposition = in_array($mimeType, static::$inlineMimes) ? 'inline' : 'attachment';
 
@@ -58,6 +57,8 @@ class Streamer
             if (preg_match('/MSIE [1-7]\./', $userAgent) && !preg_match('/\) Opera/', $userAgent)) {
                 $disposition = 'attachment';
             }
+        } else {
+            $disposition = 'attachment';
         }
 
         $headers = array(
@@ -71,9 +72,7 @@ class Streamer
             'Content-Type' => $mimeType,
         );
 
-        return new StreamedResponse(function () use ($fullPhysicalPath, $headers) {
-            // Work around StreamedResponse overwriting this header
-            header('Cache-Control: ' . $headers['Cache-Control']);
+        return new StreamedResponse(function () use ($fullPhysicalPath) {
             fpassthru(fopen($fullPhysicalPath, 'rb'));
         }, 200, $headers);
     }
