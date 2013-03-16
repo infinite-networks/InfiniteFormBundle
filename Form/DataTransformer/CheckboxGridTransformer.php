@@ -84,7 +84,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
         $accessor = PropertyAccess::getPropertyAccessor();
 
         foreach ($value as $yValue => $row) {
-            if (!is_array($value)) {
+            if (!is_array($row)) {
                 throw new TransformationFailedException('Checkbox grid reverse-transformer needs a 2D array');
             }
 

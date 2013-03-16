@@ -86,7 +86,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that bound data is mapped back correctly
+     * Test how bound data is mapped back (are the transformers being called correctly?)
      */
     public function testBind()
     {
@@ -96,7 +96,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
             'satin' => array('beige' => '1'),
             'gloss' => array('yellow' => '1', 'white' => '1'),
             'matte' => array('beige' => '1'),
-            'invalid' => array('invalid' => '1'), // Invalid values should be ignored by the transformer
+            'invalid' => array('invalid' => '1'), // Invalid values should be ignored
         ));
 
         $this->assertEquals(
@@ -162,5 +162,33 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, count($data));
         $this->assertSame($originalObject, $data[0]);
+    }
+
+    /**
+     * Preferred views aren't allowed (x axis version)
+     */
+    public function testNoPreferredXViews()
+    {
+        $this->setExpectedException('Exception');
+        $this->makeForm(
+            array(),
+            array(
+                'x_choice_list' => new SimpleChoiceList(array('white' => 'white'), array('white' => 'white')),
+            )
+        );
+    }
+
+    /**
+     * Preferred views aren't allowed (y axis version)
+     */
+    public function testNoPreferredYViews()
+    {
+        $this->setExpectedException('Exception');
+        $this->makeForm(
+            array(),
+            array(
+                'y_choice_list' => new SimpleChoiceList(array('white' => 'white'), array('white' => 'white')),
+            )
+        );
     }
 }

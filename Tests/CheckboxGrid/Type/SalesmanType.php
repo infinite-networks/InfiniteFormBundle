@@ -10,8 +10,10 @@ class SalesmanType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $productAreaOptions = $options['product_area_options'];
+
         $builder->add('name', 'text');
-        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
+        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', $productAreaOptions + array(
             'class' => 'Infinite\FormBundle\Tests\CheckboxGrid\Entity\SalesmanProductArea',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',
@@ -27,6 +29,7 @@ class SalesmanType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Infinite\FormBundle\Tests\CheckboxGrid\Entity\Salesman',
+            'product_area_options' => array(),
         ));
     }
 }

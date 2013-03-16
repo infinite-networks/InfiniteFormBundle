@@ -9,6 +9,7 @@
 
 namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
@@ -40,6 +41,11 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
      * @var TestEntity\Product[]
      */
     protected $products;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $emRegistry;
 
     protected function setUp()
     {
@@ -83,13 +89,7 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
         $this->em->flush();
 
         // This mock registry returns the real entity manager created above
-        $emRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $emRegistry->expects($this->any())
-            ->method('getManager')
-            ->will($this->returnValue($this->em));
-        $emRegistry->expects($this->any())
-            ->method('getManagerForClass')
-            ->will($this->returnValue($this->em));
+        $this->emRegistry = $emRegistry = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType(new CheckboxGridType)
@@ -100,10 +100,23 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
     }
 
     /**
+     * Most tests will call getManagerForClass() once on the S.P.A. class.
+     */
+    protected function expectSpa()
+    {
+        $this->emRegistry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($this->equalTo('Infinite\\FormBundle\\Tests\\CheckboxGrid\\Entity\\SalesmanProductArea'))
+            ->will($this->returnValue($this->em));
+    }
+
+    /**
      * Test that bound data is mapped back correctly
      */
     public function testBind()
     {
+        $this->expectSpa();
+
         $salesman = new TestEntity\Salesman;
 
         $form = $this->factory->create('infinite_form_test_salesman', $salesman);
@@ -113,7 +126,7 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
             'productAreas' => array(
                 1 => array(1 => '1', 2 => '1'),
                 3 => array(1 => '1'),
-                5 => array(1 => '1'), // Invalid values should be ignored by the transformer
+                5 => array(1 => '1'), // Invalid values should be ignored
             ),
         ));
 
@@ -134,6 +147,8 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
      */
     public function testEntityPreserved()
     {
+        $this->expectSpa();
+
         $spa = new TestEntity\SalesmanProductArea();
         $spa->setAreaServiced($this->areas[2]);
         $spa->setProductSold($this->products[3]);
@@ -152,5 +167,78 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
 
         $this->assertCount(1, $salesman->getProductAreas());
         $this->assertSame($spa, $salesman->getProductAreas()->first());
+    }
+
+    /**
+     * Query builders are allowed on both axes
+     */
+    public function testQueryBuilder()
+    {
+        $this->expectSpa();
+
+        $form = $this->factory->create('infinite_form_test_salesman', null, array(
+            'product_area_options' => array(
+                'x_query_builder' => function (EntityRepository $repo) {
+                    return $repo->createQueryBuilder('p')
+                        ->where('p.name <> \'Chair\'');
+                },
+                'y_query_builder' => function (EntityRepository $repo) {
+                    return $repo->createQueryBuilder('a')
+                        ->where('a.name NOT LIKE \'Inner%\'');
+                },
+            ),
+        ));
+
+        $view = $form->createView();
+
+        $checkboxCount = 0;
+
+        foreach ($view->children['productAreas'] as $foo =>  $row) {
+            foreach ($row->children as $bar => $cell) {
+                if (in_array('checkbox', $cell->vars['block_prefixes'])) {
+                    $blah[$foo][] = $bar;
+                    $checkboxCount++;
+                }
+            }
+        }
+
+        $this->assertEquals(4, $checkboxCount);
+    }
+
+    /**
+     * Test that we can specify a named entity manager
+     */
+    public function testNamedEntityManager()
+    {
+        $this->emRegistry->expects($this->once())
+            ->method('getManager')
+            ->with($this->equalTo('salesman_em'))
+            ->will($this->returnValue($this->em));
+
+        $this->factory->create('infinite_form_test_salesman', null, array(
+            'product_area_options' => array(
+                'em' => 'salesman_em',
+            ),
+        ));
+    }
+
+    /**
+     * If no entity manager name is specified, the system will pick the correct one for the given Doctrine class.
+     * If the specified class isn't a Doctrine class, it should throw an exception.
+     */
+    public function testExpectsDoctrineObject()
+    {
+        $this->setExpectedException('Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException');
+
+        $this->emRegistry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with($this->equalTo('stdClass'))
+            ->will($this->returnValue(null));
+
+        $this->factory->create('infinite_form_entity_checkbox_grid', array(), array(
+            'class' => 'stdClass',
+            'x_path' => 'productSold',
+            'y_path' => 'areaServiced',
+        ));
     }
 }
