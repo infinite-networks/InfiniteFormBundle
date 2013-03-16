@@ -1,6 +1,23 @@
 InfiniteFormBundle's CheckboxGrid Form Type
 ===========================================
 
+Synopsis
+-------
+
+This:
+
+```php
+    $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
+        'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
+        'x_path' => 'productSold',
+        'y_path' => 'areaServiced',
+    ));
+```
+
+Becomes this:
+
+![Rendered checkbox grid](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.png)
+
 Introduction
 ------------
 
@@ -48,7 +65,7 @@ class SalesmanType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', 'text');
-        $builder->add('productAreas', 'infinite_entity_checkbox_grid', array(
+        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
             'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',
@@ -84,7 +101,7 @@ Finally, you can exclude checkboxes with a cell_filter closure.
 An example with more options:
 
 ```php
-        $builder->add('productAreas', 'infinite_entity_checkbox_grid', array(
+        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
             'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
 
             'x_path' => 'productSold',
