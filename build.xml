@@ -126,7 +126,7 @@
 
  <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
   <exec executable="phpcb">
-   <arg value="--exclude=vendor" />
+   <arg value="--ignore=vendor" />
    <arg value="--log" />
    <arg path="${basedir}/build/logs" />
    <arg value="--source" />
