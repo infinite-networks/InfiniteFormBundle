@@ -62,9 +62,12 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
                 // Blank cell - put a dummy form control here
                 $form->add($this->factory->createNamed($choice->value, 'form', array()));
             } else {
-                $builder = $this->factory->createNamedBuilder($choice->value, 'checkbox', isset($data[$choice->value]), array(
-                    'required' => false,
-                ));
+                $builder = $this->factory->createNamedBuilder(
+                    $choice->value,
+                    'checkbox',
+                    isset($data[$choice->value]),
+                    array('required' => false)
+                );
 
                 if (isset($data[$choice->value])) {
                     $builder->addViewTransformer(new AnythingToBooleanTransformer($data[$choice->value]), true);

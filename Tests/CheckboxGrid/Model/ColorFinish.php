@@ -7,7 +7,7 @@ class ColorFinish
     public $color;
     public $finish;
 
-    public function __construct($color=null, $finish=null)
+    public function __construct($color = null, $finish = null)
     {
         $this->color = $color;
         $this->finish = $finish;

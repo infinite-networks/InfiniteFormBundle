@@ -116,7 +116,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     public function testCellFilter()
     {
         $form = $this->makeForm(array(), array(
-            'cell_filter' => function($x, $y) {
+            'cell_filter' => function ($x, $y) {
                 return !(
                     $x == 'beige' && $y == 'gloss' ||
                     $x == 'white' && $y == 'high_gloss'

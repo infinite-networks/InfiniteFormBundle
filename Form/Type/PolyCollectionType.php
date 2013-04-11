@@ -64,8 +64,13 @@ class PolyCollectionType extends AbstractType
         foreach ($options['types'] as $type) {
             $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
 
-            $prototype = $this->buildPrototype($builder, $options['prototype_name'], $type, $options['options'])->getForm();
-            $prototypes[$key] = $prototype;
+            $prototype = $this->buildPrototype(
+                $builder,
+                $options['prototype_name'],
+                $type,
+                $options['options']
+            );
+            $prototypes[$key] = $prototype->getForm();
         }
 
         return $prototypes;

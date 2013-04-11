@@ -117,6 +117,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             ),
             'allow_add' => true
         ));
+
         $form->setData(array(
             new AbstractModel('Green'),
         ));
@@ -134,8 +135,14 @@ class PolyCollectionTypeTest extends TypeTestCase
 
         $this->assertTrue($form->has('0'));
         $this->assertTrue($form->has('1'));
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel', $form[0]->getData());
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First', $form[1]->getData());
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First',
+            $form[1]->getData()
+        );
         $this->assertEquals('Red', $form[1]->getData()->text);
         $this->assertEquals('Car', $form[1]->getData()->text2);
     }
@@ -166,7 +173,10 @@ class PolyCollectionTypeTest extends TypeTestCase
 
         $this->assertTrue($form->has('0'));
         $this->assertFalse($form->has('1'));
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel', $form[0]->getData());
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
     }
 
     public function testResizedDownIfBoundWithMissingDataAndAllowDelete()
@@ -199,8 +209,14 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertTrue($form->has('0'));
         $this->assertTrue($form->has('1'));
         $this->assertFalse($form->has('2'));
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel', $form[0]->getData());
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First', $form[1]->getData());
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First',
+            $form[1]->getData()
+        );
     }
 
     public function testNotResizedIfBoundWithMissingData()
@@ -262,9 +278,18 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertInstanceOf('Symfony\\Component\\Form\\Form', $form[1]);
         $this->assertInstanceOf('Symfony\\Component\\Form\\Form', $form[2]);
 
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel', $form[0]->getData());
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First', $form[1]->getData());
-        $this->assertInstanceOf('Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second', $form[2]->getData());
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First',
+            $form[1]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
+            $form[2]->getData()
+        );
         $this->assertEquals('Green', $form[0]->getData()->text);
         $this->assertEquals('Red', $form[1]->getData()->text);
         $this->assertEquals('Car', $form[1]->getData()->text2);
