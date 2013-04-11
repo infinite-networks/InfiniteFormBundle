@@ -193,10 +193,9 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
 
         $checkboxCount = 0;
 
-        foreach ($view->children['productAreas'] as $foo => $row) {
-            foreach ($row->children as $bar => $cell) {
+        foreach ($view->children['productAreas'] as $row) {
+            foreach ($row->children as $cell) {
                 if (in_array('checkbox', $cell->vars['block_prefixes'])) {
-                    $blah[$foo][] = $bar;
                     $checkboxCount++;
                 }
             }
