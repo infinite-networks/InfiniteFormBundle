@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="./Tests/autoload.php.dist" color="true">
+<phpunit bootstrap="./Tests/autoload.php.dist"
+    backupGlobals               = "false"
+     backupStaticAttributes      = "false"
+     colors                      = "true"
+     convertErrorsToExceptions   = "true"
+     convertNoticesToExceptions  = "true"
+     convertWarningsToExceptions = "true"
+     processIsolation            = "false"
+     stopOnFailure               = "false"
+     syntaxCheck                 = "false">
     <php>
         <ini name="xdebug.max_nesting_level" value="200" />
     </php>
 
     <testsuites>
         <testsuite name="InfiniteFormBundle">
-            <directory suffix="Test.php">./Tests</directory>
+            <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
