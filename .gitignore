@@ -1,4 +1,8 @@
+build/*
+!build/phpcs.xml
+!build/phpmd.xml
 composer.phar
 composer.lock
 phpunit.xml
 vendor
+cache.properties
