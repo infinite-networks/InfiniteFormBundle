@@ -28,6 +28,10 @@ class InfiniteFormExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        if ($configs['attachment']) {
+            $loader->load('attachment.xml');
+        }
+
         if ($configs['checkbox_grid']) {
             $loader->load('checkbox_grid.xml');
         }

@@ -32,6 +32,10 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('attachment')
+                    ->defaultTrue()
+                    ->treatNullLike(true)
+                ->end()
                 ->scalarNode('checkbox_grid')
                     ->defaultTrue()
                     ->treatNullLike(true)

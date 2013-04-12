@@ -22,10 +22,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($config, self::getBundleDefaultConfig());
     }
 
-    public function testNullPolycollectionConfig()
+    public function testNullAttachmentConfig()
     {
         $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), array('polycollection' => null));
+        $config = $processor->processConfiguration(new Configuration(), array('attachment' => null));
 
         $this->assertEquals($config, self::getBundleDefaultConfig());
     }
@@ -34,6 +34,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), array('checkbox_grid' => null));
+
+        $this->assertEquals($config, self::getBundleDefaultConfig());
+    }
+
+    public function testNullPolycollectionConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array('polycollection' => null));
 
         $this->assertEquals($config, self::getBundleDefaultConfig());
     }
@@ -49,6 +57,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected static function getBundleDefaultConfig()
     {
         return array(
+            'attachment'     => true,
             'checkbox_grid'  => true,
             'polycollection' => true,
             'twig'           => true,

@@ -6,6 +6,7 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
+
 {% block infinite_form_checkbox_grid_widget %}
 <table>
     <thead>
@@ -20,7 +21,7 @@ file that was distributed with this source code.
         {{ form_widget(row) }}
     {% endfor %}
 </table>
-{% endblock %}
+{% endblock infinite_form_checkbox_grid_widget %}
 
 {% block infinite_form_checkbox_row_widget %}
     <tr>
@@ -29,4 +30,17 @@ file that was distributed with this source code.
         <td>{{ form_widget(cell) }}</td>
     {% endfor %}
     </tr>
-{% endblock %}
+{% endblock infinite_form_checkbox_row_widget %}
+
+{% block infinite_form_attachment_widget %}
+{{ form_widget(form.meta) }}
+{% set att = form.get('attachment') %}
+<span{% if not att %} style="display: none"{% endif %}>{{ att ? att.filename : '' }}</span>
+<span{% if att %} style="display: none"{% endif %}>
+    {{ form_widget(form.file) }}
+</span>
+{{ form_widget(form.removed, {value: ''}) }} {# Don't preserve 'removed' between posts #}
+{% if form.meta.get('value') %}
+    <input type="button" value="Remove" onclick="var x=$(this).hide().prev().val(1).prev().show().prev().hide()">
+{% endif %}
+{% endblock infinite_form_attachment_widget %}

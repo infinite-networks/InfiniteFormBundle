@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+ (c) Infinite Networks <http://www.infinite.net.au>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="infinite_form.attachment.path_helper.class">Infinite\FormBundle\Attachment\PathHelper</parameter>
+        <parameter key="infinite_form.attachment.attachment_type.class">Infinite\FormBundle\Form\Type\AttachmentType</parameter>
+        <parameter key="infinite_form.attachment.save_config" type="collection" />
+        <parameter key="infinite_form.attachment.default_secret">%secret%</parameter>
+        <parameter key="infinite_form.attachment.entity_manager" />
+    </parameters>
+
+    <services>
+        <service id="infinite_form.attachment.path_helper" class="%infinite_form.attachment.path_helper.class%">
+            <argument>%infinite_form.attachment.save_config%</argument>
+        </service>
+
+        <service id="infinite_form.attachment.form_type" class="%infinite_form.attachment.attachment_type.class%">
+            <argument>%infinite_form.attachment.default_secret%</argument>
+            <argument type="service">
+                <service class="Doctrine\Common\Persistence\ObjectManager" factory-service="doctrine" factory-method="getManager" public="false">
+                    <argument>%infinite_form.attachment.entity_manager%</argument>
+                </service>
+            </argument>
+            <argument type="service" id="infinite_form.attachment.path_helper" />
+            <tag name="form.type" alias="infinite_form_attachment" />
+        </service>
+    </services>
+
+</container>
+
