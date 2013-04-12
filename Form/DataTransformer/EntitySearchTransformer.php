@@ -1,0 +1,103 @@
+<?php
+
+namespace Infinite\FormBundle\Form\DataTransformer;
+
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\Exception\TransformationFailedException;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
+
+class EntitySearchTransformer implements DataTransformerInterface
+{
+    private $om;
+    private $class;
+    private $nameField;
+    private $accessor;
+    private $allowNotFound = false;
+
+    public function __construct(ObjectManager $om, array $options)
+    {
+        $this->om = $om;
+
+        if (!isset($options['class'])) {
+            throw new \InvalidArgumentException('Class not specified in EntitySearchTransformer::setOptions');
+        }
+
+        if (!class_exists($options['class'])) {
+            throw new \InvalidArgumentException(sprintf(
+                'Class "%s" not found in EntitySearchTransformer::setOptions',
+                $options['class']
+            ));
+        }
+
+        $this->class = $options['class'];
+
+        if (isset($options['allow_not_found'])) {
+            $this->allowNotFound = $options['allow_not_found'];
+        }
+
+        if (isset($options['name'])) {
+            $this->nameField = $options['name'];
+        } else {
+            $this->nameField = 'name';
+        }
+
+        $this->accessor = PropertyAccess::getPropertyAccessor();
+    }
+
+    public function transform($object)
+    {
+        if ($object === null) {
+            return null;
+        }
+
+        if (!$object instanceof $this->class) {
+            throw new UnexpectedTypeException($object, $this->class);
+        }
+
+        return array(
+            'id' => $object->getId(),
+            'name' => $this->accessor->getValue($object, $this->nameField)
+        );
+    }
+
+    public function reverseTransform($value)
+    {
+        if (!is_array($value)) {
+            return null;
+        }
+
+        if (!isset($value['id'])) {
+            $value['id'] = '';
+        }
+
+        if (!isset($value['name'])) {
+            $value['name'] = '';
+        }
+
+        if (!is_string($value['id']) || !is_string($value['name'])) {
+            return null;
+        }
+
+        $repository = $this->om->getRepository($this->class);
+        if ($value['id'] != '') {
+            $object = $repository->find($value['id']);
+
+            if (!$this->allowNotFound && !isset($object)) {
+                throw new TransformationFailedException('Transformation failed - object not found');
+            }
+        } elseif ($value['name'] != '') {
+            $object = $repository->findOneBy(array($this->nameField => $value['name']));
+
+            if (!$this->allowNotFound && !isset($object)) {
+                throw new TransformationFailedException('Transformation failed - object not found');
+            }
+        } else {
+            $object = null;
+        }
+
+        return $object;
+    }
+}

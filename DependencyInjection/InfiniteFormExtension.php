@@ -36,6 +36,10 @@ class InfiniteFormExtension extends Extension
             $loader->load('checkbox_grid.xml');
         }
 
+        if ($configs['entity_search']) {
+            $loader->load('entity_search.xml');
+        }
+
         if ($configs['polycollection']) {
             $loader->load('polycollection.xml');
         }

@@ -38,6 +38,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($config, self::getBundleDefaultConfig());
     }
 
+    public function testNullEntitySearchConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array('entity_search' => null));
+
+        $this->assertEquals($config, self::getBundleDefaultConfig());
+    }
+
     public function testNullPolycollectionConfig()
     {
         $processor = new Processor();
@@ -59,6 +67,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         return array(
             'attachment'     => true,
             'checkbox_grid'  => true,
+            'entity_search'  => true,
             'polycollection' => true,
             'twig'           => true,
         );

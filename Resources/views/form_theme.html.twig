@@ -32,6 +32,12 @@ file that was distributed with this source code.
     </tr>
 {% endblock infinite_form_checkbox_row_widget %}
 
+{% block infinite_form_entity_search_widget %}
+{{ form_widget(form.id) }}
+{% set class = attr.class|default('') ~ ' entity-search' %}
+{{ form_widget(form.name, {'attr': attr|merge({'autocomplete': 'off', 'class': class, 'data-search-url': path(search_route)})}) }}
+{% endblock infinite_form_entity_search_widget %}
+
 {% block infinite_form_attachment_widget %}
 {{ form_widget(form.meta) }}
 {% set att = form.get('attachment') %}
