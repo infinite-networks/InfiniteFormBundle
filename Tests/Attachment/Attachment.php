@@ -13,6 +13,11 @@ use Infinite\FormBundle\Attachment\Attachment as BaseAttachment;
 
 class Attachment extends BaseAttachment
 {
+    public function getId()
+    {
+        return 1;
+    }
+
     public function getAdditionalFormData()
     {
         return array();
