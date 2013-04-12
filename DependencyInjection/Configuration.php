@@ -40,6 +40,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                     ->treatNullLike(true)
                 ->end()
+                ->scalarNode('twig')
+                    ->defaultTrue()
+                    ->treatNullLike(true)
+                ->end()
             ->end();
 
         return $treeBuilder;

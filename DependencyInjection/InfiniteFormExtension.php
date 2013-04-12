@@ -35,5 +35,9 @@ class InfiniteFormExtension extends Extension
         if ($configs['polycollection']) {
             $loader->load('polycollection.xml');
         }
+
+        if ($configs['twig']) {
+            $loader->load('twig.xml');
+        }
     }
 }

@@ -30,11 +30,28 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($config, self::getBundleDefaultConfig());
     }
 
+    public function testNullCheckboxConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array('checkbox_grid' => null));
+
+        $this->assertEquals($config, self::getBundleDefaultConfig());
+    }
+
+    public function testNullTwigConfig()
+    {
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), array('twig' => null));
+
+        $this->assertEquals($config, self::getBundleDefaultConfig());
+    }
+
     protected static function getBundleDefaultConfig()
     {
         return array(
-            'checkbox_grid' => true,
+            'checkbox_grid'  => true,
             'polycollection' => true,
+            'twig'           => true,
         );
     }
 }
