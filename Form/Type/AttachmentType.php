@@ -3,6 +3,7 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\DataTransformer\AttachmentTransformer;
 use Infinite\FormBundle\Attachment\PathHelper;
 use Symfony\Component\Form\AbstractType;
@@ -16,11 +17,12 @@ class AttachmentType extends AbstractType
     protected $om;
     protected $pathHelper;
 
-    public function __construct($secret, ObjectManager $om, PathHelper $pathHelper)
+    public function __construct($secret, ObjectManager $om, PathHelper $pathHelper, Uploader $uploader)
     {
         $this->defaultSecret = $secret;
-        $this->om = $om;
-        $this->pathHelper = $pathHelper;
+        $this->om            = $om;
+        $this->pathHelper    = $pathHelper;
+        $this->uploader      = $uploader;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -29,7 +31,12 @@ class AttachmentType extends AbstractType
             ->add('file', 'file', array('required' => $options['required']))
             ->add('removed', 'hidden')
             ->add('meta', 'hidden', array('required' => false))
-            ->addViewTransformer(new AttachmentTransformer($options, $this->om, $this->pathHelper))
+            ->addViewTransformer(new AttachmentTransformer(
+                $options,
+                $this->om,
+                $this->pathHelper,
+                $this->uploader
+            ))
         ;
     }
 

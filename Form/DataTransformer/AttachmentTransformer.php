@@ -3,8 +3,9 @@
 namespace Infinite\FormBundle\Form\DataTransformer;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Infinite\FormBundle\Attachment\AttachmentInterface;
 use Infinite\FormBundle\Attachment\PathHelper;
-use Infinite\FormBundle\Model\AttachmentInterface;
+use Infinite\FormBundle\Attachment\Uploader;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -15,13 +16,15 @@ class AttachmentTransformer implements DataTransformerInterface
     protected $om;
     protected $pathHelper;
     protected $secret;
+    protected $uploader;
 
-    public function __construct($options, ObjectManager $om, PathHelper $pathHelper)
+    public function __construct($options, ObjectManager $om, PathHelper $pathHelper, Uploader $uploader)
     {
-        $this->dataClass = $options['class'];
-        $this->om = $om;
+        $this->dataClass  = $options['class'];
+        $this->om         = $om;
         $this->pathHelper = $pathHelper;
-        $this->secret = $options['secret'];
+        $this->secret     = $options['secret'];
+        $this->uploader   = $uploader;
     }
 
     public function transform($value)
@@ -97,7 +100,7 @@ class AttachmentTransformer implements DataTransformerInterface
                 $data = $data ?: new $this->dataClass;
 
                 // Accept the upload
-                $this->pathHelper->acceptUpload($file, $data);
+                $this->uploader->acceptUpload($file, $data);
             }
 
             // Apply any other posted fields

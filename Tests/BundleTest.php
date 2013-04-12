@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Infinite\FormBundle\Tests\CheckboxGrid;
+namespace Infinite\FormBundle\Tests;
 
 use Infinite\FormBundle\InfiniteFormBundle;
 use Symfony\Component\Form\Forms;

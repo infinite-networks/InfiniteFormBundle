@@ -10,6 +10,8 @@ namespace Infinite\FormBundle\Attachment;
  */
 interface AttachmentInterface
 {
+    public function getId();
+
     /**
      * The filename to be displayed to the user
      *
