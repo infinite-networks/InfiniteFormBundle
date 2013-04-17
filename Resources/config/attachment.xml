@@ -14,13 +14,22 @@
     <parameters>
         <parameter key="infinite_form.attachment.path_helper.class">Infinite\FormBundle\Attachment\PathHelper</parameter>
         <parameter key="infinite_form.attachment.attachment_type.class">Infinite\FormBundle\Form\Type\AttachmentType</parameter>
+        <parameter key="infinite_form.attachment.sanitiser.class">Infinite\FormBundle\Attachment\Sanitiser</parameter>
+        <parameter key="infinite_form.attachment.uploader.class">Infinite\FormBundle\Attachment\Uploader</parameter>
         <parameter key="infinite_form.attachment.save_config" type="collection" />
         <parameter key="infinite_form.attachment.default_secret">%secret%</parameter>
         <parameter key="infinite_form.attachment.entity_manager" />
     </parameters>
 
     <services>
+        <service id="infinite_form.attachment.sanitiser" class="%infinite_form.attachment.sanitiser.class%" />
+        <service id="infinite_form.attachment.uploader" class="%infinite_form.attachment.uploader.class%">
+            <argument type="service" id="infinite_form.attachment.sanitiser" />
+            <argument type="service" id="infinite_form.attachment.path_helper" />
+        </service>
+
         <service id="infinite_form.attachment.path_helper" class="%infinite_form.attachment.path_helper.class%">
+            <argument type="service" id="infinite_form.attachment.sanitiser" />
             <argument>%infinite_form.attachment.save_config%</argument>
         </service>
 
@@ -32,6 +41,7 @@
                 </service>
             </argument>
             <argument type="service" id="infinite_form.attachment.path_helper" />
+            <argument type="service" id="infinite_form.attachment.uploader" />
             <tag name="form.type" alias="infinite_form_attachment" />
         </service>
     </services>
