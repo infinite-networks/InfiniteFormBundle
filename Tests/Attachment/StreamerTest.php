@@ -55,7 +55,7 @@ class StreamerTest extends \PHPUnit_Framework_TestCase
     public function testStreamer()
     {
         $attachment = new Attachment();
-        $attachment->setPhysicalName('test/test.txt');
+        $attachment->setPhysicalName('infinite-streamer-test.txt');
         $attachment->setFilename('test.txt');
         $attachment->setMimeType('text/plain');
 

@@ -52,6 +52,6 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test.txt', $attachment->getFilename());
         $this->assertEquals(0, $attachment->getFileSize());
         $this->assertEquals('text/plain', $attachment->getMimeType());
-        $this->assertRegExp('#^test/([\w]{4})/test([_\d]+).txt$#', $attachment->getPhysicalName());
+        $this->assertRegExp('#^test/([a-f\d]{4})/test(_\d*)?.txt$#', $attachment->getPhysicalName());
     }
 }
