@@ -39,6 +39,21 @@ class PathHelper
         return sprintf('%s/%s', $this->getSaveDir($attachment), $attachment->getPhysicalName());
     }
 
+    protected function getConfig(AttachmentInterface $attachment)
+    {
+        if (isset($this->config[get_class($attachment)])) {
+            return $this->config[get_class($attachment)];
+        } else {
+            foreach (class_parents($attachment) as $class) {
+                if (isset($this->config[$class])) {
+                    return $this->config[$class];
+                }
+            }
+        }
+
+        throw new \Exception('Class is not configured as an attachment: '.get_class($attachment));
+    }
+
     /**
      * Returns the root saving location for a specific attachment type.
      *
@@ -47,16 +62,20 @@ class PathHelper
      */
     public function getSaveDir(AttachmentInterface $attachment)
     {
-        return $this->config[get_class($attachment)]['dir'];
+        $cfg = $this->getConfig($attachment);
+
+        return $cfg['dir'];
     }
 
     /**
      * @param AttachmentInterface $attachment
-     * @return mixed
+     * @return string
      */
     public function getFormat(AttachmentInterface $attachment)
     {
-        return $this->config[get_class($attachment)]['format'];
+        $cfg = $this->getConfig($attachment);
+
+        return $cfg['format'];
     }
 
     /**
