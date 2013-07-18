@@ -129,6 +129,11 @@ class ResizePolyFormListener extends ResizeFormListener
 
     public function preBind(FormEvent $event)
     {
+        $this->preSubmit($event);
+    }
+
+    public function preSubmit(FormEvent $event)
+    {
         $form = $event->getForm();
         $data = $event->getData();
 
