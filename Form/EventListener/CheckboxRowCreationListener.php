@@ -60,13 +60,16 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
         foreach ($options['choice_list']->getRemainingViews() as $choice) {
             if (isset($options['cell_filter']) && !$options['cell_filter']($choice->data, $options['row']->data)) {
                 // Blank cell - put a dummy form control here
-                $form->add($this->factory->createNamed($choice->value, 'form', array()));
+                $form->add($choice->value, 'form', array());
             } else {
                 $builder = $this->factory->createNamedBuilder(
                     $choice->value,
                     'checkbox',
                     isset($data[$choice->value]),
-                    array('required' => false)
+                    array(
+                        'auto_initialize' => false,
+                        'required' => false,
+                    )
                 );
 
                 if (isset($data[$choice->value])) {
