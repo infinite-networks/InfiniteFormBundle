@@ -34,7 +34,7 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testInvalidObject()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\Exception');
+        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\ExceptionInterface');
         $form = $this->factory->create('infinite_form_polycollection', null, array(
             'types' => array(
                 'abstract_type',

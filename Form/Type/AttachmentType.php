@@ -57,11 +57,6 @@ class AttachmentType extends AbstractType
         return 'infinite_form_attachment';
     }
 
-    public function getParent()
-    {
-        return 'field';
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('class'));

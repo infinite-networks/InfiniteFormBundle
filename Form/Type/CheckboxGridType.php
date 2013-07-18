@@ -54,11 +54,6 @@ class CheckboxGridType extends AbstractType
         return 'infinite_form_checkbox_grid';
     }
 
-    public function getParent()
-    {
-        return 'form';
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
