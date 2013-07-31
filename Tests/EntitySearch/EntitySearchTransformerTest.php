@@ -24,6 +24,16 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->em = $this->getMock('Doctrine\\Common\\Persistence\\ObjectManager');
+        $mockMetadata = $this->getMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
+
+        $this->em->expects($this->any())
+            ->method('getClassMetadata')
+            ->with($this->equalTo('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit'))
+            ->will($this->returnValue($mockMetadata));
+
+        $mockMetadata->expects($this->any())
+            ->method('getIdentifierFieldNames')
+            ->will($this->returnValue(array('id')));
     }
 
     public function testClassRequired()
@@ -49,8 +59,6 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
         $fruit = new Fruit;
         $fruit->id = 42;
         $fruit->name = 'watermelon';
-
-        $this->expectsGetClassMetadata();
 
         $transformer = $this->makeTransformer();
         $data = $transformer->transform($fruit);
@@ -104,8 +112,6 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
         $fruit->id = 48;
         $fruit->name = 'feijoa';
 
-        $this->expectsGetClassMetadata();
-
         $transformer = $this->makeTransformer(array('name' => 'id'));
         $data = $transformer->transform($fruit);
 
@@ -146,18 +152,6 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
         $transformer = $this->makeTransformer();
         $transformer->reverseTransform(array('id' => '', 'name' => 'foo'));
-    }
-
-    private function expectsGetClassMetadata()
-    {
-        $mockMetadata = $this->getMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
-        $mockMetadata->expects($this->once())
-            ->method('getIdentifierValues')
-            ->will($this->returnCallback(function ($obj) { return array($obj->id); }));
-
-        $this->em->expects($this->once())
-            ->method('getClassMetadata')
-            ->will($this->returnValue($mockMetadata));
     }
 
     private function expectsGetRepository()
