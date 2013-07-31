@@ -12,6 +12,7 @@ class EntitySearchTransformer implements DataTransformerInterface
 {
     private $om;
     private $class;
+    private $idField;
     private $nameField;
     private $accessor;
     private $allowNotFound = false;
@@ -43,6 +44,9 @@ class EntitySearchTransformer implements DataTransformerInterface
             $this->nameField = 'name';
         }
 
+        $idFieldArray = $om->getClassMetadata($this->class)->getIdentifierFieldNames();
+        $this->idField = reset($idFieldArray);
+
         $this->accessor = PropertyAccess::getPropertyAccessor();
     }
 
@@ -56,10 +60,8 @@ class EntitySearchTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($object, $this->class);
         }
 
-        $ids = $this->om->getClassMetadata(get_class($object))->getIdentifierValues($object);
-
         return array(
-            'id' => reset($ids),
+            'id' => $this->accessor->getValue($object, $this->idField),
             'name' => $this->accessor->getValue($object, $this->nameField),
         );
     }
