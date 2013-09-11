@@ -26,7 +26,7 @@ $(function ($) {
      */
     window.infinite.Collection = function (collection, prototypes) {
         this.$collection = $(collection);
-        this.internalCount = $(collection).children.length;
+        this.internalCount = $(collection).children().length;
         this.$prototypes = prototypes;
 
         this.initialise();
