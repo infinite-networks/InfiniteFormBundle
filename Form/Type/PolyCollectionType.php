@@ -134,6 +134,12 @@ class PolyCollectionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $optionsNormalizer = function (Options $options, $value) {
+            $value['block_name'] = 'entry';
+
+            return $value;
+        };
+        
         $resolver->setDefaults(array(
             'allow_add'      => false,
             'allow_delete'   => false,
@@ -149,6 +155,10 @@ class PolyCollectionType extends AbstractType
 
         $resolver->setAllowedTypes(array(
             'types' => 'array'
+        ));
+        
+        $resolver->setNormalizers(array(
+            'options' => $optionsNormalizer,
         ));
     }
 
