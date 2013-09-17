@@ -10,7 +10,7 @@
  *
  * @author Tim Nagel <t.nagel@infinite.net.au>
  */
-$(function ($) {
+(function ($) {
     "use strict";
 
     window.infinite = window.infinite || {};
@@ -57,7 +57,7 @@ $(function ($) {
         addToCollection: function (prototype, values) {
             values = values || {};
 
-            var row = $(this._getPrototypeHtml(prototype));
+            var row = $($.parseHTML(this._getPrototypeHtml(prototype)));
             this._fillRowWithValues(row, values);
 
             var event = $.Event('infinite_collection_add');
@@ -84,7 +84,7 @@ $(function ($) {
 
          */
         removeFromCollection: function (row) {
-            var event = jQuery.Event('infinite_collection_remove');
+            var event = $.Event('infinite_collection_remove');
             event.collection = this.$collection;
             event.row = row;
             this.$collection.trigger(event);
@@ -95,15 +95,18 @@ $(function ($) {
         },
 
         /**
-         * Retrieves the HTML from the prototype button, replacing __name__ with
-         * an incremented counter value.
+         * Retrieves the HTML from the prototype button, replacing __name__label__
+         * and __name__ with an incremented counter value.
+         *
+         * TODO support customized prototype name
+         * TODO add an extension point for the replacement of the label
          *
          * @private
          */
         _getPrototypeHtml: function (prototype) {
             var html = prototype.data('prototype');
 
-            return html.replace(/__name__/gi, this.internalCount++);
+            return html.replace(/__name__label__/gi, this.internalCount).replace(/__name__/gi, this.internalCount++);
         },
 
         /**
