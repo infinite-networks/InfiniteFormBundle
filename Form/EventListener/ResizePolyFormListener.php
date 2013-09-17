@@ -38,13 +38,22 @@ class ResizePolyFormListener extends ResizeFormListener
     protected $classMap = array();
 
     /**
+     * Name of the hidden field identifying the type
+     *
+     * @var string
+     */
+    protected $typeFieldName;
+
+    /**
      * @param array<FormInterface> $prototypes
      * @param array $options
      * @param bool $allowAdd
      * @param bool $allowDelete
+     * @param string $typeFieldName
      */
-    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false)
+    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type')
     {
+        $this->typeFieldName = $typeFieldName;
         $defaultType = null;
 
         foreach ($prototypes as $prototype) {
@@ -93,11 +102,11 @@ class ResizePolyFormListener extends ResizeFormListener
      */
     protected function getTypeForData(array $data)
     {
-        if (!array_key_exists('_type', $data) or !array_key_exists($data['_type'], $this->typeMap)) {
+        if (!array_key_exists($this->typeFieldName, $data) || !array_key_exists($data[$this->typeFieldName], $this->typeMap)) {
             throw new \InvalidArgumentException('Unable to determine the Type for given data');
         }
 
-        return $this->typeMap[$data['_type']];
+        return $this->typeMap[$data[$this->typeFieldName]];
     }
 
     public function preSetData(FormEvent $event)
