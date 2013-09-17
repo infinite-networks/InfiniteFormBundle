@@ -24,6 +24,7 @@
   <delete dir="${basedir}/build/coverage"/>
   <delete dir="${basedir}/build/logs"/>
   <delete dir="${basedir}/build/pdepend"/>
+  <delete file="${basedir}/composer.lock"/>
  </target>
 
  <target name="prepare" depends="clean" description="Prepare for build">
