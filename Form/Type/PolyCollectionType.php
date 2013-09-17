@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -44,7 +45,8 @@ class PolyCollectionType extends AbstractType
             $prototypes,
             $options['options'],
             $options['allow_add'],
-            $options['allow_delete']
+            $options['allow_delete'],
+            $options['type_name']
         );
 
         $builder->addEventSubscriber($resizeListener);
@@ -134,6 +136,12 @@ class PolyCollectionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $optionsNormalizer = function (Options $options, $value) {
+            $value['block_name'] = 'entry';
+
+            return $value;
+        };
+        
         $resolver->setDefaults(array(
             'allow_add'      => false,
             'allow_delete'   => false,
@@ -149,6 +157,10 @@ class PolyCollectionType extends AbstractType
 
         $resolver->setAllowedTypes(array(
             'types' => 'array'
+        ));
+        
+        $resolver->setNormalizers(array(
+            'options' => $optionsNormalizer,
         ));
     }
 
