@@ -147,6 +147,47 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertEquals('Car', $form[1]->getData()->text2);
     }
 
+    public function testResizedWithCustomTypeField()
+    {
+        $form = $this->factory->create('infinite_form_polycollection', null, array(
+            'types' => array(
+                'abstract_type',
+                'first_type',
+                'second_type'
+            ),
+            'type_name' => '_type_id',
+            'allow_add' => true
+        ));
+
+        $form->setData(array(
+            new AbstractModel('Green'),
+        ));
+        $form->bind(array(
+            array(
+                '_type_id' => 'abstract_type',
+                'text' => 'Green'
+            ),
+            array(
+                '_type_id' => 'first_type',
+                'text' => 'Red',
+                'text2' => 'Car'
+            )
+        ));
+
+        $this->assertTrue($form->has('0'));
+        $this->assertTrue($form->has('1'));
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First',
+            $form[1]->getData()
+        );
+        $this->assertEquals('Red', $form[1]->getData()->text);
+        $this->assertEquals('Car', $form[1]->getData()->text2);
+    }
+
     public function testNotResizedIfBoundWithExtraData()
     {
         $form = $this->factory->create('infinite_form_polycollection', null, array(

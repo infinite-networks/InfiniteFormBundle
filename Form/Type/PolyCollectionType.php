@@ -44,7 +44,8 @@ class PolyCollectionType extends AbstractType
             $prototypes,
             $options['options'],
             $options['allow_add'],
-            $options['allow_delete']
+            $options['allow_delete'],
+            $options['type_name']
         );
 
         $builder->addEventSubscriber($resizeListener);
