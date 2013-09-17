@@ -1,0 +1,28 @@
+{#
+
+(c) Infinite Networks <http://www.infinite.net.au>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{#
+
+Provides legacy theme templates for the collection widget that will allow the use
+of the collection.js helper.
+
+#}
+
+{% block collection_widget %}
+{% spaceless %}
+    {% set attr = attr|merge({
+        'data-form-widget': 'collection',
+    }) %}
+
+    {{ block('form_widget') }}
+    {% if prototype is defined %}
+        <a class="btn" data-prototype="{{ form_row(prototype) | escape }}"><i class="icon-plus"></i> Add</a>
+    {% endif %}
+{% endspaceless %}
+{% endblock collection_widget %}
