@@ -57,7 +57,7 @@
         addToCollection: function (prototype, values) {
             values = values || {};
 
-            var row = $(this._getPrototypeHtml(prototype));
+            var row = $($.parseHTML(this._getPrototypeHtml(prototype)));
             this._fillRowWithValues(row, values);
 
             var event = $.Event('infinite_collection_add');
