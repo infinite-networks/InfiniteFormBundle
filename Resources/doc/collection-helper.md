@@ -192,5 +192,7 @@ Properties provided on the event object:
                          buttons.
 - `html`: The raw HTML to be used for generating the prototype. It should remain as a
           string of HTML. The helper will process this HTML in a later stage into the DOM.
-- `replacement`: What the prototype name should be replaced with. The helper will generate
-                 the next integer based on its internal count of items in the collection.
+- `replacement`: READ ONLY. What the prototype name should be replaced with. The helper
+                 will generate the next integer based on its internal count of items in
+                 the collection. If you wish to do a custom replacement it will need to
+                 be applied directly to `event.html`.
