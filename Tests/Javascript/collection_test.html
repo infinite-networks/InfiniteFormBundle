@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>InfiniteFormBundle Collection Helper Tests</title>
+    <link rel="stylesheet" href="../../components/qunit/qunit.css">
+    <style type="text/css">#markup { display: none; }</style>
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="../../components/qunit/qunit.js"></script>
+<script src="../../components/jquery/jquery.js"></script>
+<script src="../../Resources/public/js/collections.js"></script>
+<script src="collection_tests.js"></script>
+
+<div id="markup">
+    <div class="list-collection">
+        <div class="collection">
+            <div class="item input-append" data-original>
+                <input type="email" name="form[__name__]" id="form___name__" />
+                <a class="remove_item">Remove</a>
+            </div>
+        </div>
+
+        <a data-prototype="&lt;div class=&quot;item input-append&quot;&gt;
+            &lt;input type=&quot;email&quot; name=&quot;form[__name__]&quot; id=&quot;form___name__&quot; /&gt;
+            &lt;a class=&quot;remove_item&quot;&gt;Remove&lt;/a&gt;
+        &lt;/div&gt;">Add</a>
+    </div>
+</div>
+
+</body>
+</html>

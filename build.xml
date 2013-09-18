@@ -2,10 +2,10 @@
 
 <project name="InfiniteFormBundle" default="build">
  <target name="build"
-   depends="prepare,lint-php,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpcb"/>
+   depends="prepare,lint-php,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,qunit,phpcb"/>
 
  <target name="build-parallel"
-   depends="prepare,lint-php,tools-parallel,phpunit,phpcb"/>
+   depends="prepare,lint-php,tools-parallel,phpunit,qunit,phpcb"/>
 
  <target name="tools-parallel" description="Run tools in parallel">
   <parallel threadCount="2">
@@ -122,6 +122,12 @@
   <exec executable="phpunit" failonerror="true">
    <arg value="-c" />
    <arg value="${basedir}/build/phpunit.jenkins.xml" />
+  </exec>
+ </target>
+
+ <target name="qunit" description="Run javascript tests with QUnit">
+  <exec executable="${basedir}/Tests/Javascript/runner.py" failonerror="true">
+   <arg value="${basedir}/Tests/Javascript/collection_test.html" />
   </exec>
  </target>
 

@@ -27,7 +27,16 @@ like `InvoiceProductLine`, `InvoiceShippingLine` and `InvoiceDiscountLine`
 you could use this form type to achieve a form collection that would support
 all 4 types of `InvoiceLine` inside the same collection.
 
-For more information see [PolyCollection Documentation](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md)
+For more information see the [PolyCollection Documentation][].
+
+Collection Helper
+-----------------
+
+InfiniteFormBundle supplies some helper javascript for working with form collections. It
+supports both the standard Symfony2 collection type and the PolyCollection type supplied
+by this bundle.
+
+For more information see the [Collection Helper Documentation][].
 
 CheckboxGrid
 -------------
@@ -41,4 +50,8 @@ different areas. Any of its salesmen could sell any combination of products
 in areas. The salesman form needs a table of checkboxes where the rows are
 products and the columns are areas (or vice versa!)
 
-For more information see [CheckboxGrid Documentation](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md)
+For more information see the [CheckboxGrid Documentation][].
+
+[PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
+[Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md)
+[CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md

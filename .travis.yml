@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
 
@@ -9,7 +8,9 @@ before_script:
   - curl --silent http://getcomposer.org/installer | php
   - php composer.phar install --dev --no-interaction --prefer-source
 
-script: phpunit --coverage-text --colors
+script:
+  - phpunit --coverage-text --colors
+  - Tests/Javascript/runner.py Tests/Javascript/collection_test.html
 
 notifications:
   email:

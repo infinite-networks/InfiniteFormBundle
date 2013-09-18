@@ -2,6 +2,7 @@ build/*
 !build/phpcs.xml
 !build/phpmd.xml
 !build/phpunit.jenkins.xml
+components
 composer.phar
 composer.lock
 phpunit.xml
