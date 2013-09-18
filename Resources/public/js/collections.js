@@ -5,8 +5,18 @@
  */
 
 /**
- * Provides helper javascript for handling adding and removing
- * items from a form collection.
+ * Provides helper javascript for handling adding and removing items from a form
+ * collection. It requires jQuery to operate.
+ *
+ * To use this collection javascript, initialise it against a collection and pass in any
+ * prototype add links as a second argument.
+ *
+ * The example below assumes that PR https://github.com/symfony/symfony/pull/7713 has been
+ * merged.
+ *
+ *      $('[data-form-widget=collection]').each(function () {
+ *          new window.infinite.Collection(this, $('[data-prototype]', this));
+ *      });
  *
  * @author Tim Nagel <t.nagel@infinite.net.au>
  */
@@ -23,11 +33,22 @@
      * @param prototypes We expect a jQuery array passed here that will provide one or
      *                   more clickable elements that contain a prototype to be inserted
      *                   into the collection as a data-prototype attribute.
+     * @param options    Allows configuration of different aspects of the Collection
+     *                   objects behavior.
      */
-    window.infinite.Collection = function (collection, prototypes) {
+    window.infinite.Collection = function (collection, prototypes, options) {
         this.$collection = $(collection);
-        this.internalCount = $(collection).children().length;
+        this.internalCount = this.$collection.children().length;
         this.$prototypes = prototypes;
+
+        this.options = $.extend({
+            allowAdd: true,
+            allowDelete: true,
+            itemSelector: '.item',
+            prototypeAttribute: 'data-prototype',
+            prototypeName: '__name__',
+            removeSelector: '.remove_item'
+        }, options || {});
 
         this.initialise();
     };
@@ -44,90 +65,91 @@
                 that.addToCollection($(this));
             });
 
-            this.$collection.on('click', '.remove_item', function (e) {
+            this.$collection.on('click', this.options.removeSelector, function (e) {
                 e.preventDefault();
 
-                that.removeFromCollection($(this).parents('.item'));
+                that.removeFromCollection($(this).closest(that.options.itemSelector));
             });
+
+            this.$collection.data('collection', this);
         },
 
         /**
          * Adds another row to the collection
          */
-        addToCollection: function (prototype, values) {
-            values = values || {};
+        addToCollection: function ($prototype) {
+            if (!this.options.allowAdd) {
+                return;
+            }
 
-            var row = $($.parseHTML(this._getPrototypeHtml(prototype)));
-            this._fillRowWithValues(row, values);
+            var $row = $($.parseHTML(this._getPrototypeHtml($prototype, this.internalCount++)));
 
-            var event = $.Event('infinite_collection_add');
-            event.collection = this.$collection;
-            event.row = row;
+            var event = this._createEvent('infinite_collection_add');
+            event.$triggeredPrototype = $prototype;
+            event.$row = $row;
             event.insertBefore = null;
             this.$collection.trigger(event);
 
             if (!event.isDefaultPrevented()) {
                 if (event.insertBefore) {
-                    row.insertBefore(event.insertBefore);
+                    $row.insertBefore(event.insertBefore);
                 } else {
-                    this.$collection.append(row);
+                    this.$collection.append($row);
                 }
-
-                return row;
             }
-
-            return false;
         },
 
         /**
          * Removes a supplied row from the collection.
-
          */
-        removeFromCollection: function (row) {
-            var event = $.Event('infinite_collection_remove');
-            event.collection = this.$collection;
-            event.row = row;
+        removeFromCollection: function ($row) {
+            if (!this.options.allowDelete) {
+                return;
+            }
+
+            var event = this._createEvent('infinite_collection_remove');
+            event.$row = $row;
             this.$collection.trigger(event);
 
             if (!event.isDefaultPrevented()) {
-                row.remove();
+                $row.remove();
             }
         },
 
         /**
          * Retrieves the HTML from the prototype button, replacing __name__label__
-         * and __name__ with an incremented counter value.
-         *
-         * TODO support customized prototype name
-         * TODO add an extension point for the replacement of the label
+         * and __name__ with the supplied replacement value.
          *
          * @private
          */
-        _getPrototypeHtml: function (prototype) {
-            var html = prototype.data('prototype');
+        _getPrototypeHtml: function ($prototype, replacement) {
+            var event = this._createEvent('infinite_collection_prototype');
+            event.$triggeredPrototype = $prototype;
+            event.html = $prototype.attr(this.options.prototypeAttribute);
+            event.replacement = replacement;
+            this.$collection.trigger(event);
 
-            return html.replace(/__name__label__/gi, this.internalCount).replace(/__name__/gi, this.internalCount++);
+            if (!event.isDefaultPrevented()) {
+                var labelRegex = new RegExp(this.options.prototypeName + 'label__', 'gi'),
+                    prototypeRegex = new RegExp(this.options.prototypeName, 'gi');
+
+                event.html = event.html.replace(labelRegex, replacement)
+                    .replace(prototypeRegex, replacement);
+            }
+
+            return event.html;
         },
 
         /**
-         * Fills a given row with default values.
+         * Creates a jQuery event object with the given name.
          *
          * @private
          */
-        _fillRowWithValues: function (row, values) {
-            $.each(values, function (field, value) {
-                var el = row.find(field);
+        _createEvent: function (eventName) {
+            var event = $.Event(eventName);
+            event.collection = this;
 
-                if (el.is('input, textarea, select')) {
-                    el.val(value);
-                } else {
-                    el.text(value);
-                }
-
-                if (value && !el.is(':visible') && !el.is('.stay-hidden')) {
-                    el.show();
-                }
-            });
+            return event;
         }
     };
 }(window.jQuery));
