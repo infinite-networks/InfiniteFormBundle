@@ -24,7 +24,7 @@
 
     test( "Add Item Test", function() {
         var collection = setUpCollection('#markup .list-collection');
-        collection.$prototypes[0].click();
+        collection.$prototypes.click();
 
         var items = collection.$collection.find('.item');
 
@@ -37,10 +37,10 @@
     test( "Complicated Item Test", function() {
         var collection = setUpCollection('#markup .list-collection');
 
-        collection.$prototypes[0].click();
+        collection.$prototypes.click();
         collection.$collection.find('.remove_item').eq(0).click();
-        collection.$prototypes[0].click();
-        collection.$prototypes[0].click();
+        collection.$prototypes.click();
+        collection.$prototypes.click();
 
         var items = collection.$collection.find('.item');
 
