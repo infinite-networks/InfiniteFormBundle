@@ -133,6 +133,8 @@
  <target name="qunit" description="Run javascript tests with QUnit">
   <exec executable="${basedir}/Tests/Javascript/runner.py" failonerror="true">
    <arg value="${basedir}/Tests/Javascript/collection_test.html" />
+   <arg value="--output=junit" />
+   <redirector output="${basedir}/build/logs/junit.javascript.xml" />
   </exec>
  </target>
 
