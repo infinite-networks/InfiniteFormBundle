@@ -40,6 +40,7 @@
 
    <fileset dir="${basedir}">
     <exclude name="vendor/**" />
+    <exclude name="component/**" />
     <include name="**/*.php" />
     <modified />
    </fileset>
@@ -50,6 +51,8 @@
   <exec executable="phploc">
    <arg value="--exclude" />
    <arg value="vendor" />
+   <arg value="--exclude" />
+   <arg value="components" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
    <arg path="${basedir}" />
@@ -62,6 +65,7 @@
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
    <arg value="--ignore=vendor" />
+   <arg value="--ignore=components" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -74,6 +78,8 @@
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--exclude" />
    <arg value="vendor" />
+   <arg value="--exclude" />
+   <arg value="components" />
   </exec>
  </target>
 
@@ -86,6 +92,8 @@
    <arg value="${basedir}/build/logs/pmd.xml" />
    <arg value="--exclude" />
    <arg value="vendor" />
+   <arg value="--exclude" />
+   <arg value="components" />
   </exec>
  </target>
 
@@ -94,6 +102,8 @@
   <exec executable="phpcs">
    <arg value="--standard=${basedir}/build/phpcs.xml" />
    <arg value="--ignore=vendor" />
+   <arg value="--ignore=components" />
+   <arg value="--ignore=Tests/Javascript" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -104,6 +114,8 @@
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg value="--standard=${basedir}/build/phpcs.xml" />
    <arg value="--ignore=vendor" />
+   <arg value="--ignore=components" />
+   <arg value="--ignore=Tests/Javascript" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -114,6 +126,8 @@
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
    <arg value="--exclude" />
    <arg value="vendor" />
+   <arg value="--exclude" />
+   <arg value="components" />
    <arg path="${basedir}" />
   </exec>
  </target>
@@ -134,6 +148,7 @@
  <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
   <exec executable="phpcb">
    <arg value="--ignore=vendor" />
+   <arg value="--ignore=components" />
    <arg value="--log" />
    <arg path="${basedir}/build/logs" />
    <arg value="--source" />
