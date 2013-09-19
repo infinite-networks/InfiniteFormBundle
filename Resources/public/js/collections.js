@@ -108,8 +108,7 @@
             }
 
             var event = this._createEvent('infinite_collection_remove');
-            event.$row = $row;
-            this.$collection.trigger(event);
+            this.$row.trigger(event);
 
             if (!event.isDefaultPrevented()) {
                 $row.remove();

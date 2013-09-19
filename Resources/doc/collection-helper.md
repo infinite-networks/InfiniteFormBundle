@@ -165,8 +165,6 @@ manually handle removal from the DOM.
 Properties provided on the event object:
 
 - `collection`: The window.infinite.Collection instance
-- `$row`: the jQuery wrapped DOM elements that will end up being added to the collection
-          once the event finishes.
 
 ### infinite_collection_prototype
 

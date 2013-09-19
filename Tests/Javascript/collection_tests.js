@@ -45,7 +45,7 @@
         var items = collection.$collection.find('.item');
 
         equal(items.length, 3,
-            'Add item added another prototype to the collection');
+            'Added 3 and removed 1 item from the collection');
         equal(collection.$collection.find('[data-original]').length, 0,
             'Original entry is removed');
         equal(collection.internalCount, 4,
