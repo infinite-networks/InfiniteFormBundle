@@ -10,7 +10,7 @@ before_script:
 
 script:
   - phpunit --coverage-text --colors
-  - Tests/Javascript/runner.py Tests/Javascript/collection_test.html
+  - Tests/Javascript/runner.py Tests/Javascript/test.html
 
 notifications:
   email:
