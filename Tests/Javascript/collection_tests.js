@@ -1,6 +1,6 @@
 (function ($) {
 
-    module("Basic Collection Helper tests");
+    module("Collection Helper tests");
     test( "Initialisation Test", 3, function() {
         var collection = setUpCollection('#markup .list-collection');
 
@@ -50,6 +50,25 @@
             'Original entry is removed');
         equal(collection.internalCount, 4,
             'Internal count is incremented when adding');
+    });
+
+    test( "Disabled Collection Test", function() {
+        var collection = setUpCollection('#markup .list-collection');
+        collection.$collection.attr('data-disabled', 1);
+
+        collection.$prototypes.click();
+        collection.$collection.find('.remove_item').eq(0).click();
+        collection.$prototypes.click();
+        collection.$prototypes.click();
+
+        var items = collection.$collection.find('.item');
+
+        equal(items.length, 1,
+            'Collection didnt add or remove any rows');
+        equal(collection.$collection.find('[data-original]').length, 1,
+            'Original Entry was not removed');
+        equal(collection.internalCount, 1,
+            'Internal count stayed the same');
     });
 
     function setUpCollection(selector) {

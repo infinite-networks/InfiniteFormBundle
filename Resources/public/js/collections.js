@@ -44,6 +44,7 @@
         this.options = $.extend({
             allowAdd: true,
             allowDelete: true,
+            disabledSelector: '[data-disabled]',
             itemSelector: '.item',
             prototypeAttribute: 'data-prototype',
             prototypeName: '__name__',
@@ -78,7 +79,7 @@
          * Adds another row to the collection
          */
         addToCollection: function ($prototype) {
-            if (!this.options.allowAdd) {
+            if (!this.options.allowAdd || this.$collection.is(this.options.disabledSelector)) {
                 return;
             }
 
@@ -103,7 +104,7 @@
          * Removes a supplied row from the collection.
          */
         removeFromCollection: function ($row) {
-            if (!this.options.allowDelete) {
+            if (!this.options.allowDelete || this.$collection.is(this.options.disabledSelector)) {
                 return;
             }
 

@@ -19,6 +19,11 @@ of the collection.js helper.
     {% set attr = attr|merge({
         'data-form-widget': 'collection',
     }) %}
+    {% if disabled %}
+    {% set attr = attr|merge({
+        'data-disabled': 1
+    }) %}
+    {% endif %}
 
     {{ block('form_widget') }}
     {% if prototype is defined %}
