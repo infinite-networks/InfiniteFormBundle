@@ -12,7 +12,7 @@
             'Internal count is properly set');
     });
 
-    test( "Remove Item Test", function() {
+    test("Remove Item", function() {
         var collection = setUpCollection('#markup .list-collection');
         collection.$collection.find('.remove_item').click();
 
@@ -22,19 +22,22 @@
             'Remove item removed item from collection');
     });
 
-    test( "Add Item Test", function() {
+    test("Add Item", function() {
         var collection = setUpCollection('#markup .list-collection');
         collection.$prototypes.click();
 
-        var items = collection.$collection.find('.item');
+        var items = collection.$collection.find('.item'),
+            newItem = items.eq(1);
 
         equal(items.length, 2,
             'Add item added another prototype to the collection');
         equal(collection.internalCount, 2,
             'Internal count is incremented when adding');
+        equal(newItem.find('input[type=email]').length, 1,
+            'Added row has input');
     });
 
-    test( "Complicated Item Test", function() {
+    test("Complicated Item", function() {
         var collection = setUpCollection('#markup .list-collection');
 
         collection.$prototypes.click();
@@ -52,7 +55,7 @@
             'Internal count is incremented when adding');
     });
 
-    test( "Disabled Collection Test", function() {
+    test("Disabled Collection", function() {
         var collection = setUpCollection('#markup .list-collection');
         collection.$collection.attr('data-disabled', 1);
 
@@ -71,16 +74,106 @@
             'Internal count stayed the same');
     });
 
-    function setUpCollection(selector) {
+    test("Disabled Add Collection", function() {
+        var collection = setUpCollection('#markup .list-collection', {
+            allowAdd: false
+        });
+
+        collection.$prototypes.click();
+        collection.$collection.find('.remove_item').eq(0).click();
+
+        var items = collection.$collection.find('.item');
+
+        equal(items.length, 0,
+            'Collection only removed items');
+        equal(collection.$collection.find('[data-original]').length, 0,
+            'Original Entry was removed');
+        equal(collection.internalCount, 1,
+            'Internal count stayed the same');
+    });
+
+    test("Disabled Delete Collection", function() {
+        var collection = setUpCollection('#markup .list-collection', {
+            allowDelete: false
+        });
+
+        collection.$prototypes.click();
+        collection.$collection.find('.remove_item').eq(0).click();
+
+        var items = collection.$collection.find('.item');
+
+        equal(items.length, 2,
+            'Collection only removed items');
+        equal(collection.$collection.find('[data-original]').length, 1,
+            'Original Entry was not removed');
+        equal(collection.internalCount, 2,
+            'Internal count incremented');
+    });
+
+    test("Custom Selectors", function() {
+        var collection = setUpCollection('#markup .list-collection-different-selectors', {
+            itemSelector: '.customitem',
+            prototypeAttribute: 'data-customprototype',
+            prototypeName: '__customname__',
+            removeSelector: '.custom_remove_item'
+        });
+
+        collection.$prototypes.click();
+        collection.$collection.find('.custom_remove_item').eq(0).click();
+        collection.$prototypes.click();
+        collection.$prototypes.click();
+
+        var items = collection.$collection.find('.customitem');
+
+        equal(items.length, 3,
+            'Added 3 and removed 1 item from the collection');
+        equal(collection.$collection.find('[data-original]').length, 0,
+            'Original entry is removed');
+        equal(collection.internalCount, 4,
+            'Internal count is incremented when adding');
+    });
+
+    test("Add Event", function () {
+        expect(2);
+
+        var collection = setUpCollection('#markup .list-collection');
+
+        collection.$collection.on('infinite_collection_add', function (e) {
+            ok(true, 'Add event fired');
+        });
+
+        collection.$prototypes.click();
+
+        var items = collection.$collection.find('.item');
+
+        equal(items.length, 2,
+            'Add item added another prototype to the collection');
+    });
+
+    test("Add Event Prevents adding", function () {
+        var collection = setUpCollection('#markup .list-collection');
+        collection.$collection.on('infinite_collection_add', function (e) {
+            e.preventDefault();
+        });
+
+        collection.$prototypes.click();
+
+        var items = collection.$collection.find('.item');
+
+        equal(items.length, 1,
+            'Add item skipped because we prevented it with an event');
+    });
+
+    function setUpCollection(selector, options) {
         var $fixture = $('#qunit-fixture');
 
         var $dom = $(selector).clone();
         $dom.appendTo($fixture);
 
         var colEl = $dom.find('.collection'),
-            prototypes = $dom.find('[data-prototype]');
+            prototypes = $dom.find('.add_item');
 
-        collection = new window.infinite.Collection(colEl, prototypes);
+        collection = new window.infinite.Collection(colEl, prototypes, options);
 
         return collection;
     }
