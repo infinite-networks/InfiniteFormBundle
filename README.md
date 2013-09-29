@@ -11,7 +11,7 @@ any feedback, corrections additions you can provide.
 Installation
 ------------
 
-Installation instructions [can be found here](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md)
+Installation instructions [can be found here][].
 
 PolyCollection
 --------------
@@ -53,5 +53,6 @@ products and the columns are areas (or vice versa!)
 For more information see the [CheckboxGrid Documentation][].
 
 [PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
-[Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md)
+[Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md
 [CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md
+[can be found here]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md
