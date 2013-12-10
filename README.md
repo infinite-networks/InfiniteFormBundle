@@ -39,7 +39,7 @@ by this bundle.
 For more information see the [Collection Helper Documentation][].
 
 CheckboxGrid
--------------
+------------
 
 The CheckboxGrid form type allows editing many-to-many relationships with
 a grid of checkboxes. It has handy shortcuts for Doctrine entities but can
@@ -52,7 +52,16 @@ products and the columns are areas (or vice versa!)
 
 For more information see the [CheckboxGrid Documentation][].
 
+Twig Helper
+-----------
+
+InfiniteFormBundle comes with a Twig extension that adds form specific helpers
+for use when rendering templates.
+
+For more information see the [Twig Helper][].
+
 [PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
 [Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md
 [CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md
+[Twig Helper]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/twig-helper.md
 [can be found here]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md
