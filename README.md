@@ -60,17 +60,8 @@ for use when rendering templates.
 
 For more information see the [Twig Helper][].
 
-Validators
-----------
-
-InfiniteFormBundle comes with some common validators that are not included in the Symfony
-Validator component.
-
-For more information see the [Validation][] page.
-
 [PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
 [Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md
 [CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md
 [Twig Helper]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/twig-helper.md
-[Validation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/validators.md
 [can be found here]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md
