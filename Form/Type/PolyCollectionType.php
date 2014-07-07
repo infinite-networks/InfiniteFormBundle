@@ -163,7 +163,14 @@ class PolyCollectionType extends AbstractType
             'options' => $optionsNormalizer,
         ));
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent() {
+        return 'collection';
+    }
+    
     /**
      * {@inheritdoc}
      */
