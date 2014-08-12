@@ -31,7 +31,6 @@
         }
     },
     "autoload": {
-        "psr-0": { "Infinite\\FormBundle": "" }
-    },
-    "target-dir": "Infinite/FormBundle"
+        "psr-4": { "Infinite\\FormBundle\\": "" }
+    }
 }
