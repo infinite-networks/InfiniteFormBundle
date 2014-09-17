@@ -13,7 +13,6 @@ use Infinite\FormBundle\Twig\FormExtension;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\Validator\Validation;
 
 class FormExtensionTest extends \PHPUnit_Framework_TestCase
 {

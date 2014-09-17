@@ -10,8 +10,6 @@
 namespace Infinite\FormBundle\Tests\Attachment;
 
 use Infinite\FormBundle\Attachment\Sanitiser;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\Request;
 
 class SanitiserTest extends \PHPUnit_Framework_TestCase
 {

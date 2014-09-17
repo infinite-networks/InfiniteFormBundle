@@ -14,7 +14,6 @@ use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\Request;
 
 class CheckboxGridTest extends \PHPUnit_Framework_TestCase
 {
