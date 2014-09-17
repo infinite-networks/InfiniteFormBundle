@@ -11,8 +11,6 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformer;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
-use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
-use Symfony\Component\Form\Forms;
 
 class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 {

@@ -16,9 +16,7 @@ use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Tests\Attachment\Attachments\FullHashAttachment;
 use Infinite\FormBundle\Tests\Attachment\Attachments\InvalidFormatAttachment;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
-use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 
 class UploaderTest extends \PHPUnit_Framework_TestCase
 {

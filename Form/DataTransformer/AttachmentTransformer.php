@@ -7,7 +7,6 @@ use Infinite\FormBundle\Attachment\AttachmentInterface;
 use Infinite\FormBundle\Attachment\PathHelper;
 use Infinite\FormBundle\Attachment\Uploader;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AttachmentTransformer implements DataTransformerInterface

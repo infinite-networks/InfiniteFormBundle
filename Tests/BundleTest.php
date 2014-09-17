@@ -10,8 +10,6 @@
 namespace Infinite\FormBundle\Tests;
 
 use Infinite\FormBundle\InfiniteFormBundle;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\Request;
 
 class BundleTest extends \PHPUnit_Framework_TestCase
 {

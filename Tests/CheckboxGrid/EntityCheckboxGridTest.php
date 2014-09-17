@@ -18,7 +18,6 @@ use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
 use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\Request;
 
 class EntityCheckboxGridTest extends DoctrineOrmTestCase
 {

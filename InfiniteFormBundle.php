@@ -10,7 +10,6 @@
 namespace Infinite\FormBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class InfiniteFormBundle extends Bundle
 {

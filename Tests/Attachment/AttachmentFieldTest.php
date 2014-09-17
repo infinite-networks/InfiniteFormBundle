@@ -19,7 +19,6 @@ use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
 
 class AttachmentFieldTest extends DoctrineOrmTestCase
 {

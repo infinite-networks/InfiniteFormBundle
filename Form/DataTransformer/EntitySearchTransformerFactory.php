@@ -3,7 +3,6 @@
 namespace Infinite\FormBundle\Form\DataTransformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * A quick class to create EntitySearchTransformers from options.

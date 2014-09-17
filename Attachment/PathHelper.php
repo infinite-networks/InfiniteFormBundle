@@ -4,9 +4,6 @@ namespace Infinite\FormBundle\Attachment;
 
 use Infinite\FormBundle\Attachment\Sanitiser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PathHelper
 {
