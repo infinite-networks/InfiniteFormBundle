@@ -18,7 +18,7 @@
         <parameter key="infinite_form.attachment.streamer.class">Infinite\FormBundle\Attachment\Streamer</parameter>
         <parameter key="infinite_form.attachment.uploader.class">Infinite\FormBundle\Attachment\Uploader</parameter>
         <parameter key="infinite_form.attachment.save_config" type="collection" />
-        <parameter key="infinite_form.attachment.default_secret">%secret%</parameter>
+        <parameter key="infinite_form.attachment.default_secret">%kernel.secret%</parameter>
         <parameter key="infinite_form.attachment.entity_manager" />
     </parameters>
 
