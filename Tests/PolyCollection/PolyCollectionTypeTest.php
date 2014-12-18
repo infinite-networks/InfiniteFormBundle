@@ -241,9 +241,8 @@ class PolyCollectionTypeTest extends TypeTestCase
                 'text' => 'Green'
             ),
             array(
-                '_type' => 'first_type',
-                'text' => 'Red',
-                'text2' => 'Car'
+                '_type' => 'second_type',
+                'checked' => 'true'
             )
         ));
 
@@ -255,7 +254,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             $form[0]->getData()
         );
         $this->assertInstanceOf(
-            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\First',
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
             $form[1]->getData()
         );
     }
