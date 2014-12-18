@@ -9,12 +9,15 @@
 
 namespace Infinite\FormBundle\Form\EventListener;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * A Form Resize listener capable of coping with a polycollection.
@@ -45,15 +48,32 @@ class ResizePolyFormListener extends ResizeFormListener
     protected $typeFieldName;
 
     /**
+     * Name of the index field on the given entity
+     *
+     * @var null|string
+     */
+    protected $indexProperty;
+
+    /**
+     * Property Accessor
+     *
+     * @var \Symfony\Component\PropertyAccess\PropertyAccessor
+     */
+    protected $propertyAccessor;
+
+    /**
      * @param array<FormInterface> $prototypes
      * @param array $options
      * @param bool $allowAdd
      * @param bool $allowDelete
      * @param string $typeFieldName
+     * @param string $indexProperty
      */
-    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type')
+    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type', $indexProperty = null)
     {
         $this->typeFieldName = $typeFieldName;
+        $this->indexProperty = $indexProperty;
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $defaultType = null;
 
         foreach ($prototypes as $prototype) {
@@ -157,8 +177,28 @@ class ResizePolyFormListener extends ResizeFormListener
         // Remove all empty rows
         if ($this->allowDelete) {
             foreach ($form as $name => $child) {
-                if (!isset($data[$name])) {
+
+                // Use accessor to get unique index
+                if (!is_null($this->indexProperty)) {
+                    $index = $this->propertyAccessor->getValue($child->getData(), $this->indexProperty);
+
+                    // Try to find a match
+                    foreach($data as $item) {
+                        if ($item[$this->indexProperty] == $index) {
+                            continue 2;
+                        }
+                    }
+
+                    // Remove if not found above
                     $form->remove($name);
+                    if ($form->getViewData() instanceof PersistentCollection) {
+                        $form->getViewData()->remove($name);
+                    }
+
+                } else {
+                    if (!isset($data[$name])) {
+                        $form->remove($name);
+                    }
                 }
             }
         }
@@ -166,11 +206,34 @@ class ResizePolyFormListener extends ResizeFormListener
         // Add all additional rows
         if ($this->allowAdd) {
             foreach ($data as $name => $value) {
-                if (!$form->has($name)) {
+
+                // Use property lookup
+                if (!is_null($this->indexProperty)) {
+
+                    // Allow skipping if property exists
+                    if (isset($value[$this->indexProperty]) && !empty($value[$this->indexProperty])) {
+                        $index = $value[$this->indexProperty];
+
+                        // Try to find a match
+                        foreach($form as $item) {
+                            if ($this->propertyAccessor->getValue($item->getData(), $this->indexProperty) == $index) {
+                                continue 2;
+                            }
+                        }
+                    }
+
                     $type = $this->getTypeForData($value);
                     $form->add($name, $type, array_replace(array(
                         'property_path' => '['.$name.']',
                     ), $this->options));
+
+                } else {
+                    if (!$form->has($name)) {
+                        $type = $this->getTypeForData($value);
+                        $form->add($name, $type, array_replace(array(
+                            'property_path' => '['.$name.']',
+                        ), $this->options));
+                    }
                 }
             }
         }

@@ -12,6 +12,10 @@ class AbstractType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('id', 'number', array(
+            'required'=>false,
+        ));
+
         $builder->add('text', 'text');
 
         $builder->add('_type', 'hidden', array(

@@ -236,26 +236,26 @@ class PolyCollectionTypeTest extends TypeTestCase
             new Second('Blue', true)
         ));
         $form->bind(array(
-            array(
+            0=>array(
                 '_type' => 'abstract_type',
                 'text' => 'Green'
             ),
-            array(
+            2=>array(
                 '_type' => 'second_type',
                 'checked' => 'true'
             )
         ));
 
         $this->assertTrue($form->has('0'));
-        $this->assertTrue($form->has('1'));
-        $this->assertFalse($form->has('2'));
+        $this->assertFalse($form->has('1'));
+        $this->assertTrue($form->has('2'));
         $this->assertInstanceOf(
             'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
             $form[0]->getData()
         );
         $this->assertInstanceOf(
             'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
-            $form[1]->getData()
+            $form[2]->getData()
         );
     }
 
@@ -350,6 +350,86 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertFalse(isset($form[2]));
         $this->assertEquals('Orange', $form[0]->getData()->text);
         $this->assertEquals(20, $form[0]->getConfig()->getOption('max_length'));
+    }
+
+    public function testResizedDownIfBoundWithMissingDataAndAllowDeleteWithEntityIndexProperty()
+    {
+        $form = $this->factory->create('infinite_form_polycollection', null, array(
+                'types' => array(
+                    'abstract_type',
+                    'first_type',
+                    'second_type'
+                ),
+                'allow_delete' => true,
+                'index_property' => 'id'
+            ));
+        $form->setData(array(
+                new AbstractModel('Green', 1),
+                new First('Red', 'Car', 2),
+                new Second('Blue', true, 3)
+            ));
+        $form->bind(array(
+                array(
+                    '_type' => 'abstract_type',
+                    'text' => 'Green',
+                    'id'=>1
+                ),
+                array(
+                    '_type' => 'second_type',
+                    'checked' => 'true',
+                    'id'=>3
+                )
+            ));
+
+        $this->assertTrue($form->has('0'));
+        $this->assertFalse($form->has('1'));
+        $this->assertTrue($form->has('2'));
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
+            $form[2]->getData()
+        );
+    }
+
+    public function testResizedUpIfBoundWithExtraDataAndAllowAddWithEntityIndexPropertyMissing()
+    {
+        $form = $this->factory->create('infinite_form_polycollection', null, array(
+                'types' => array(
+                    'abstract_type',
+                    'first_type',
+                    'second_type'
+                ),
+                'allow_add' => true,
+                'index_property' => 'id'
+            ));
+        $form->setData(array(
+                new AbstractModel('Green', 1),
+            ));
+        $form->bind(array(
+                array(
+                    '_type' => 'abstract_type',
+                    'text' => 'Green',
+                    'id'=>1
+                ),
+                array(
+                    '_type' => 'second_type',
+                    'checked' => 'true'
+                )
+            ));
+
+        $this->assertTrue($form->has('0'));
+        $this->assertTrue($form->has('1'));
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
+            $form[1]->getData()
+        );
     }
 
     public function testContainsNoChildByDefault()
