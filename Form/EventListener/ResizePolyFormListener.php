@@ -9,7 +9,6 @@
 
 namespace Infinite\FormBundle\Form\EventListener;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
