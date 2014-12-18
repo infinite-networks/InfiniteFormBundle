@@ -432,6 +432,46 @@ class PolyCollectionTypeTest extends TypeTestCase
         );
     }
 
+    public function testReorderedIfBoundWithShuffledDataAndAllowMatchWithEntityIndexProperty()
+    {
+        $form = $this->factory->create('infinite_form_polycollection', null, array(
+                'types' => array(
+                    'abstract_type',
+                    'first_type',
+                    'second_type'
+                ),
+                'allow_add' => true,
+                'index_property' => 'id'
+            ));
+        $form->setData(array(
+                new AbstractModel('Green', 1),
+                new Second('Blue', false, 2)
+            ));
+        $form->bind(array(
+                array(
+                    '_type' => 'second_type',
+                    'checked' => 'true',
+                    'id'=>2
+                ),
+                array(
+                    '_type' => 'abstract_type',
+                    'text' => 'Green',
+                    'id'=>1
+                )
+            ));
+
+        $this->assertTrue($form->has('0'));
+        $this->assertTrue($form->has('1'));
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
+            $form[0]->getData()
+        );
+        $this->assertInstanceOf(
+            'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Second',
+            $form[1]->getData()
+        );
+    }
+
     public function testContainsNoChildByDefault()
     {
         $form = $this->factory->create('infinite_form_polycollection', null, array(

@@ -146,7 +146,7 @@ class ResizePolyFormListener extends ResizeFormListener
             $form->remove($name);
         }
 
-        // Then add all rows again in the correct order
+        // Then add all rows again in the correct order for the incoming data
         foreach ($data as $name => $value) {
             $type = $this->getTypeForObject($value);
             $form->add($name, $type, array_replace(array(
