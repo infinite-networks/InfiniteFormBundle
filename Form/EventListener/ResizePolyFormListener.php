@@ -173,60 +173,70 @@ class ResizePolyFormListener extends ResizeFormListener
             throw new UnexpectedTypeException($data, 'array or (\Traversable and \ArrayAccess)');
         }
 
-        // Remove all empty rows
-        if ($this->allowDelete) {
-            foreach ($form as $name => $child) {
+        // Process entries by IndexProperty
+        if (!is_null($this->indexProperty)) {
 
-                // Use accessor to get unique index
-                if (!is_null($this->indexProperty)) {
-                    $index = $this->propertyAccessor->getValue($child->getData(), $this->indexProperty);
+            // Reindex the submit data by given index
+            $indexedData = array();
+            $unindexedData = array();
+            $finalData = array();
+            foreach($data as $item) {
+                if (isset($item[$this->indexProperty])) {
+                    $indexedData[$item[$this->indexProperty]] = $item;
+                } else {
+                    $unindexedData[] = $item;
+                }
+            }
 
-                    // Try to find a match
-                    foreach($data as $item) {
-                        if ($item[$this->indexProperty] == $index) {
-                            continue 2;
+            // Add all additional rows to the end of the array
+            $name = $form->count();
+            foreach ($unindexedData as $item) {
+                if ($this->allowAdd) {
+
+                    $type = $this->getTypeForData($item);
+                    $form->add($name, $type, array_replace(array(
+                        'property_path' => '['.$name.']',
+                    ), $this->options));
+                }
+
+                // Add to final data array
+                $finalData[$name] = $item;
+                $name++;
+            }
+
+            // Remove all empty rows
+            if ($this->allowDelete) {
+                foreach ($form as $name => $child) {
+
+                    // New items will have null data. Skip these.
+                    if (!is_null($child->getData())) {
+                        $index = $this->propertyAccessor->getValue($child->getData(), $this->indexProperty);
+                        if (!isset($indexedData[$index])) {
+                            $form->remove($name);
+                        } else {
+                            $finalData[$name] = $indexedData[$index];
                         }
                     }
+                }
+            }
 
-                    // Remove if not found above
-                    $form->remove($name);
-                    if ($form->getViewData() instanceof PersistentCollection) {
-                        $form->getViewData()->remove($name);
-                    }
+            // Replace submitted data with new form order
+            $event->setData($finalData);
 
-                } else {
+        } else {
+
+            // Remove all empty rows
+            if ($this->allowDelete) {
+                foreach ($form as $name => $child) {
                     if (!isset($data[$name])) {
                         $form->remove($name);
                     }
                 }
             }
-        }
 
-        // Add all additional rows
-        if ($this->allowAdd) {
-            foreach ($data as $name => $value) {
-
-                // Use property lookup
-                if (!is_null($this->indexProperty)) {
-
-                    // Allow skipping if property exists
-                    if (isset($value[$this->indexProperty]) && !empty($value[$this->indexProperty])) {
-                        $index = $value[$this->indexProperty];
-
-                        // Try to find a match
-                        foreach($form as $item) {
-                            if ($this->propertyAccessor->getValue($item->getData(), $this->indexProperty) == $index) {
-                                continue 2;
-                            }
-                        }
-                    }
-
-                    $type = $this->getTypeForData($value);
-                    $form->add($name, $type, array_replace(array(
-                        'property_path' => '['.$name.']',
-                    ), $this->options));
-
-                } else {
+            // Add all additional rows
+            if ($this->allowAdd) {
+                foreach ($data as $name => $value) {
                     if (!$form->has($name)) {
                         $type = $this->getTypeForData($value);
                         $form->add($name, $type, array_replace(array(

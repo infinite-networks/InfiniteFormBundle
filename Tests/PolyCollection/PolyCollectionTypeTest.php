@@ -416,12 +416,14 @@ class PolyCollectionTypeTest extends TypeTestCase
                 ),
                 array(
                     '_type' => 'second_type',
+                    'text' => 'Blue',
                     'checked' => 'true'
                 )
             ));
 
         $this->assertTrue($form->has('0'));
         $this->assertTrue($form->has('1'));
+        $this->assertEquals(2, $form->count());
         $this->assertInstanceOf(
             'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel',
             $form[0]->getData()
