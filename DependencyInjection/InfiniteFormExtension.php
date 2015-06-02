@@ -12,6 +12,7 @@ namespace Infinite\FormBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -46,6 +47,15 @@ class InfiniteFormExtension extends Extension
 
         if ($configs['twig']) {
             $loader->load('twig.xml');
+        }
+
+        $attachmentDefinition = $container->getDefinition('infinite_form.attachment.form_type');
+
+        if (method_exists($attachmentDefinition, 'setFactory')) {
+            $attachmentDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
+        } else {
+            $attachmentDefinition->setFactoryService('doctrine');
+            $attachmentDefinition->setFactoryMethod('getManager');
         }
     }
 }
