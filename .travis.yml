@@ -1,12 +1,32 @@
 language: php
 
 php:
+  - 5.3
   - 5.4
   - 5.5
+  - hhvm
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.3
+      env: deps="low"
+    - php: 5.5
+      env: SYMFONY_VERSION='2.3.*' SYMFONY_DEPRECATIONS_HELPER=strict
+    - php: 5.5
+      env: SYMFONY_VERSION='2.7.*'
+  allow_failures:
+    - php: hhvm
+
+env:
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
 
 before_script:
-  - curl --silent http://getcomposer.org/installer | php
-  - php composer.phar install --dev --no-interaction --prefer-source
+  - composer self-update
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony=$SYMFONY_VERSION; fi
+  - if [ "$deps" = "low" ]; then composer update --prefer-lowest; fi
+  - if [ "$deps" != "low" ]; then composer update --prefer-source; fi
 
 script:
   - phpunit --coverage-text --colors
