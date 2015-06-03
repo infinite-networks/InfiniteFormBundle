@@ -18,16 +18,12 @@ matrix:
     - php: 5.5
       env: SYMFONY_VERSION='3.0.*@dev'
   exclude:
-    - php: 5.5
-      env: SYMFONY_VERSION='3.0.*@dev'
+    - env: SYMFONY_VERSION='3.0.*@dev'
     - php: hhvm
 
 
 before_script:
   - composer self-update
-  - >
-      composer require --dev \
-        symfony/symfony:${SYMFONY_VERSION}
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony=$SYMFONY_VERSION; fi
   - if [ "$deps" = "low" ]; then composer update --prefer-lowest; fi
   - if [ "$deps" != "low" ]; then composer update --prefer-source; fi
