@@ -23,7 +23,8 @@
         "doctrine/orm": "~2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "components/qunit": "*",
-        "components/jquery": "*"
+        "components/jquery": "*",
+        "symfony/phpunit-bridge": "^2.7"
     },
     "extra": {
         "branch-alias": {

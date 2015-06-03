@@ -6,7 +6,7 @@ php:
 
 env:
   - SYMFONY_VERSION="2.3.*"
-  - SYMFONY_VERSION="2.7.*"
+  - SYMFONY_VERSION="2.7.*" SYMFONY_DEPRECATIONS_HELPER=weak
   - SYMFONY_VERSION="3.0.x-dev"
 
 matrix:
