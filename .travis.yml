@@ -6,14 +6,11 @@ php:
 
 env:
   - SYMFONY_VERSION="2.3.*"
-  - SYMFONY_VERSION="2.6.*"
   - SYMFONY_VERSION="2.7.*"
-  - SYMFONY_VERSION="2.8.x-dev"
   - SYMFONY_VERSION="3.0.x-dev"
 
 matrix:
   allow_failures:
-    - env: SYMFONY_VERSION="2.8.x-dev"
     - env: SYMFONY_VERSION="3.0.x-dev"
 
 
@@ -22,7 +19,6 @@ before_script:
   - >
       php composer.phar require --dev \
         symfony/symfony:${SYMFONY_VERSION}
-  - phpenv rehash
 
 script:
   - phpunit --coverage-text --colors
