@@ -12,15 +12,15 @@ matrix:
     - php: 5.3
       env: deps="low"
     - php: 5.5
-      env: SYMFONY_VERSION='2.3.*'
+      env: SYMFONY_VERSION='2.3.*' SYMFONY_DEPRECATIONS_HELPER=strict
     - php: 5.5
-      env: SYMFONY_VERSION='2.7.*' SYMFONY_DEPRECATIONS_HELPER=weak
-    - php: 5.5
-      env: SYMFONY_VERSION='3.0.*@dev'
-  exclude:
-    - env: SYMFONY_VERSION='3.0.*@dev'
+      env: SYMFONY_VERSION='2.7.*'
+  allow_failures:
     - php: hhvm
 
+env:
+  global:
+    - SYMFONY_DEPRECATIONS_HELPER=weak
 
 before_script:
   - composer self-update
