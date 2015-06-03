@@ -18,9 +18,9 @@ matrix:
 
 
 before_script:
-  - curl --silent http://getcomposer.org/installer | php
+  - composer self-update
   - >
-      php composer.phar require --dev \
+      composer require --dev \
         symfony/symfony:${SYMFONY_VERSION}
 
 script:
