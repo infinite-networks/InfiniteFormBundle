@@ -1,20 +1,26 @@
 language: php
 
 php:
+  - 5.3
   - 5.4
   - 5.5
-
-env:
-  - SYMFONY_VERSION="2.3.*"
-  - SYMFONY_VERSION="2.7.*" SYMFONY_DEPRECATIONS_HELPER=weak
-  - SYMFONY_VERSION="3.0.x-dev"
+  - hhvm
 
 matrix:
-  allow_failures:
-    - env: SYMFONY_VERSION="3.0.x-dev"
+  fast_finish: true
+  include:
+    - php: 5.3
+      env: deps="low"
+    - php: 5.5
+      env: SYMFONY_VERSION='2.3.*'
+    - php: 5.5
+      env: SYMFONY_VERSION='2.7.*' SYMFONY_DEPRECATIONS_HELPER=weak
+    - php: 5.5
+      env: SYMFONY_VERSION='3.0.*@dev'
   exclude:
-    - php: 5.4
-      env: SYMFONY_VERSION="3.0.x-dev"
+    - php: 5.5
+      env: SYMFONY_VERSION='3.0.*@dev'
+    - php: hhvm
 
 
 before_script:
@@ -22,6 +28,9 @@ before_script:
   - >
       composer require --dev \
         symfony/symfony:${SYMFONY_VERSION}
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony=$SYMFONY_VERSION; fi
+  - if [ "$deps" = "low" ]; then composer update --prefer-lowest; fi
+  - if [ "$deps" != "low" ]; then composer update --prefer-source; fi
 
 script:
   - phpunit --coverage-text --colors
