@@ -42,7 +42,9 @@
         <service id="infinite_form.attachment.form_type" class="%infinite_form.attachment.attachment_type.class%">
             <argument>%infinite_form.attachment.default_secret%</argument>
             <argument type="service">
-                <service class="Doctrine\Common\Persistence\ObjectManager" factory-service="doctrine" factory-method="getManager" public="false">
+                <service class="Doctrine\Common\Persistence\ObjectManager" public="false">
+                    <!-- Added in extension class -->
+                    <!--<factory service="doctrine" method="getManager"/>-->
                     <argument>%infinite_form.attachment.entity_manager%</argument>
                 </service>
             </argument>
