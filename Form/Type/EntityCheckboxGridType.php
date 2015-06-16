@@ -44,7 +44,7 @@ class EntityCheckboxGridType extends AbstractType
     {
         $this->internalConfigureOptions($resolver);
         
-        $resolver->setNormalizer('em', $em);
+        $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
     }
 
     // BC for SF < 2.7
@@ -53,14 +53,12 @@ class EntityCheckboxGridType extends AbstractType
         $this->internalConfigureOptions($resolver);
         
         $resolver->setNormalizers(array(
-            'em' => $em,
+            'em' => $this->getEntityManagerNormalizer(),
         ));
     }
     
     private function internalConfigureOptions(OptionsResolver $resolver)
     {
-        $registry = $this->registry; // for closures
-
         // X Axis defaults
         $defaultXClass = function (Options $options) {
             /** @var $em \Doctrine\ORM\EntityManager */
@@ -109,21 +107,6 @@ class EntityCheckboxGridType extends AbstractType
             );
         };
 
-        // Entity manager 'normaliser' - turns an entity manager name into an entity manager instance
-        $em = function (Options $options, $emName) use ($registry) {
-            if ($emName !== null) {
-                return $registry->getManager($emName);
-            }
-
-            $em = $registry->getManagerForClass($options['class']);
-
-            if ($em === null) {
-                throw new InvalidOptionsException(sprintf('"%s" is not a Doctrine entity', $options['class']));
-            }
-
-            return $em;
-        };
-
         $resolver->setDefaults(array(
             'em'              => null,
 
@@ -147,5 +130,25 @@ class EntityCheckboxGridType extends AbstractType
             'x_path',
             'y_path',
         ));
+    }
+    
+    private function getEntityManagerNormalizer()
+    {
+        $registry = $this->registry; // for closures
+
+        // Entity manager 'normaliser' - turns an entity manager name into an entity manager instance
+        return function (Options $options, $emName) use ($registry) {
+            if ($emName !== null) {
+                return $registry->getManager($emName);
+            }
+
+            $em = $registry->getManagerForClass($options['class']);
+
+            if ($em === null) {
+                throw new InvalidOptionsException(sprintf('"%s" is not a Doctrine entity', $options['class']));
+            }
+
+            return $em;
+        };
     }
 }
