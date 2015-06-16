@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -39,7 +40,24 @@ class EntityCheckboxGridType extends AbstractType
         return 'infinite_form_checkbox_grid';
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setNormalizer('em', $em);
+    }
+
+    // BC for SF < 2.7
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setNormalizers(array(
+            'em' => $em,
+        ));
+    }
+    
+    private function internalConfigureOptions(OptionsResolver $resolver)
     {
         $registry = $this->registry; // for closures
 
@@ -128,10 +146,6 @@ class EntityCheckboxGridType extends AbstractType
             'class',
             'x_path',
             'y_path',
-        ));
-
-        $resolver->setNormalizers(array(
-            'em' => $em,
         ));
     }
 }

@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntitySearchType extends AbstractType
@@ -36,7 +37,7 @@ class EntitySearchType extends AbstractType
         $view->vars['search_route'] = $form->getConfig()->getAttribute('search_route');
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'allow_not_found' => false,
@@ -49,6 +50,12 @@ class EntitySearchType extends AbstractType
         $resolver->setRequired(array(
             'class'
         ));
+    }
+    
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
     }
 
     public function getName()

@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -130,18 +131,52 @@ class PolyCollectionType extends AbstractType
             }
         }
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'infinite_form_polycollection';
+    }
 
     /**
      * {@inheritdoc}
      */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setAllowedTypes('types', 'array');
+        
+        $resolver->setNormalizer('options', $this->getOptionsNormalizer());
+    }
+    
+    // BC for SF < 2.7
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $optionsNormalizer = function (Options $options, $value) {
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setAllowedTypes(array(
+            'types' => 'array'
+        ));
+        
+        $resolver->setNormalizers(array(
+            'options' => $this->getOptionsNormalizer(),
+        ));
+    }
+    
+    private function getOptionsNormalizer()
+    {
+        return function (Options $options, $value) {
             $value['block_name'] = 'entry';
 
             return $value;
         };
-        
+    }
+    
+    private function internalConfigureOptions(OptionsResolverInterface $resolver)
+    {
         $resolver->setDefaults(array(
             'allow_add'      => false,
             'allow_delete'   => false,
@@ -154,21 +189,5 @@ class PolyCollectionType extends AbstractType
         $resolver->setRequired(array(
             'types'
         ));
-
-        $resolver->setAllowedTypes(array(
-            'types' => 'array'
-        ));
-        
-        $resolver->setNormalizers(array(
-            'options' => $optionsNormalizer,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'infinite_form_polycollection';
     }
 }
