@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -39,10 +40,25 @@ class EntityCheckboxGridType extends AbstractType
         return 'infinite_form_checkbox_grid';
     }
 
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
+    }
+
+    // BC for SF < 2.7
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $registry = $this->registry; // for closures
-
+        $this->internalConfigureOptions($resolver);
+        
+        $resolver->setNormalizers(array(
+            'em' => $this->getEntityManagerNormalizer(),
+        ));
+    }
+    
+    private function internalConfigureOptions(OptionsResolver $resolver)
+    {
         // X Axis defaults
         $defaultXClass = function (Options $options) {
             /** @var $em \Doctrine\ORM\EntityManager */
@@ -91,21 +107,6 @@ class EntityCheckboxGridType extends AbstractType
             );
         };
 
-        // Entity manager 'normaliser' - turns an entity manager name into an entity manager instance
-        $em = function (Options $options, $emName) use ($registry) {
-            if ($emName !== null) {
-                return $registry->getManager($emName);
-            }
-
-            $em = $registry->getManagerForClass($options['class']);
-
-            if ($em === null) {
-                throw new InvalidOptionsException(sprintf('"%s" is not a Doctrine entity', $options['class']));
-            }
-
-            return $em;
-        };
-
         $resolver->setDefaults(array(
             'em'              => null,
 
@@ -129,9 +130,25 @@ class EntityCheckboxGridType extends AbstractType
             'x_path',
             'y_path',
         ));
+    }
+    
+    private function getEntityManagerNormalizer()
+    {
+        $registry = $this->registry; // for closures
 
-        $resolver->setNormalizers(array(
-            'em' => $em,
-        ));
+        // Entity manager 'normaliser' - turns an entity manager name into an entity manager instance
+        return function (Options $options, $emName) use ($registry) {
+            if ($emName !== null) {
+                return $registry->getManager($emName);
+            }
+
+            $em = $registry->getManagerForClass($options['class']);
+
+            if ($em === null) {
+                throw new InvalidOptionsException(sprintf('"%s" is not a Doctrine entity', $options['class']));
+            }
+
+            return $em;
+        };
     }
 }
