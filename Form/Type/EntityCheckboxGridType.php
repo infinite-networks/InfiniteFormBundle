@@ -13,6 +13,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,23 +42,6 @@ class EntityCheckboxGridType extends AbstractType
     }
 
     public function configureOptions(OptionsResolver $resolver)
-    {
-        $this->internalConfigureOptions($resolver);
-        
-        $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
-    }
-
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->internalConfigureOptions($resolver);
-        
-        $resolver->setNormalizers(array(
-            'em' => $this->getEntityManagerNormalizer(),
-        ));
-    }
-    
-    private function internalConfigureOptions(OptionsResolver $resolver)
     {
         // X Axis defaults
         $defaultXClass = function (Options $options) {
@@ -130,6 +114,20 @@ class EntityCheckboxGridType extends AbstractType
             'x_path',
             'y_path',
         ));
+
+        if (version_compare(Kernel::VERSION, '2.6.0', '>=')) {
+            $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
+        } else {
+            $resolver->setNormalizers(array(
+                'em' => $this->getEntityManagerNormalizer(),
+            ));
+        }
+    }
+
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
     }
     
     private function getEntityManagerNormalizer()
