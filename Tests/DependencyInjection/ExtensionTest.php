@@ -17,7 +17,7 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var ContainerBuilder
      */
-    protected $configuration;
+    protected $container;
 
     /**
      * @var InfiniteFormExtension
@@ -26,30 +26,47 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->configuration = new ContainerBuilder;
-        $this->extension     = new InfiniteFormExtension;
+        $this->container = new ContainerBuilder;
+        $this->extension = new InfiniteFormExtension;
     }
 
-    public function testPolyCollectionLoaded()
+    public function provideFeatures()
     {
-        $config = array(
-            'polycollection' => true
+        return array(
+            array('polycollection', 'infinite_form.polycollection.form_type'),
+            array('attachment', 'infinite_form.attachment.form_type'),
+            array('checkbox_grid', 'infinite_form.form_type.checkbox_grid_type'),
+            array('entity_search', 'infinite_form.entity_search.type'),
+            array('twig', 'infinite_form.twig_extension'),
         );
-
-        $this->extension->load(array($config), $this->configuration);
-
-        $this->assertHasDefinition('infinite_form.polycollection.form_type');
     }
 
-    public function testPolyCollectionNotLoaded()
+    /**
+     * @dataProvider provideFeatures
+     */
+    public function testFeatureLoaded($feature, $serviceId)
     {
         $config = array(
-            'polycollection' => false
+            $feature => true
         );
 
-        $this->extension->load(array($config), $this->configuration);
+        $this->extension->load(array($config), $this->container);
 
-        $this->assertNotHasDefinition('infinite_form.polycollection.form_type');
+        $this->assertHasDefinition($serviceId);
+    }
+
+    /**
+     * @dataProvider provideFeatures
+     */
+    public function testFeatureNotLoaded($feature, $serviceId)
+    {
+        $config = array(
+            $feature => false
+        );
+
+        $this->extension->load(array($config), $this->container);
+
+        $this->assertNotHasDefinition($serviceId);
     }
 
     /**
@@ -57,7 +74,7 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private function assertHasDefinition($id)
     {
-        $this->assertTrue(($this->configuration->hasDefinition($id) ?: $this->configuration->hasAlias($id)));
+        $this->assertTrue($this->container->hasDefinition($id) || $this->container->hasAlias($id));
     }
 
     /**
@@ -65,11 +82,11 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private function assertNotHasDefinition($id)
     {
-        $this->assertFalse(($this->configuration->hasDefinition($id) ?: $this->configuration->hasAlias($id)));
+        $this->assertFalse($this->container->hasDefinition($id) || $this->container->hasAlias($id));
     }
 
     protected function tearDown()
     {
-        unset($this->configuration);
+        $this->container = null;
     }
 }
