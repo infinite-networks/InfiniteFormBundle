@@ -31,6 +31,15 @@ class InfiniteFormExtension extends Extension
 
         if ($configs['attachment']) {
             $loader->load('attachment.xml');
+
+            $attachmentDefinition = $container->getDefinition('infinite_form.attachment.doctrine_manager');
+
+            if (method_exists($attachmentDefinition, 'setFactory')) {
+                $attachmentDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
+            } else {
+                $attachmentDefinition->setFactoryService('doctrine');
+                $attachmentDefinition->setFactoryMethod('getManager');
+            }
         }
 
         if ($configs['checkbox_grid']) {
@@ -47,15 +56,6 @@ class InfiniteFormExtension extends Extension
 
         if ($configs['twig']) {
             $loader->load('twig.xml');
-        }
-
-        $attachmentDefinition = $container->getDefinition('infinite_form.attachment.form_type');
-
-        if (method_exists($attachmentDefinition, 'setFactory')) {
-            $attachmentDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
-        } else {
-            $attachmentDefinition->setFactoryService('doctrine');
-            $attachmentDefinition->setFactoryMethod('getManager');
         }
     }
 }
