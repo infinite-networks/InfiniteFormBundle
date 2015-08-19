@@ -53,7 +53,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
 
         $vals = array();
 
-        $accessor = PropertyAccess::getPropertyAccessor();
+        $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($value as $object) {
             $xChoice = $accessor->getValue($object, $this->xPath);
@@ -81,7 +81,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
         }
 
         $result = array();
-        $accessor = PropertyAccess::getPropertyAccessor();
+        $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($value as $yValue => $row) {
             if (!is_array($row)) {

@@ -47,7 +47,7 @@ class EntitySearchTransformer implements DataTransformerInterface
         $idFieldArray = $om->getClassMetadata($this->class)->getIdentifierFieldNames();
         $this->idField = reset($idFieldArray);
 
-        $this->accessor = PropertyAccess::getPropertyAccessor();
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     public function transform($object)
