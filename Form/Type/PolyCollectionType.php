@@ -159,7 +159,8 @@ class PolyCollectionType extends AbstractType
             'types'
         ));
         
-        if (version_compare(Kernel::VERSION, '2.6.0', '>=')) {
+        // OptionsResolver 2.6+
+        if (method_exists($resolver, 'setNormalizer')) {
             $resolver->setAllowedTypes('types', 'array');
             $resolver->setNormalizer('options', $this->getOptionsNormalizer());
         } else {
