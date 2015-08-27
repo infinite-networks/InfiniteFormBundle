@@ -27,6 +27,9 @@
         "robloach/component-installer": "~0.1.1",
         "symfony/phpunit-bridge": "^2.7"
     },
+    "conflict": {
+        "twig/twig": "<1.12"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.x-dev"
