@@ -120,7 +120,7 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
 
         $form = $this->factory->create('infinite_form_test_salesman', $salesman);
 
-        $form->bind(array(
+        $form->submit(array(
             'name' => 'John Smith',
             'productAreas' => array(
                 1 => array(1 => '1', 2 => '1'),
@@ -157,7 +157,7 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
 
         $form = $this->factory->create('infinite_form_test_salesman', $salesman);
 
-        $form->bind(array(
+        $form->submit(array(
             'name' => 'John Smith',
             'productAreas' => array(
                 2 => array(3 => '1'),

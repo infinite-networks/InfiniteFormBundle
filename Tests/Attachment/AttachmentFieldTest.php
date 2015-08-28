@@ -64,7 +64,7 @@ class AttachmentFieldTest extends DoctrineOrmTestCase
     {
         $form1 = $this->makeAttachmentForm();
 
-        $form1->bind(array(
+        $form1->submit(array(
             'file' => $this->createFooUpload(),
             'removed' => false,
             'meta' => null,
@@ -77,7 +77,7 @@ class AttachmentFieldTest extends DoctrineOrmTestCase
 
         // Verify that the unsaved attachment can be successfully rebuilt from the form's view data
         $form2 = $this->makeAttachmentForm();
-        $form2->bind(array(
+        $form2->submit(array(
             'file' => null,
             'removed' => false,
             'meta' => $view1->children['meta']->vars['value'],
@@ -93,7 +93,7 @@ class AttachmentFieldTest extends DoctrineOrmTestCase
 
         $form = $this->makeAttachmentForm();
         $form->setData($att);
-        $form->bind(array(
+        $form->submit(array(
             'file' => null,
             'removed' => true,
             'meta' => '',
@@ -116,7 +116,7 @@ class AttachmentFieldTest extends DoctrineOrmTestCase
         $view1 = $form1->createView();
 
         $form2 = $this->makeAttachmentForm();
-        $form2->bind(array(
+        $form2->submit(array(
             'file' => null,
             'removed' => false,
             'meta' => $view1->children['meta']->vars['value'],
