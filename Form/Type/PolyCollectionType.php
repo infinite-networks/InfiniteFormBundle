@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -145,38 +146,6 @@ class PolyCollectionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $this->internalConfigureOptions($resolver);
-        
-        $resolver->setAllowedTypes('types', 'array');
-        
-        $resolver->setNormalizer('options', $this->getOptionsNormalizer());
-    }
-    
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->internalConfigureOptions($resolver);
-        
-        $resolver->setAllowedTypes(array(
-            'types' => 'array'
-        ));
-        
-        $resolver->setNormalizers(array(
-            'options' => $this->getOptionsNormalizer(),
-        ));
-    }
-    
-    private function getOptionsNormalizer()
-    {
-        return function (Options $options, $value) {
-            $value['block_name'] = 'entry';
-
-            return $value;
-        };
-    }
-    
-    private function internalConfigureOptions(OptionsResolverInterface $resolver)
-    {
         $resolver->setDefaults(array(
             'allow_add'      => false,
             'allow_delete'   => false,
@@ -189,5 +158,33 @@ class PolyCollectionType extends AbstractType
         $resolver->setRequired(array(
             'types'
         ));
+        
+        // OptionsResolver 2.6+
+        if (method_exists($resolver, 'setNormalizer')) {
+            $resolver->setAllowedTypes('types', 'array');
+            $resolver->setNormalizer('options', $this->getOptionsNormalizer());
+        } else {
+            $resolver->setAllowedTypes(array(
+                'types' => 'array'
+            ));
+            $resolver->setNormalizers(array(
+                'options' => $this->getOptionsNormalizer(),
+            ));
+        }
+    }
+    
+    // BC for SF < 2.7
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $this->configureOptions($resolver);
+    }
+    
+    private function getOptionsNormalizer()
+    {
+        return function (Options $options, $value) {
+            $value['block_name'] = 'entry';
+
+            return $value;
+        };
     }
 }
