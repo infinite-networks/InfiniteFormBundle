@@ -58,7 +58,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             ),
             'allow_add' => true
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type' => 'unknown_type',
                 'text' => 'Green'
@@ -76,7 +76,7 @@ class PolyCollectionTypeTest extends TypeTestCase
                 'second_type'
             ),
         ));
-        $form->bind('invalid_data');
+        $form->submit('invalid_data');
     }
 
     public function testMultipartPropagation()
@@ -102,7 +102,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             ),
             'allow_delete' => true
         ));
-        $form->bind(null);
+        $form->submit(null);
 
         $this->assertCount(0, $form->getData());
     }
@@ -121,7 +121,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->setData(array(
             new AbstractModel('Green'),
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type' => 'abstract_type',
                 'text' => 'Green'
@@ -162,7 +162,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->setData(array(
             new AbstractModel('Green'),
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type_id' => 'abstract_type',
                 'text' => 'Green'
@@ -200,7 +200,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->setData(array(
             new AbstractModel('Green'),
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type' => 'abstract_type',
                 'text' => 'Green'
@@ -235,7 +235,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             new First('Red', 'Car'),
             new Second('Blue', true)
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type' => 'abstract_type',
                 'text' => 'Green'
@@ -274,7 +274,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             new First('Red', 'Car'),
             new Second('Blue', true)
         ));
-        $form->bind(array(
+        $form->submit(array(
             array(
                 '_type' => 'abstract_type',
                 'text' => 'Brown'

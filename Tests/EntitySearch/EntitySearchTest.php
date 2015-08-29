@@ -67,7 +67,7 @@ class EntitySearchTest extends DoctrineOrmTestCase
         // This happens if someone types in a name but doesn't click on the Javascript dropdown list.
         $form = $this->makeForm();
 
-        $form->bind(array(
+        $form->submit(array(
             'id' => '',
             'name' => 'avocado',
         ));
@@ -82,7 +82,7 @@ class EntitySearchTest extends DoctrineOrmTestCase
         // This happens if someone clicks on the Javascript dropdown list.
         $form = $this->makeForm();
 
-        $form->bind(array(
+        $form->submit(array(
             'id' => '4',
             'name' => '', // (Ignored by the transformer since the ID is available)
         ));

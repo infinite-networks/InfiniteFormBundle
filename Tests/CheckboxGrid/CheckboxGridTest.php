@@ -91,7 +91,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     {
         $form = $this->makeForm(array(), array());
 
-        $form->bind(array(
+        $form->submit(array(
             'satin' => array('beige' => '1'),
             'gloss' => array('yellow' => '1', 'white' => '1'),
             'matte' => array('beige' => '1'),
@@ -153,7 +153,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
             'y_path' => 'finish',
         ));
 
-        $form->bind(array(
+        $form->submit(array(
             'satin' => array('white' => '1'),
         ));
 
