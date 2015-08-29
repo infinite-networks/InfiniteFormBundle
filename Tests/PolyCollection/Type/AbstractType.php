@@ -4,6 +4,7 @@ namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
 use Symfony\Component\Form\AbstractType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AbstractType extends BaseType
@@ -21,6 +22,12 @@ class AbstractType extends BaseType
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        // BC for Symfony 2.6 and older
+        $this->configureOptions($resolver);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class'  => $this->dataClass,
