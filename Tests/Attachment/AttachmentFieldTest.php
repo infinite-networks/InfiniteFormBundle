@@ -16,11 +16,11 @@ use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\Type\AttachmentType;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
-use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
+use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AttachmentFieldTest extends DoctrineOrmTestCase
+class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Doctrine\ORM\EntityManager */
     private $em;
@@ -33,10 +33,8 @@ class AttachmentFieldTest extends DoctrineOrmTestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
         // Create a test database and table
-        $this->em = $this->createTestEntityManager();
+        $this->em = DoctrineTestHelper::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = array(

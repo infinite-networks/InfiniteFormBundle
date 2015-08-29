@@ -13,7 +13,7 @@ use Infinite\FormBundle\Tests\PolyCollection\Model\AbstractModel;
 use Infinite\FormBundle\Tests\PolyCollection\Model\First;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Second;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Third;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 class PolyCollectionTypeTest extends TypeTestCase
 {

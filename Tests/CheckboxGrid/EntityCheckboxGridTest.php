@@ -16,10 +16,10 @@ use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
-use Symfony\Bridge\Doctrine\Tests\DoctrineOrmTestCase;
+use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 
-class EntityCheckboxGridTest extends DoctrineOrmTestCase
+class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface
@@ -48,10 +48,8 @@ class EntityCheckboxGridTest extends DoctrineOrmTestCase
 
     protected function setUp()
     {
-        parent::setUp();
-
         // Create a test database, tables and a few rows
-        $this->em = $this->createTestEntityManager();
+        $this->em = DoctrineTestHelper::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = array(
