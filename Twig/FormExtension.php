@@ -22,7 +22,7 @@ class FormExtension extends Twig_Extension
     public function getTests()
     {
         return array(
-            'invalid' => new \Twig_Test_Method($this, 'hasErrors'),
+            new \Twig_SimpleTest('invalid', array($this, 'hasErrors')),
         );
     }
 
