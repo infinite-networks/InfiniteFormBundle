@@ -18,7 +18,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Infinite\FormBundle\InfiniteFormBundle,
+        new Infinite\FormBundle\InfiniteFormBundle(),
     );
 }
 ```
