@@ -12,15 +12,12 @@
 
     <services>
         <service id="infinite_form.choice_tree.type" class="%infinite_form.choice_tree.type.class%">
-            <argument type="service" id="infinite_form.choice_tree.transformer_factory" />
             <tag name="form.type" alias="infinite_form_choice_tree" />
         </service>
         <service id="infinite_form.radio_level.type" class="%infinite_form.radio_level.type.class%">
-            <argument type="service" id="infinite_form.radio_level.transformer_factory" />
             <tag name="form.type" alias="infinite_form_radio_level" />
         </service>
         <service id="infinite_form.checkbox_level.type" class="%infinite_form.checkbox_level.type.class%">
-            <argument type="service" id="infinite_form.checkbox_level.transformer_factory" />
             <tag name="form.type" alias="infinite_form_checkbox_level" />
         </service>
     </services>

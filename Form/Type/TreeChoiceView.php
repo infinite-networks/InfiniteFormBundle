@@ -1,6 +1,6 @@
 <?php
 
-namespace InfiniteFormBundle\Form\Type;
+namespace Infinite\FormBundle\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
