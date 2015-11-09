@@ -54,6 +54,10 @@ class InfiniteFormExtension extends Extension
             $loader->load('polycollection.xml');
         }
 
+        if ($configs['choice_tree']) {
+            $loader->load('choice_tree.xml');
+        }
+
         if ($configs['twig']) {
             $loader->load('twig.xml');
         }
