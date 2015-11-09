@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="infinite_form.choice_tree.type.class">Infinite\FormBundle\Form\Type\ChoiceTreeType</parameter>
+        <parameter key="infinite_form.radio_level.type.class">Infinite\FormBundle\Form\Type\RadioLevelType</parameter>
+        <parameter key="infinite_form.checkbox_level.type.class">Infinite\FormBundle\Form\Type\CheckboxLevelType</parameter>
+
+    </parameters>
+
+    <services>
+        <service id="infinite_form.choice_tree.type" class="%infinite_form.choice_tree.type.class%">
+            <argument type="service" id="infinite_form.choice_tree.transformer_factory" />
+            <tag name="form.type" alias="infinite_form_choice_tree" />
+        </service>
+        <service id="infinite_form.radio_level.type" class="%infinite_form.radio_level.type.class%">
+            <argument type="service" id="infinite_form.radio_level.transformer_factory" />
+            <tag name="form.type" alias="infinite_form_radio_level" />
+        </service>
+        <service id="infinite_form.checkbox_level.type" class="%infinite_form.checkbox_level.type.class%">
+            <argument type="service" id="infinite_form.checkbox_level.transformer_factory" />
+            <tag name="form.type" alias="infinite_form_checkbox_level" />
+        </service>
+    </services>
+
+</container>
