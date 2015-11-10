@@ -32,17 +32,18 @@ class ChoiceTreeType extends ChoiceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['choice_list'] && !is_array($options['choices']) && !$options['choices'] instanceof \Traversable) {
+        $choiceList = $options['choice_list']->getAdaptedList();
+        if (!$choiceList && !is_array($options['choices']) && !$options['choices'] instanceof \Traversable) {
             throw new LogicException('Either the option "choices" or "choice_list" must be set.');
         }
 
         if ($options['expanded']) {
-            $preferredViews = $options['choice_list']->getPreferredViews();
-            $remainingViews = $options['choice_list']->getRemainingViews();
+            $preferredViews = $choiceList->getPreferredViews();
+            $remainingViews = $choiceList->getRemainingViews();
 
             // Check if the choices already contain the empty value
             // Only add the empty value option if this is not the case
-            if (null !== $options['placeholder'] && 0 === count($options['choice_list']->getChoicesForValues(['']))) {
+            if (null !== $options['placeholder'] && 0 === count($choiceList->getChoicesForValues(['']))) {
                 $placeholderView = new TreeChoiceView(null, '', $options['placeholder'], 0);
 
                 // "placeholder" is a reserved index
@@ -106,7 +107,7 @@ class ChoiceTreeType extends ChoiceType
      */
     public function getName()
     {
-        return 'choice_tree';
+        return 'infinite_form_choice_tree';
     }
 
     /**

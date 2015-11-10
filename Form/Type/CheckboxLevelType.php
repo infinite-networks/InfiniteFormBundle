@@ -22,7 +22,7 @@ class CheckboxLevelType extends CheckboxType
      */
     public function getName()
     {
-        return 'checkbox_level';
+        return 'infinite_form_checkbox_level';
     }
 
     /**

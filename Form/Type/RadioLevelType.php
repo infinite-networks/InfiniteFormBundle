@@ -22,7 +22,7 @@ class RadioLevelType extends RadioType
      */
     public function getName()
     {
-        return 'radio_level';
+        return 'infinite_form_radio_level';
     }
 
     /**
