@@ -133,12 +133,12 @@ class ChoiceTreeType extends ChoiceType
                 ];
 
                 if ($options['multiple']) {
-                    $choiceType = 'checkbox_level';
+                    $choiceType = 'infinite_form_checkbox_level';
                     // The user can check 0 or more checkboxes. If required
                     // is true, he is required to check all of them.
                     $choiceOpts['required'] = false;
                 } else {
-                    $choiceType = 'radio_level';
+                    $choiceType = 'infinite_form_radio_level';
                 }
                 $builder->add($i, $choiceType, $choiceOpts);
             }
