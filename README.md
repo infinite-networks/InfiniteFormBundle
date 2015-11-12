@@ -60,8 +60,16 @@ for use when rendering templates.
 
 For more information see the [Twig Helper][].
 
+Choice Tree
+--------------
+
+The choice Tree form Type allows have a tree for choices.
+
+For more information see the [Choice Tree Documentation][].
+
 [PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
 [Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md
 [CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md
 [Twig Helper]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/twig-helper.md
+[Choice Tree Documentation]: https://github.com/Charlie-Lucas/InfiniteFormBundle/blob/feature/add-choice-tree-form-type/Resources/doc/choice_tree.md
 [can be found here]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md
