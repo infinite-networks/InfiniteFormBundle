@@ -32,7 +32,8 @@ class ChoiceTreeType extends ChoiceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choiceList = $options['choice_list']->getAdaptedList();
+        // for symfony 2.7
+        $choiceList = method_exists($options['choice_list'], "getAdaptedList") ? $options['choice_list']->getAdaptedList(): $options['choice_list'];
         if (!$choiceList && !is_array($options['choices']) && !$options['choices'] instanceof \Traversable) {
             throw new LogicException('Either the option "choices" or "choice_list" must be set.');
         }
