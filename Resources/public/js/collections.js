@@ -98,6 +98,8 @@
                 } else {
                     this.$collection.append($row);
                 }
+
+                return $row;
             }
         },
 

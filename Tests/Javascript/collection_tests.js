@@ -164,6 +164,13 @@
             'Add item skipped because we prevented it with an event');
     });
 
+    test("Programatic addToCollection returns row", function () {
+        var collection = setUpCollection('#markup .list-collection');
+        var result = collection.addToCollection(collection.$prototypes);
+
+        equal(result.length, 1, 'addToCollection returned the row');
+    });
+
     function setUpCollection(selector, options) {
         var $fixture = $('#qunit-fixture');
 
