@@ -99,6 +99,10 @@
                     this.$collection.append($row);
                 }
 
+                var addedEvent = this._createEvent('infinite_collection_added');
+                addedEvent.index = this.internalCount - 1;
+                $row.trigger(addedEvent);
+
                 return $row;
             }
         },
