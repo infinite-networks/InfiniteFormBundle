@@ -134,7 +134,7 @@
     });
     
     test("Keep scripts in prototype html", function() {
-        var collection = setUpCollection('#markup .list-collection', {
+        var collection = setUpCollection('#markup .list-collection-with-prototype-scripts', {
             keepScripts: true
         });
 
