@@ -48,7 +48,8 @@
             itemSelector: '.item',
             prototypeAttribute: 'data-prototype',
             prototypeName: '__name__',
-            removeSelector: '.remove_item'
+            removeSelector: '.remove_item',
+            keepScripts: false
         }, options || {});
 
         this.initialise();
@@ -84,7 +85,11 @@
             }
 
             var html = this._getPrototypeHtml($prototype, this.internalCount++),
+            if (this.options.keepScripts) {
                 $row = $($.parseHTML(html, document, true));
+            } else {
+                $row = $($.parseHTML(html));
+            }
 
             var event = this._createEvent('infinite_collection_add');
             event.$triggeredPrototype = $prototype;
