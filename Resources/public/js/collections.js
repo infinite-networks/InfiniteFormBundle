@@ -85,11 +85,7 @@
             }
 
             var html = this._getPrototypeHtml($prototype, this.internalCount++),
-            if (this.options.keepScripts) {
-                $row = $($.parseHTML(html, document, true));
-            } else {
-                $row = $($.parseHTML(html));
-            }
+            $row = $($.parseHTML(html, document, this.options.keepScripts));
 
             var event = this._createEvent('infinite_collection_add');
             event.$triggeredPrototype = $prototype;
