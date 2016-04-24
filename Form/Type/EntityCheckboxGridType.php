@@ -38,7 +38,9 @@ class EntityCheckboxGridType extends AbstractType
 
     public function getParent()
     {
-        return 'infinite_form_checkbox_grid';
+        return method_exists('\Symfony\Component\Form\AbstractType', 'getBlockPrefix')
+            ? '\Infinite\FormBundle\Form\Type\CheckboxGridType'
+            : 'infinite_form_checkbox_grid';  // BC for SF < 2.8
     }
 
     public function configureOptions(OptionsResolver $resolver)
