@@ -15,7 +15,7 @@ class SecondType extends AbstractType
         $builder->add('checked', 'checkbox', array('required' => false));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'second_type';
     }

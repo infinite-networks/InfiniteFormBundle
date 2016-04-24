@@ -37,6 +37,11 @@ class EntitySearchType extends AbstractType
         $view->vars['search_route'] = $form->getConfig()->getAttribute('search_route');
     }
 
+    public function getBlockPrefix()
+    {
+        return 'infinite_form_entity_search';
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -57,9 +62,10 @@ class EntitySearchType extends AbstractType
     {
         $this->configureOptions($resolver);
     }
-
+    
+    // BC for SF < 2.8
     public function getName()
     {
-        return 'infinite_form_entity_search';
+        return $this->getBlockPrefix();
     }
 }

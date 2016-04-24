@@ -53,7 +53,7 @@ class AttachmentType extends AbstractType
         $view->children['meta']->vars['value'] = $view->vars['value']['meta'];
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'infinite_form_attachment';
     }
@@ -70,5 +70,11 @@ class AttachmentType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

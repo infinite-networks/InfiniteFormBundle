@@ -15,7 +15,7 @@ class FourthType extends AbstractType
         $builder->add('file', 'file', array('required' => false));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fourth_type';
     }

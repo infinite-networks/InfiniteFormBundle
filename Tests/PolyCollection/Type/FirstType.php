@@ -15,7 +15,7 @@ class FirstType extends AbstractType
         $builder->add('text2', 'text');
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'first_type';
     }

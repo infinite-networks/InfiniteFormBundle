@@ -31,7 +31,7 @@ class EntityCheckboxGridType extends AbstractType
         $this->registry = $registry;
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'infinite_form_entity_checkbox_grid';
     }
@@ -129,6 +129,12 @@ class EntityCheckboxGridType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
+    }
+    
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
     
     private function getEntityManagerNormalizer()

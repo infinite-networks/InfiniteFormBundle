@@ -38,8 +38,14 @@ class AbstractType extends BaseType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'abstract_type';
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

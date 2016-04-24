@@ -21,7 +21,7 @@ class SalesmanType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'infinite_form_test_salesman';
     }
@@ -38,5 +38,11 @@ class SalesmanType extends AbstractType
             'data_class' => 'Infinite\FormBundle\Tests\CheckboxGrid\Entity\Salesman',
             'product_area_options' => array(),
         ));
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }
