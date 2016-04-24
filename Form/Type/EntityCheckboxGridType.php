@@ -10,6 +10,7 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\AbstractType;
@@ -38,9 +39,8 @@ class EntityCheckboxGridType extends AbstractType
 
     public function getParent()
     {
-        return method_exists('\Symfony\Component\Form\AbstractType', 'getBlockPrefix')
-            ? '\Infinite\FormBundle\Form\Type\CheckboxGridType'
-            : 'infinite_form_checkbox_grid';  // BC for SF < 2.8
+        // BC for SF < 2.8
+        return LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxGridType');
     }
 
     public function configureOptions(OptionsResolver $resolver)

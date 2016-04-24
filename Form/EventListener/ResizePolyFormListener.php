@@ -11,6 +11,7 @@ namespace Infinite\FormBundle\Form\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\FormEvent;
@@ -84,7 +85,12 @@ class ResizePolyFormListener extends ResizeFormListener
                 $defaultType = $type;
             }
 
-            $typeKey = $type instanceof FormTypeInterface ? $type->getName() : $type;
+            $typeKey = $type;
+
+            if ($type instanceof FormTypeInterface) {
+                $typeKey = LegacyFormUtil::isFullClassNameRequired() ? get_class($type) : $type->getName();
+            }
+
             $this->typeMap[$typeKey] = $type;
             $this->classMap[$modelClass] = $type;
         }
@@ -103,12 +109,13 @@ class ResizePolyFormListener extends ResizeFormListener
     {
         $class = get_class($object);
         $class = ClassUtils::getRealClass($class);
+        $type = $this->type;
 
         if (array_key_exists($class, $this->classMap)) {
-            return $this->classMap[$class];
+            $type = $this->classMap[$class];
         }
 
-        return $this->type;
+        return LegacyFormUtil::getType($type);
     }
 
     /**
@@ -125,7 +132,7 @@ class ResizePolyFormListener extends ResizeFormListener
             throw new \InvalidArgumentException('Unable to determine the Type for given data');
         }
 
-        return $this->typeMap[$data[$this->typeFieldName]];
+        return LegacyFormUtil::getType($this->typeMap[$data[$this->typeFieldName]]);
     }
 
     public function preSetData(FormEvent $event)

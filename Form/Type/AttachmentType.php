@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\DataTransformer\AttachmentTransformer;
 use Infinite\FormBundle\Attachment\PathHelper;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -30,9 +31,9 @@ class AttachmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'file', array('required' => $options['required']))
-            ->add('removed', 'hidden')
-            ->add('meta', 'hidden', array('required' => false))
+            ->add('file', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FileType'), array('required' => $options['required']))
+            ->add('removed', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'))
+            ->add('meta', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'), array('required' => false))
             ->addViewTransformer(new AttachmentTransformer(
                 $options,
                 $this->om,

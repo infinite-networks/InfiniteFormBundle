@@ -14,6 +14,7 @@ use Infinite\FormBundle\Attachment\PathHelper;
 use Infinite\FormBundle\Attachment\Sanitiser;
 use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\Type\AttachmentType;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
@@ -128,7 +129,7 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
 
     private function makeAttachmentForm()
     {
-        return $this->factory->create('infinite_form_attachment', null, array(
+        return $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\AttachmentType'), null, array(
             'class' => 'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment',
         ));
     }

@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
 use Infinite\FormBundle\Form\Type\EntitySearchType;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
@@ -102,7 +103,7 @@ class EntitySearchTest extends \PHPUnit_Framework_TestCase
 
     private function makeForm()
     {
-        return $this->factory->createBuilder('infinite_form_entity_search', null, array(
+        return $this->factory->createBuilder(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntitySearchType'), null, array(
             'invalid_message' => 'Item not found',
             'class'           => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
         ))->getForm();

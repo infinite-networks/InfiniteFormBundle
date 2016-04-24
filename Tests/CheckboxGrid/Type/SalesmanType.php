@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\CheckboxGrid\Type;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +14,8 @@ class SalesmanType extends AbstractType
     {
         $productAreaOptions = $options['product_area_options'];
 
-        $builder->add('name', 'text');
-        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', $productAreaOptions + array(
+        $builder->add('name', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
+        $builder->add('productAreas', LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntityCheckboxGridType'), $productAreaOptions + array(
             'class' => 'Infinite\FormBundle\Tests\CheckboxGrid\Entity\SalesmanProductArea',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',

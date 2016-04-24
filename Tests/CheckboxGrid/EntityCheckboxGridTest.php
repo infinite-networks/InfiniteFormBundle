@@ -14,6 +14,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
@@ -116,7 +117,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
 
         $salesman = new TestEntity\Salesman;
 
-        $form = $this->factory->create('infinite_form_test_salesman', $salesman);
+        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
 
         $form->submit(array(
             'name' => 'John Smith',
@@ -153,7 +154,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
         $salesman = new TestEntity\Salesman;
         $salesman->addProductArea($spa);
 
-        $form = $this->factory->create('infinite_form_test_salesman', $salesman);
+        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
 
         $form->submit(array(
             'name' => 'John Smith',
@@ -173,7 +174,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectSpa();
 
-        $form = $this->factory->create('infinite_form_test_salesman', null, array(
+        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), null, array(
             'product_area_options' => array(
                 'x_query_builder' => function (EntityRepository $repo) {
                     return $repo->createQueryBuilder('p')
@@ -211,7 +212,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('salesman_em'))
             ->will($this->returnValue($this->em));
 
-        $this->factory->create('infinite_form_test_salesman', null, array(
+        $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), null, array(
             'product_area_options' => array(
                 'em' => 'salesman_em',
             ),
@@ -231,7 +232,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('stdClass'))
             ->will($this->returnValue(null));
 
-        $this->factory->create('infinite_form_entity_checkbox_grid', array(), array(
+        $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntityCheckboxGridType'), array(), array(
             'class' => 'stdClass',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',
