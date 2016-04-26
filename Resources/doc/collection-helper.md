@@ -127,6 +127,7 @@ collection helper's constructor.
 | prototypeAttribute | data-prototype  | The attribute where the prototype html is stored on each prototype button/link. |
 | prototypeName      | \_\_name\_\_    | A Symfony2 Form component specific option: the name used for each prototype. It defaults to \_\_name\_\_ and unless changed in the form framework, does not need to be modified. |
 | removeSelector     | .remove_item    | The selector to target a remove item button against each row. When clicked, the collection helper will remove the row from the DOM. |
+| keepScripts     | false    | Whether or not to keep script tags in the added prototype html. Set it to true if your added form element has scripts attached to it (to instantiate a wysiwyg editor for example). |
 
 Events
 ------

@@ -132,6 +132,17 @@
         equal(collection.internalCount, 4,
             'Internal count is incremented when adding');
     });
+    
+    test("Keep scripts in prototype html", function() {
+        var collection = setUpCollection('#markup .list-collection-with-prototype-scripts', {
+            keepScripts: true
+        });
+
+        var result = collection.addToCollection(collection.$prototypes);
+
+        equal(result.find('script').length, 1,
+            'Prototype scripts were kept');
+    });
 
     test("Add Event", function () {
         expect(2);
