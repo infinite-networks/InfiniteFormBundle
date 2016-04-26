@@ -11,6 +11,7 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\Forms;
@@ -32,7 +33,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
 
     protected function makeForm($data, $options)
     {
-        return $this->factory->create('infinite_form_checkbox_grid', $data, $options + array(
+        return $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxGridType'), $data, $options + array(
             'x_choice_list' => new SimpleChoiceList(array(
                 'white' => 'white',
                 'beige' => 'beige',

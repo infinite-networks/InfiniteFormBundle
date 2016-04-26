@@ -9,6 +9,7 @@
 
 namespace Infinite\FormBundle\Tests\FormExtension;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Twig\FormExtension;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
@@ -29,11 +30,11 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
         $twig = new \Twig_Environment(new \Twig_Loader_Array(array('template' => '{{ form is invalid ? 1 : 0 }}')));
         $twig->addExtension(new FormExtension);
 
-        $formWithError = $this->formFactory->create('text');
+        $formWithError = $this->formFactory->create(LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
         $formWithError->addError(new FormError('test error'));
         $this->assertEquals('1', $twig->render('template', array('form' => $formWithError->createView())));
 
-        $formWithoutError = $this->formFactory->create('text');
+        $formWithoutError = $this->formFactory->create(LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
         $this->assertEquals('0', $twig->render('template', array('form' => $formWithoutError->createView())));
     }
 }

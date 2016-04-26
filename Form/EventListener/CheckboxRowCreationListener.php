@@ -10,6 +10,7 @@
 namespace Infinite\FormBundle\Form\EventListener;
 
 use Infinite\FormBundle\Form\DataTransformer\AnythingToBooleanTransformer;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -60,11 +61,11 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
         foreach ($options['choice_list']->getRemainingViews() as $choice) {
             if (isset($options['cell_filter']) && !$options['cell_filter']($choice->data, $options['row']->data)) {
                 // Blank cell - put a dummy form control here
-                $form->add($choice->value, 'form', array());
+                $form->add($choice->value, LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType'), array());
             } else {
                 $builder = $this->factory->createNamedBuilder(
                     $choice->value,
-                    'checkbox',
+                    LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType'),
                     isset($data[$choice->value]),
                     array(
                         'auto_initialize' => false,

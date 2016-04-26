@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class FirstType extends AbstractType
@@ -12,10 +13,10 @@ class FirstType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('text2', 'text');
+        $builder->add('text2', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'first_type';
     }

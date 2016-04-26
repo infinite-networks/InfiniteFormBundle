@@ -9,6 +9,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\PolyCollection\Model\AbstractModel;
 use Infinite\FormBundle\Tests\PolyCollection\Model\First;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Second;
@@ -19,12 +20,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 {
     public function testObjectNotCoveredByTypesArray()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
         ));
         $form->setData(array(
             new AbstractModel('Green'),
@@ -35,12 +32,8 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testInvalidObject()
     {
         $this->setExpectedException('Symfony\\Component\\Form\\Exception\\ExceptionInterface');
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
         ));
         $form->setData(array(
             new \stdClass
@@ -50,17 +43,13 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testInvalidBindType()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'allow_add' => true
         ));
         $form->submit(array(
             array(
-                '_type' => 'unknown_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\UnknownType'),
                 'text' => 'Green'
             )
         ));
@@ -69,22 +58,18 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testBindInvalidData()
     {
         $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
         ));
         $form->submit('invalid_data');
     }
 
     public function testMultipartPropagation()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => array(
-                'abstract_type',
-                'fourth_type'
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FourthType')
             ),
             'allow_add' => true
         ));
@@ -94,12 +79,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testBindNullEmptiesCollection()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'allow_delete' => true
         ));
         $form->submit(null);
@@ -109,12 +90,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testResizedUpIfBoundWithExtraDataAndAllowAdd()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'allow_add' => true
         ));
 
@@ -123,11 +100,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => 'abstract_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                 'text' => 'Green'
             ),
             array(
-                '_type' => 'first_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -149,12 +126,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testResizedWithCustomTypeField()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'type_name' => '_type_id',
             'allow_add' => true
         ));
@@ -164,11 +137,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type_id' => 'abstract_type',
+                '_type_id' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                 'text' => 'Green'
             ),
             array(
-                '_type_id' => 'first_type',
+                '_type_id' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -190,23 +163,19 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testNotResizedIfBoundWithExtraData()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
         ));
         $form->setData(array(
             new AbstractModel('Green'),
         ));
         $form->submit(array(
             array(
-                '_type' => 'abstract_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                 'text' => 'Green'
             ),
             array(
-                '_type' => 'first_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -222,12 +191,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testResizedDownIfBoundWithMissingDataAndAllowDelete()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'allow_delete' => true
         ));
         $form->setData(array(
@@ -237,11 +202,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             0=>array(
-                '_type' => 'abstract_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                 'text' => 'Green'
             ),
             2=>array(
-                '_type' => 'second_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
                 'checked' => 'true'
             )
         ));
@@ -261,12 +226,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testNotResizedIfBoundWithMissingData()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
         ));
         $form->setData(array(
             new AbstractModel('Green'),
@@ -275,11 +236,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => 'abstract_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                 'text' => 'Brown'
             ),
             array(
-                '_type' => 'first_type',
+                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
                 'text' => 'Yellow',
                 'text2' => 'Bicycle'
             )
@@ -297,12 +258,8 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testSetDataAdjustsSize()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'abstract_type',
-                'first_type',
-                'second_type'
-            ),
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
             'options' => array(
                 'max_length' => 20,
             )
@@ -354,14 +311,10 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testResizedDownIfBoundWithMissingDataAndAllowDeleteWithEntityIndexProperty()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-                'types' => array(
-                    'abstract_type',
-                    'first_type',
-                    'second_type'
-                ),
-                'allow_delete' => true,
-                'index_property' => 'id'
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
+            'allow_delete' => true,
+            'index_property' => 'id'
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
@@ -370,12 +323,12 @@ class PolyCollectionTypeTest extends TypeTestCase
             ));
         $form->bind(array(
                 array(
-                    '_type' => 'abstract_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                     'text' => 'Green',
                     'id'=>1
                 ),
                 array(
-                    '_type' => 'second_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
                     'checked' => 'true',
                     'id'=>3
                 )
@@ -396,26 +349,22 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testResizedUpIfBoundWithExtraDataAndAllowAddWithEntityIndexPropertyMissing()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-                'types' => array(
-                    'abstract_type',
-                    'first_type',
-                    'second_type'
-                ),
-                'allow_add' => true,
-                'index_property' => 'id'
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
+            'allow_add' => true,
+            'index_property' => 'id'
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
             ));
         $form->bind(array(
                 array(
-                    '_type' => 'abstract_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                     'text' => 'Green',
                     'id'=>1
                 ),
                 array(
-                    '_type' => 'second_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
                     'text' => 'Blue',
                     'checked' => 'true'
                 )
@@ -436,14 +385,10 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testReorderedIfBoundWithShuffledDataAndAllowMatchWithEntityIndexProperty()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
-                'types' => array(
-                    'abstract_type',
-                    'first_type',
-                    'second_type'
-                ),
-                'allow_add' => true,
-                'index_property' => 'id'
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
+            'allow_add' => true,
+            'index_property' => 'id'
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
@@ -451,12 +396,12 @@ class PolyCollectionTypeTest extends TypeTestCase
             ));
         $form->bind(array(
                 array(
-                    '_type' => 'second_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
                     'checked' => 'true',
                     'id'=>2
                 ),
                 array(
-                    '_type' => 'abstract_type',
+                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
                     'text' => 'Green',
                     'id'=>1
                 )
@@ -476,7 +421,7 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testContainsNoChildByDefault()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => array(),
         ));
 
@@ -485,7 +430,7 @@ class PolyCollectionTypeTest extends TypeTestCase
 
     public function testThrowsExceptionIfObjectIsNotTraversable()
     {
-        $form = $this->factory->create('infinite_form_polycollection', null, array(
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => array(),
         ));
         $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
@@ -496,13 +441,27 @@ class PolyCollectionTypeTest extends TypeTestCase
     {
         $this->setExpectedException('Symfony\Component\OptionsResolver\Exception\MissingOptionsException');
 
-        $this->factory->create('infinite_form_polycollection', null, array());
+        $this->factory->create($this->getPolyCollectionType(), null, array());
     }
 
     protected function getExtensions()
     {
         return array(
             new FormExtension()
+        );
+    }
+
+    private function getPolyCollectionType()
+    {
+        return LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\PolyCollectionType');
+    }
+
+    private function getTestTypes()
+    {
+        return array(
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
         );
     }
 }

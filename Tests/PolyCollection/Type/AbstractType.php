@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,11 +14,11 @@ class AbstractType extends BaseType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'number');
+        $builder->add('id', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\NumberType'));
 
-        $builder->add('text', 'text');
+        $builder->add('text', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
 
-        $builder->add('_type', 'hidden', array(
+        $builder->add('_type', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'), array(
             'data'   => $this->getName(),
             'mapped' => false
         ));
@@ -38,8 +39,14 @@ class AbstractType extends BaseType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'abstract_type';
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

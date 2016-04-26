@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class FourthType extends AbstractType
@@ -12,10 +13,10 @@ class FourthType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('file', 'file', array('required' => false));
+        $builder->add('file', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FileType'), array('required' => false));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'fourth_type';
     }

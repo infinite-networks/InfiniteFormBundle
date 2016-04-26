@@ -10,6 +10,7 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\DataTransformer\CheckboxGridTransformer;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -39,7 +40,7 @@ class CheckboxGridType extends AbstractType
                 'row'         => $choice,
             );
 
-            $builder->add($choice->value, 'infinite_form_checkbox_row', $rowOptions);
+            $builder->add($choice->value, LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxRowType'), $rowOptions);
         }
 
         $builder->addViewTransformer(new CheckboxGridTransformer($options));
@@ -50,7 +51,7 @@ class CheckboxGridType extends AbstractType
         $view->vars['headers'] = $options['x_choice_list'];
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'infinite_form_checkbox_grid';
     }
@@ -74,5 +75,11 @@ class CheckboxGridType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
+    }
+
+    // BC for SF < 2.8
+    public function getName()
+    {
+        return $this->getBlockPrefix();
     }
 }

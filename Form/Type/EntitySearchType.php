@@ -3,6 +3,7 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -25,8 +26,8 @@ class EntitySearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden')
-            ->add('name', 'text', array('required' => $options['required']))
+            ->add('id', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'))
+            ->add('name', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'), array('required' => $options['required']))
             ->setAttribute('search_route', $options['search_route'])
             ->addModelTransformer($this->transformerFactory->createFromOptions($options))
         ;
@@ -35,6 +36,11 @@ class EntitySearchType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['search_route'] = $form->getConfig()->getAttribute('search_route');
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'infinite_form_entity_search';
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -57,9 +63,10 @@ class EntitySearchType extends AbstractType
     {
         $this->configureOptions($resolver);
     }
-
+    
+    // BC for SF < 2.8
     public function getName()
     {
-        return 'infinite_form_entity_search';
+        return $this->getBlockPrefix();
     }
 }

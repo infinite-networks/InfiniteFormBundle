@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SecondType extends AbstractType
@@ -12,10 +13,10 @@ class SecondType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('checked', 'checkbox', array('required' => false));
+        $builder->add('checked', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType'), array('required' => false));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'second_type';
     }
