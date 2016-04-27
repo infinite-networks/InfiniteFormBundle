@@ -1,3 +1,17 @@
+1.0.5 (28/04/2016)
+
+ * Deprecated passing FormTypeInterfaces to Polycollection, to be removed in 2.0
+
+1.0.4 (26/04/2016)
+
+ * Fix misc deprecation warnings with Symfony 2.8+
+ * Added option to keep script tags in prototypes when rendering new collection rows
+
+1.0.3 (26/11/2015)
+
+ * Added indexing by ID for the Polycollection
+ * Collection helper returns added row when calling addToCollection
+
 1.0.2 (29/08/2015)
 
  * Actually fix deprecation warnings (except CheckboxGrid)
