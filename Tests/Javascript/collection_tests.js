@@ -132,7 +132,7 @@
         equal(collection.internalCount, 4,
             'Internal count is incremented when adding');
     });
-    
+
     test("Keep scripts in prototype html", function() {
         var collection = setUpCollection('#markup .list-collection-with-prototype-scripts', {
             keepScripts: true
@@ -182,13 +182,33 @@
         equal(result.length, 1, 'addToCollection returned the row');
     });
 
-    function setUpCollection(selector, options) {
+    test("Custom html structure internalCount", function() {
+        var collection = setUpCollection('#markup .list-collection-different-html-structure');
+        equal(collection.internalCount, 1,
+            'Internal count is correctly initialized');
+     });
+
+     test("Nested collection internalCount", function() {
+        var collection = setUpCollection('#markup .list-collection-with-nested-collection');
+        equal(collection.internalCount, 1,
+            'Internal count with nested collections is correctly initialized');
+
+        var nestedcollection = setUpCollection('#markup .list-collection-with-nested-collection', { itemSelector: '.child-item' }, '.child-collection');
+        equal(nestedcollection.internalCount, 3,
+            'Internal count of nested collection is correctly initialized');
+
+        var nestedcollection = setUpCollection('#markup .list-collection-with-nested-collection', {}, '.third-level-collection');
+        equal(nestedcollection.internalCount, 2,
+            'Internal count of multiple nested collection is correctly initialized');
+    });
+
+    function setUpCollection(selector, options, elSelector) {
         var $fixture = $('#qunit-fixture');
 
         var $dom = $(selector).clone();
         $dom.appendTo($fixture);
 
-        var colEl = $dom.find('.collection'),
+        var colEl = $dom.find(elSelector ? elSelector : '.collection'),
             prototypes = $dom.find('.add_item');
 
         collection = new window.infinite.Collection(colEl, prototypes, options);
