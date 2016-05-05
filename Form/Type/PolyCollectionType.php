@@ -67,7 +67,11 @@ class PolyCollectionType extends AbstractType
     {
         $prototypes = array();
         foreach ($options['types'] as $type) {
-            $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
+            $key = $type;
+            if ($type instanceof FormTypeInterface) {
+                @trigger_error(sprintf('Passing type instances to PolyCollection is deprecated since version 1.0.5 and will not be supported in 2.0. Use the fully-qualified type class name instead (%s).', get_class($type)), E_USER_DEPRECATED);
+                $key = $type->getName();
+            }
 
             $prototype = $this->buildPrototype(
                 $builder,
@@ -133,7 +137,7 @@ class PolyCollectionType extends AbstractType
             }
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -160,7 +164,7 @@ class PolyCollectionType extends AbstractType
         $resolver->setRequired(array(
             'types'
         ));
-        
+
         // OptionsResolver 2.6+
         if (method_exists($resolver, 'setNormalizer')) {
             $resolver->setAllowedTypes('types', 'array');
@@ -174,7 +178,7 @@ class PolyCollectionType extends AbstractType
             ));
         }
     }
-    
+
     // BC for SF < 2.7
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -186,7 +190,7 @@ class PolyCollectionType extends AbstractType
     {
         return $this->getBlockPrefix();
     }
-    
+
     private function getOptionsNormalizer()
     {
         return function (Options $options, $value) {

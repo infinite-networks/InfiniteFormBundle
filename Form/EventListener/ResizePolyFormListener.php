@@ -88,7 +88,6 @@ class ResizePolyFormListener extends ResizeFormListener
             $typeKey = $type;
 
             if ($type instanceof FormTypeInterface) {
-                @trigger_error(sprintf('Passing type instances to PolyCollection is deprecated since version 1.0.5 and will not be supported in 2.0. Use the fully-qualified type class name instead (%s).', get_class($type)), E_USER_DEPRECATED);
                 $typeKey = LegacyFormUtil::isFullClassNameRequired() ? get_class($type) : $type->getName();
             }
 
