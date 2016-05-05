@@ -51,7 +51,7 @@ final class LegacyFormUtil
         }
 
         // BC for SF < 2.8 for internally used types
-        if (!self::isFullClassNameRequired() && isset(self::$map[$type])) {
+        if (!self::isFullClassNameRequired() && is_string($type) && isset(self::$map[$type])) {
             return self::$map[$type];
         }
 
