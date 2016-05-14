@@ -50,3 +50,73 @@ file that was distributed with this source code.
     <input type="button" value="Remove" onclick="var x=$(this).hide().prev().val(1).prev().show().prev().hide()">
 {% endif %}
 {% endblock infinite_form_attachment_widget %}
+{%- block infinite_form_choice_tree_widget -%}
+    {% if expanded %}
+        {{- block('infinite_form_choice_tree_widget_expanded') -}}
+    {% else %}
+        {{- block('infinite_form_choice_tree_widget_collapsed') -}}
+    {% endif %}
+{%- endblock infinite_form_choice_tree_widget -%}
+
+{%- block infinite_form_choice_tree_widget_expanded -%}
+    <div {{ block('infinite_form_widget_container_attributes') }}>
+        {%- for child in form %}
+            {% set marginLeft = 0 %}
+            {%  if child.vars.level > 0 %}
+                {% for i in 1..child.vars.level  %}
+                    {% set marginLeft = marginLeft + 20 %}
+                {% endfor %}
+            {% endif %}
+            <div style="margin-left: {{ marginLeft }}px">
+                {{- form_widget(child) -}}
+                {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+            </div>
+        {% endfor -%}
+    </div>
+{%- endblock infinite_form_choice_tree_widget_expanded -%}
+
+{%- block infinite_form_choice_tree_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('infinite_form_choice_tree_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('infinite_form_choice_tree_widget_options') -}}
+    </select>
+{%- endblock infinite_form_choice_tree_widget_collapsed -%}
+
+{%- block infinite_form_choice_tree_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            {% set options = choice %}
+            {{- block('infinite_form_choice_tree_widget_options') -}}
+        {%- else -%}
+            {% set index = "" %}
+            {%  if choice.level > 0 %}
+                {% for i in 1..choice.level  %}
+                    {% set index = index ~ "&nbsp;&nbsp;" %}
+                {% endfor %}
+            {% endif %}
+            {% set attr = choice.attr %}
+            <option value="{{ choice.value }}" {{ block('attributes') }}{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ index|raw }}{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock infinite_form_choice_tree_widget_options -%}
+
+{%- block infinite_form_checkbox_level_widget -%}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock infinite_form_checkbox_level_widget -%}
+
+{%- block infinite_form_radio_level_widget -%}
+    <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock infinite_form_radio_level_widget -%}
