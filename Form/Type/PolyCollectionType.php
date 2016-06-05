@@ -10,6 +10,7 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\EventListener\ResizePolyFormListener;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -67,10 +68,8 @@ class PolyCollectionType extends AbstractType
     {
         $prototypes = array();
         foreach ($options['types'] as $type) {
-            $key = $type;
             if ($type instanceof FormTypeInterface) {
                 @trigger_error(sprintf('Passing type instances to PolyCollection is deprecated since version 1.0.5 and will not be supported in 2.0. Use the fully-qualified type class name instead (%s).', get_class($type)), E_USER_DEPRECATED);
-                $key = $type->getName();
             }
 
             $prototype = $this->buildPrototype(
@@ -79,6 +78,16 @@ class PolyCollectionType extends AbstractType
                 $type,
                 $options['options']
             );
+
+            $typeInstance = $prototype->getType()->getInnerType();
+
+            if (LegacyFormUtil::isFullClassNameRequired()) {
+                // SF 2.8+
+                $key = $typeInstance->getBlockPrefix();
+            } else {
+                $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
+            }
+
             $prototypes[$key] = $prototype->getForm();
         }
 

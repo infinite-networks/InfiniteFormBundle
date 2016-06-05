@@ -55,6 +55,11 @@ final class LegacyFormUtil
             return self::$map[$type];
         }
 
+        // BC for SF < 2.8 for custom types
+        if (!self::isFullClassNameRequired() && $type instanceof FormTypeInterface) {
+            return $type->getName();
+        }
+
         return $type;
     }
 

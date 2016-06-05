@@ -76,7 +76,7 @@ class ResizePolyFormListener extends ResizeFormListener
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $defaultType = null;
 
-        foreach ($prototypes as $prototype) {
+        foreach ($prototypes as $key => $prototype) {
             /** @var FormInterface $prototype */
             $modelClass = $prototype->getConfig()->getOption('model_class');
             $type       = $prototype->getConfig()->getType()->getInnerType();
@@ -85,13 +85,7 @@ class ResizePolyFormListener extends ResizeFormListener
                 $defaultType = $type;
             }
 
-            $typeKey = $type;
-
-            if ($type instanceof FormTypeInterface) {
-                $typeKey = LegacyFormUtil::isFullClassNameRequired() ? get_class($type) : $type->getName();
-            }
-
-            $this->typeMap[$typeKey] = $type;
+            $this->typeMap[$key] = $type;
             $this->classMap[$modelClass] = $type;
         }
 
