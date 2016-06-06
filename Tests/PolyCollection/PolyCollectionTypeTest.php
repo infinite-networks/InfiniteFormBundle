@@ -127,7 +127,10 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testResizedWithCustomTypeField()
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
-            'types' => $this->getTestTypes(),
+            'types' => array(
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType'),
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType'),
+            ),
             'type_name' => '_type_id',
             'allow_add' => true
         ));
@@ -137,11 +140,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type_id' => 'abstract_type',
+                '_type_id' => 'abstract_type_id_type',
                 'text' => 'Green'
             ),
             array(
-                '_type_id' => 'first_type',
+                '_type_id' => 'first_type_id_type',
                 'text' => 'Red',
                 'text2' => 'Car'
             )

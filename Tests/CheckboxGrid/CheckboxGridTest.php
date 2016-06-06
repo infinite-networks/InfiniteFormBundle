@@ -13,9 +13,6 @@ use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish;
-use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
-use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\Forms;
 
 class CheckboxGridTest extends \PHPUnit_Framework_TestCase
@@ -36,32 +33,20 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     protected function makeForm($data, $options)
     {
         return $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxGridType'), $data, $options + array(
-            'x_choice_list' => $this->makeArrayChoiceList(array(
+            'x_choices' => array(
                 'white' => 'white',
                 'beige' => 'beige',
                 'yellow' => 'yellow',
-            )),
+            ),
             'x_path' => '[color]',
-            'y_choice_list' => $this->makeArrayChoiceList(array(
+            'y_choices' => array(
                 'matte' => 'matte',
                 'satin' => 'satin',
                 'gloss' => 'gloss',
                 'high_gloss' => 'high gloss',
-            )),
+            ),
             'y_path' => '[finish]',
         ));
-    }
-
-    protected function makeArrayChoiceList($choices)
-    {
-        // SF 2.7+
-        // We aren't using the labels for anything here so just drop them.
-        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-            return new ArrayChoiceList(array_keys($choices));
-        }
-
-        // BC < 2.7
-        return new SimpleChoiceList($choices);
     }
 
     /**
