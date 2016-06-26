@@ -11,10 +11,13 @@ namespace Infinite\FormBundle\Form\EventListener;
 
 use Infinite\FormBundle\Form\DataTransformer\AnythingToBooleanTransformer;
 use Infinite\FormBundle\Form\Util\LegacyFormUtil;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface as LegacyChoiceListInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * When a checkbox grid is created, there may already be a few boxes checked. When the grid is bound,
@@ -58,27 +61,48 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
         // Now that we have data available, create the checkboxes for the form. For every box that should
         // be checked, attach a transformer that will convert between its data object and a boolean.
 
-        foreach ($options['choice_list']->getRemainingViews() as $choice) {
-            if (isset($options['cell_filter']) && !$options['cell_filter']($choice->data, $options['row']->data)) {
-                // Blank cell - put a dummy form control here
-                $form->add($choice->value, LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType'), array());
-            } else {
-                $builder = $this->factory->createNamedBuilder(
-                    $choice->value,
-                    LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType'),
-                    isset($data[$choice->value]),
-                    array(
-                        'auto_initialize' => false,
-                        'required' => false,
-                    )
-                );
+        /** @var ChoiceListInterface|LegacyChoiceListInterface $yChoiceList */
+        $choiceList = $options['choice_list'];
 
-                if (isset($data[$choice->value])) {
-                    $builder->addViewTransformer(new AnythingToBooleanTransformer($data[$choice->value]), true);
-                }
-
-                $form->add($builder->getForm());
+        if ($choiceList instanceof LegacyChoiceListInterface) {
+            foreach ($choiceList->getRemainingViews() as $view) {
+                $this->addCheckbox($options, $view->data, $form, $view->value, $data);
             }
+        } else {
+            foreach ($options['choice_list']->getChoices() as $value => $choice) {
+                $this->addCheckbox($options, $choice, $form, $value, $data);
+            }
+        }
+    }
+
+    /**
+     * @param array $options
+     * @param $choice
+     * @param FormInterface $form
+     * @param $value
+     * @param $data
+     */
+    protected function addCheckbox($options, $choice, FormInterface $form, $value, $data)
+    {
+        if (isset($options['cell_filter']) && !$options['cell_filter']($choice, $options['row'])) {
+            // Blank cell - put a dummy form control here
+            $form->add($value, LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType'), array());
+        } else {
+            $builder = $this->factory->createNamedBuilder(
+                $value,
+                LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType'),
+                isset($data[$value]),
+                array(
+                    'auto_initialize' => false,
+                    'required' => false,
+                )
+            );
+
+            if (isset($data[$value])) {
+                $builder->addViewTransformer(new AnythingToBooleanTransformer($data[$value]), true);
+            }
+
+            $form->add($builder->getForm());
         }
     }
 }

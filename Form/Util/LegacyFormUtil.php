@@ -27,7 +27,9 @@ final class LegacyFormUtil
         'Infinite\FormBundle\Form\Type\PolyCollectionType' => 'infinite_form_polycollection',
         'Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType' => 'infinite_form_test_salesman',
         'Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType' => 'abstract_type',
+        'Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType' => 'abstract_type_id_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\FirstType' => 'first_type',
+        'Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType' => 'first_type_id_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\SecondType' => 'second_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\FourthType' => 'fourth_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\UnknownType' => 'unknown_type',
@@ -53,6 +55,11 @@ final class LegacyFormUtil
         // BC for SF < 2.8 for internally used types
         if (!self::isFullClassNameRequired() && is_string($type) && isset(self::$map[$type])) {
             return self::$map[$type];
+        }
+
+        // BC for SF < 2.8 for custom types
+        if (!self::isFullClassNameRequired() && $type instanceof FormTypeInterface) {
+            return $type->getName();
         }
 
         return $type;

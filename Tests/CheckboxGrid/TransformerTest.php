@@ -10,6 +10,7 @@
 namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
 use Infinite\FormBundle\Form\DataTransformer\CheckboxGridTransformer;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
 class TransformerTest extends \PHPUnit_Framework_TestCase
@@ -18,13 +19,13 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     {
         return new CheckboxGridTransformer(array(
             'class' => null,
-            'x_choice_list' => new SimpleChoiceList(array(
+            'x_choice_list' => $this->makeChoiceList(array(
                 'white' => 'white',
                 'beige' => 'beige',
                 'yellow' => 'yellow',
             )),
             'x_path' => '[color]',
-            'y_choice_list' => new SimpleChoiceList(array(
+            'y_choice_list' => $this->makeChoiceList(array(
                 'matte' => 'matte',
                 'satin' => 'satin',
                 'gloss' => 'gloss',
@@ -32,6 +33,17 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
             )),
             'y_path' => '[finish]',
         ));
+    }
+
+    protected function makeChoiceList($choices)
+    {
+        // SF 2.7+
+        if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
+            return new ArrayChoiceList(array_keys($choices));
+        }
+
+        // BC
+        return new SimpleChoiceList($choices);
     }
 
     /**

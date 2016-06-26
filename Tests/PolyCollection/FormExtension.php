@@ -11,7 +11,9 @@ namespace Infinite\FormBundle\Tests\PolyCollection;
 
 use Infinite\FormBundle\Form\Type\PolyCollectionType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType;
+use Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FirstType;
+use Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FourthType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\SecondType;
 use Symfony\Component\Form\AbstractExtension;
@@ -28,7 +30,9 @@ class FormExtension extends AbstractExtension
         return array(
             new PolyCollectionType(),
             new AbstractType(),
+            new AbstractTypeIdType(),
             new FirstType(),
+            new FirstTypeIdType(),
             new SecondType(),
             new FourthType(),
         );

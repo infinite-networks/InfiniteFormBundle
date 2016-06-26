@@ -27,7 +27,7 @@ class CheckboxRowType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['label'] = $options['row']->label;
+        $view->vars['label'] = $options['row_label'];
     }
 
     public function getBlockPrefix()
@@ -40,7 +40,9 @@ class CheckboxRowType extends AbstractType
         $resolver->setDefaults(array(
             'cell_filter' => null,
             'choice_list' => null,
+            'label_path'  => null,
             'row'         => null,
+            'row_label'   => null,
         ));
     }
     

@@ -174,16 +174,15 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     {
         $this->expectSpa();
 
+        $productRepo = $this->em->getRepository('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Product');
+        $areaRepo = $this->em->getRepository('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Area');
+
         $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), null, array(
             'product_area_options' => array(
-                'x_query_builder' => function (EntityRepository $repo) {
-                    return $repo->createQueryBuilder('p')
-                        ->where('p.name <> \'Chair\'');
-                },
-                'y_query_builder' => function (EntityRepository $repo) {
-                    return $repo->createQueryBuilder('a')
-                        ->where('a.name NOT LIKE \'Inner%\'');
-                },
+                'x_query_builder' => $productRepo->createQueryBuilder('p')
+                        ->where('p.name <> \'Chair\''),
+                'y_query_builder' => $areaRepo->createQueryBuilder('a')
+                        ->where('a.name NOT LIKE \'Inner%\''),
             ),
         ));
 

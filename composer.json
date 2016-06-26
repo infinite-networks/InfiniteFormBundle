@@ -15,16 +15,16 @@
         "php": ">=5.3.2",
 
         "doctrine/common": "~2.3",
-        "symfony/framework-bundle": "~2.3",
-        "symfony/form": "~2.3"
+        "symfony/framework-bundle": "^2.3 || ^3.0",
+        "symfony/form": "^2.3 || ^3.0"
     },
     "require-dev": {
-        "symfony/symfony": "^2.3.5",
+        "symfony/symfony": "^2.3.5 || ^3.0",
         "doctrine/orm": "~2.3",
         "doctrine/doctrine-bundle": "~1.2",
         "components/qunit": "*",
         "components/jquery": "*",
-        "robloach/component-installer": "~0.1.1",
+        "robloach/component-installer": "^0.2",
         "symfony/phpunit-bridge": "^2.7"
     },
     "conflict": {

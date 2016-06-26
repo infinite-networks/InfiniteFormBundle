@@ -10,7 +10,9 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\EventListener\ResizePolyFormListener;
+use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -67,10 +69,8 @@ class PolyCollectionType extends AbstractType
     {
         $prototypes = array();
         foreach ($options['types'] as $type) {
-            $key = $type;
             if ($type instanceof FormTypeInterface) {
                 @trigger_error(sprintf('Passing type instances to PolyCollection is deprecated since version 1.0.5 and will not be supported in 2.0. Use the fully-qualified type class name instead (%s).', get_class($type)), E_USER_DEPRECATED);
-                $key = $type->getName();
             }
 
             $prototype = $this->buildPrototype(
@@ -79,6 +79,23 @@ class PolyCollectionType extends AbstractType
                 $type,
                 $options['options']
             );
+
+            if (LegacyFormUtil::isFullClassNameRequired()) {
+                // SF 2.8+
+                $key = $prototype->get($options['type_name'])->getData();
+            } else {
+                $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
+            }
+
+            if (array_key_exists($key, $prototypes)) {
+                throw new InvalidConfigurationException(sprintf(
+                    'Each type of row in a polycollection must have a unique key. (Found "%s" in both %s and %s)',
+                    $key,
+                    get_class($prototypes[$key]->getConfig()->getType()->getInnerType()),
+                    get_class($prototype->getType()->getInnerType())
+                ));
+            }
+
             $prototypes[$key] = $prototype->getForm();
         }
 

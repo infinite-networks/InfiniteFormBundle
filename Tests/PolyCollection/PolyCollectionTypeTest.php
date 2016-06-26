@@ -49,7 +49,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\UnknownType'),
+                '_type' => 'unknown_type',
                 'text' => 'Green'
             )
         ));
@@ -100,11 +100,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                '_type' => 'abstract_type',
                 'text' => 'Green'
             ),
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
+                '_type' => 'first_type',
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -127,7 +127,10 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testResizedWithCustomTypeField()
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
-            'types' => $this->getTestTypes(),
+            'types' => array(
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType'),
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType'),
+            ),
             'type_name' => '_type_id',
             'allow_add' => true
         ));
@@ -137,11 +140,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type_id' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                '_type_id' => 'abstract_type_id_type',
                 'text' => 'Green'
             ),
             array(
-                '_type_id' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
+                '_type_id' => 'first_type_id_type',
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -171,11 +174,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                '_type' => 'abstract_type',
                 'text' => 'Green'
             ),
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
+                '_type' => 'first_type',
                 'text' => 'Red',
                 'text2' => 'Car'
             )
@@ -202,11 +205,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             0=>array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                '_type' => 'abstract_type',
                 'text' => 'Green'
             ),
             2=>array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
+                '_type' => 'second_type',
                 'checked' => 'true'
             )
         ));
@@ -236,11 +239,11 @@ class PolyCollectionTypeTest extends TypeTestCase
         ));
         $form->submit(array(
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                '_type' => 'abstract_type',
                 'text' => 'Brown'
             ),
             array(
-                '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
+                '_type' => 'first_type',
                 'text' => 'Yellow',
                 'text2' => 'Bicycle'
             )
@@ -321,14 +324,14 @@ class PolyCollectionTypeTest extends TypeTestCase
                 new First('Red', 'Car', 2),
                 new Second('Blue', true, 3)
             ));
-        $form->bind(array(
+        $form->submit(array(
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                    '_type' => 'abstract_type',
                     'text' => 'Green',
                     'id'=>1
                 ),
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
+                    '_type' => 'second_type',
                     'checked' => 'true',
                     'id'=>3
                 )
@@ -357,14 +360,14 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->setData(array(
                 new AbstractModel('Green', 1),
             ));
-        $form->bind(array(
+        $form->submit(array(
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                    '_type' => 'abstract_type',
                     'text' => 'Green',
                     'id'=>1
                 ),
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
+                    '_type' => 'second_type',
                     'text' => 'Blue',
                     'checked' => 'true'
                 )
@@ -394,14 +397,14 @@ class PolyCollectionTypeTest extends TypeTestCase
                 new AbstractModel('Green', 1),
                 new Second('Blue', false, 2)
             ));
-        $form->bind(array(
+        $form->submit(array(
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
+                    '_type' => 'second_type',
                     'checked' => 'true',
                     'id'=>2
                 ),
                 array(
-                    '_type' => LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+                    '_type' => 'abstract_type',
                     'text' => 'Green',
                     'id'=>1
                 )

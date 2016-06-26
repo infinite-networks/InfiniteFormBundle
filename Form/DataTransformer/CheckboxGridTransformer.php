@@ -20,6 +20,9 @@ use Symfony\Component\PropertyAccess\PropertyPath;
  */
 class CheckboxGridTransformer implements DataTransformerInterface
 {
+    /** @var string */
+    protected $class;
+
     /** @var ChoiceListInterface */
     protected $xChoiceList;
     /** @var ChoiceListInterface */
