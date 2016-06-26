@@ -117,35 +117,38 @@ PolyCollection to know which type to use when it encounters an object.
 
 namespace Infinite\InvoiceBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType as BaseType;
+use Infinite\FormBundle\Form\Type\PolyCollectionType;
+use Infinite\InvoiceBundle\Entity\Invoice;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InvoiceType extends BaseType
+class InvoiceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('customer', 'entity', array( /* ... */ ));
-        $builder->add('address', 'entity', array( /* ... */ ));
+        $builder->add('customer', EntityType::class, array( /* ... */ ));
+        $builder->add('address', EntityType::class, array( /* ... */ ));
 
-        $builder->add('lines', 'infinite_form_polycollection', array(
+        $builder->add('lines', PolycollectionType::class, array(
             'types' => array(
-                'invoice_line_type', // The first defined Type becomes the default
-                'invoice_product_line_type',
+                InvoiceLineType::class,
+                InvoiceProductLineType::class,
             ),
             'allow_add' => true,
             'allow_delete' => true,
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array('data_class'  => 'Infinite\\InvoiceBundle\\Entity\\Invoice'));
+        $resolver->setDefaults(array('data_class' => Invoice::class));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
-        return 'invoice_type';
+        return 'invoice';
     }
 }
 ```
@@ -156,37 +159,40 @@ class InvoiceType extends BaseType
 
 namespace Infinite\InvoiceBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType as BaseType;
+use Infinite\InvoiceBundle\Entity\InvoiceLine;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InvoiceLineType extends BaseType
+class InvoiceLineType extends AbstractType
 {
-    protected $dataClass = 'Infinite\\InvoiceBundle\\Entity\\InvoiceLine';
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity', 'number');
-        $builder->add('unitAmount', 'text');
-        $builder->add('description', 'textarea');
+        $builder->add('quantity', NumberType::class);
+        $builder->add('unitAmount', TextType::class);
+        $builder->add('description', TextareaType::class);
 
-        $builder->add('_type', 'hidden', array(
-            'data'   => $this->getName(),
+        $builder->add('_type', HiddenType::class, array(
+            'data'   => 'line', // Arbitrary, but must be distinct
             'mapped' => false
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'  => $this->dataClass,
-            'model_class' => $this->dataClass,
+            'data_class'  => InvoiceLine::class,
+            'model_class' => InvoiceLine::class,
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
-        return 'invoice_line_type';
+        return 'invoice_line';
     }
 }
 ```
@@ -197,24 +203,41 @@ class InvoiceLineType extends BaseType
 
 namespace Infinite\InvoiceBundle\Form\Type;
 
+use Infinite\InvoiceBundle\Entity\InvoiceProductLine;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InvoiceProductType extends InvoiceLineType
+class InvoiceProductType extends AbstractType
 {
-    protected $dataClass = 'Infinite\\InvoiceBundle\\Entity\\InvoiceProductType';
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $builder->add('quantity', NumberType::class);
 
-        $builder->add('product', 'entity', array(
+        $builder->add('product', EntityType::class, array(
             // entity field definition here
+        ));
+
+        $builder->add('_type', HiddenType::class, array(
+            'data'   => 'product', // Arbitrary, but must be distinct
+            'mapped' => false
         ));
     }
 
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'invoice_product_line_type';
+        $resolver->setDefaults(array(
+            'data_class'  => InvoiceProductLine::class,
+            'model_class' => InvoiceProductLine::class,
+        ));
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'invoice_product_line';
     }
 }
 ```
@@ -222,4 +245,83 @@ class InvoiceProductType extends InvoiceLineType
 Rendering the form
 ------------------
 
-Coming Soon. Still a work in progress.
+Polycollections require manual work to render. This code can go
+in the same template that renders the rest of the form.
+
+You will need to render add buttons from the prototypes array, which is
+keyed on the _type field in the form definition.
+
+It is best illustrated by example.
+
+```twig
+{# AppBundle:Invoice:add.html.twig #}
+
+{% form_theme form.lines _self %}
+
+{# ... #}
+
+{% block infinite_form_polycollection_row %}
+    {% set collectionForm = form %}
+    <hr>
+    <div class="collection">
+        <div class="clearfix">
+            <div class="pull-left">
+                {{ form_label(collectionForm, 'Invoice lines') }}
+            </div>
+            <div class="pull-right">
+                {% set form = prototypes.line %}
+                <a href="#" data-prototype="{{ block('entry_row') | escape }}"
+                   class="btn btn-success add_item">
+                    <i class="glyphicon glyphicon-plus"></i> Freight line
+                </a>
+                {% set form = prototypes.product %}
+                <a href="#" data-prototype="{{ block('entry_row') | escape }}"
+                   class="btn btn-success add_item">
+                    <i class="glyphicon glyphicon-plus"></i> 
+                </a>
+            </div>
+        </div>
+        <div class="items">
+            {% for form in collectionForm %}
+                {{ block('entry_row') }}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block entry_row %}
+    <div class="item">
+        <hr>
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+
+{% block invoice_line_widget %}
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.description) }}</div>
+        <div class="col-md-2">{{ form_row(form.unitAmount) }}</div>
+        <div class="col-md-2">{{ form_row(form.quantity) }}</div>
+        <div class="col-md-2 text-right">
+            <label>&nbsp;</label><br>
+            <a href="#" class="btn btn-danger remove_item">
+                <i class="glyphicon glyphicon-minus"></i> Remove
+            </a>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{% endblock %}
+
+{% block invoice_product_line_widget %}
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.product) }}</div>
+        <div class="col-md-2 col-md-offset-2">{{ form_row(form.quantity) }}</div>
+        <div class="col-md-2 text-right">
+            <label>&nbsp;</label><br>
+            <a href="#" class="btn btn-danger remove_item">
+                <i class="glyphicon glyphicon-minus"></i> Remove
+            </a>
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{% endblock %}
+```

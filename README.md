@@ -11,7 +11,7 @@ any feedback, corrections additions you can provide.
 Installation
 ------------
 
-Installation instructions [can be found here][].
+Installation instructions [can be found here](Resources/doc/installation.md).
 
 PolyCollection
 --------------
@@ -27,7 +27,7 @@ like `InvoiceProductLine`, `InvoiceShippingLine` and `InvoiceDiscountLine`
 you could use this form type to achieve a form collection that would support
 all 4 types of `InvoiceLine` inside the same collection.
 
-For more information see the [PolyCollection Documentation][].
+For more information see the [PolyCollection Documentation](Resources/doc/polycollection.md).
 
 Collection Helper
 -----------------
@@ -36,7 +36,7 @@ InfiniteFormBundle supplies some helper javascript for working with form collect
 supports both the standard Symfony2 collection type and the PolyCollection type supplied
 by this bundle.
 
-For more information see the [Collection Helper Documentation][].
+For more information see the [Collection Helper Documentation](Resources/doc/collection-helper.md).
 
 CheckboxGrid
 ------------
@@ -50,7 +50,7 @@ different areas. Any of its salesmen could sell any combination of products
 in areas. The salesman form needs a table of checkboxes where the rows are
 products and the columns are areas (or vice versa!)
 
-For more information see the [CheckboxGrid Documentation][].
+For more information see the [CheckboxGrid Documentation](Resources/doc/checkboxgrid.md).
 
 Twig Helper
 -----------
@@ -58,10 +58,4 @@ Twig Helper
 InfiniteFormBundle comes with a Twig extension that adds form specific helpers
 for use when rendering templates.
 
-For more information see the [Twig Helper][].
-
-[PolyCollection Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/polycollection.md
-[Collection Helper Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/collection-helper.md
-[CheckboxGrid Documentation]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/checkboxgrid.md
-[Twig Helper]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/twig-helper.md
-[can be found here]: https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/doc/installation.md
+For more information see the [Twig Helper](Resources/doc/twig-helper.md).

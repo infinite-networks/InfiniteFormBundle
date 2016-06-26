@@ -7,7 +7,7 @@ Synopsis
 This:
 
 ```php
-    $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
+    $builder->add('productAreas', EntityCheckboxGridType::class, array(
         'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
         'x_path' => 'productSold',
         'y_path' => 'areaServiced',
@@ -16,7 +16,7 @@ This:
 
 Becomes this:
 
-![Rendered checkbox grid](https://raw.github.com/infinite-networks/InfiniteFormBundle/master/Resources/doc/checkboxgrid.png)
+![Rendered checkbox grid](checkboxgrid.png)
 
 Introduction
 ------------
@@ -56,28 +56,30 @@ A very simple example:
 
 namespace Acme\DemoBundle\Form;
 
+use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesmanType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text');
-        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
+        $builder->add('name', TextType::class);
+        $builder->add('productAreas', EntityCheckboxGrid::class, array(
             'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'salesman';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Acme\DemoBundle\Entity\Salesman',
@@ -101,7 +103,7 @@ Finally, you can exclude checkboxes with a cell_filter closure.
 An example with more options:
 
 ```php
-        $builder->add('productAreas', 'infinite_form_entity_checkbox_grid', array(
+        $builder->add('productAreas', EntityCheckboxGridType::class, array(
             'class' => 'Acme\DemoBundle\Entity\SalesmanProductArea',
 
             'x_path' => 'productSold',
@@ -113,7 +115,7 @@ An example with more options:
 
             'y_path' => 'areaServiced',
             'y_label_path' => 'name',
-            'y_choice_list' => $areaChoiceList, // An EntityChoiceList constructed elsewhere
+            'y_choices' => $areaChoices, // An array of options built elsewhere
 
             'cell_filter' => function ($x, $y) {
                 // We cannot sell tables in the north due to contractual obligations
@@ -130,8 +132,8 @@ CSS styles or you'd like to add some Javascript to allow checking every box
 in a row or column at once.
 
 Open your form theme and add blocks for infinite_form_checkbox_grid_widget
-and infinite_form_checkbox_row_widget. Use our [default form theme](https://github.com/infinite-networks/InfiniteFormBundle/blob/master/Resources/views/form_theme.html.twig)
+and infinite_form_checkbox_row_widget. Use our [default form theme](../views/form_theme.html.twig)
 as a guide for what to put there.
 
-See [Form Theming in Twig](http://symfony.com/doc/2.2/cookbook/form/form_customization.html#form-theming-in-twig)
+See [Form Theming in Twig](http://symfony.com/doc/3.1/cookbook/form/form_customization.html#form-theming-in-twig)
 if you're not sure where to add the blocks.
