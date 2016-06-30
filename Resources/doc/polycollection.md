@@ -131,7 +131,7 @@ class InvoiceType extends AbstractType
         $builder->add('customer', EntityType::class, array( /* ... */ ));
         $builder->add('address', EntityType::class, array( /* ... */ ));
 
-        $builder->add('lines', PolycollectionType::class, array(
+        $builder->add('lines', PolyCollectionType::class, array(
             'types' => array(
                 InvoiceLineType::class,
                 InvoiceProductLineType::class,
@@ -245,7 +245,7 @@ class InvoiceProductType extends AbstractType
 Rendering the form
 ------------------
 
-Polycollections require manual work to render. This code can go
+PolyCollections require manual work to render. This code can go
 in the same template that renders the rest of the form.
 
 You will need to render add buttons from the prototypes array, which is
