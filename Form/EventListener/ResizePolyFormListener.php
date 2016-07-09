@@ -62,6 +62,11 @@ class ResizePolyFormListener extends ResizeFormListener
     protected $propertyAccessor;
 
     /**
+     * @var bool
+     */
+    protected $useTypesOptions;
+
+    /**
      * @param array<FormInterface> $prototypes
      * @param array $options
      * @param bool $allowAdd
@@ -69,10 +74,11 @@ class ResizePolyFormListener extends ResizeFormListener
      * @param string $typeFieldName
      * @param string $indexProperty
      */
-    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type', $indexProperty = null)
+    public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type', $indexProperty = null, $useTypesOptions = false)
     {
         $this->typeFieldName = $typeFieldName;
         $this->indexProperty = $indexProperty;
+        $this->useTypesOptions = $useTypesOptions;
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $defaultType = null;
 
@@ -129,6 +135,15 @@ class ResizePolyFormListener extends ResizeFormListener
         return LegacyFormUtil::getType($this->typeMap[$data[$this->typeFieldName]]);
     }
 
+    protected function getOptionsForType($type)
+    {
+        if($this->useTypesOptions === true){
+            return isset($this->options[$type]) ? $this->options[$type] :[] ;
+        }else{
+            return $this->options;
+        }
+    }
+
     public function preSetData(FormEvent $event)
     {
         $form = $event->getForm();
@@ -152,7 +167,7 @@ class ResizePolyFormListener extends ResizeFormListener
             $type = $this->getTypeForObject($value);
             $form->add($name, $type, array_replace(array(
                 'property_path' => '['.$name.']',
-            ), $this->options));
+            ), $this->getOptionsForType($type)));
         }
     }
 
@@ -197,7 +212,7 @@ class ResizePolyFormListener extends ResizeFormListener
                     $type = $this->getTypeForData($item);
                     $form->add($name, $type, array_replace(array(
                         'property_path' => '['.$name.']',
-                    ), $this->options));
+                    ), $this->getOptionsForType($type)));
                 }
 
                 // Add to final data array
@@ -242,7 +257,7 @@ class ResizePolyFormListener extends ResizeFormListener
                         $type = $this->getTypeForData($value);
                         $form->add($name, $type, array_replace(array(
                             'property_path' => '['.$name.']',
-                        ), $this->options));
+                        ), $this->getOptionsForType($type)));
                     }
                 }
             }
