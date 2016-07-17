@@ -14,7 +14,10 @@ use Infinite\FormBundle\Tests\PolyCollection\Model\AbstractModel;
 use Infinite\FormBundle\Tests\PolyCollection\Model\First;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Second;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Third;
+use Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType;
+use Infinite\FormBundle\Tests\PolyCollection\Type\SecondSpecificOptionsType;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\VarDumper\VarDumper;
 
 class PolyCollectionTypeTest extends TypeTestCase
 {
@@ -447,6 +450,48 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->factory->create($this->getPolyCollectionType(), null, array());
     }
 
+
+    public function testTypeLegacyOptions()
+    {
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypes(),
+            'options'=>[
+                'max_length'=>'30'
+            ]
+        ));
+        $form->setData(array(
+            new AbstractModel('Green', 1),
+            new Second('Blue', false, 2)
+        ));
+
+        $this->assertEquals(30,$form->get(0)->getConfig()->getOptions()['max_length']);
+        $this->assertEquals(30,$form->get(1)->getConfig()->getOptions()['max_length']);
+    }
+
+    public function testTypesOptions()
+    {
+
+        $form = $this->factory->create($this->getPolyCollectionType(), null, array(
+            'types' => $this->getTestTypesWithSpecificOptions(),
+            'types_options'=>[
+                FirstSpecificOptionsType::class=>[
+                    'first_option'=>888
+                ],
+                SecondSpecificOptionsType::class=>[
+                    'second_option'=>999
+                ]
+            ]
+        ));
+
+        $form->setData(array(
+            new First('Green',false),
+            new Second('Blue', false)
+        ));
+
+        $this->assertEquals(888,$form->get(0)->getConfig()->getOption('first_option'));
+        $this->assertEquals(999,$form->get(1)->getConfig()->getOption('second_option'));
+    }
+
     protected function getExtensions()
     {
         return array(
@@ -465,6 +510,15 @@ class PolyCollectionTypeTest extends TypeTestCase
             LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
             LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstType'),
             LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondType'),
+        );
+    }
+
+    private function getTestTypesWithSpecificOptions()
+    {
+        return array(
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType'),
+            LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\SecondSpecificOptionsType'),
         );
     }
 }

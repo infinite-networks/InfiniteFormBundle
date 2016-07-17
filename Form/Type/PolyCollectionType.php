@@ -45,13 +45,16 @@ class PolyCollectionType extends AbstractType
             $builder->setAttribute('prototypes', $prototypes);
         }
 
+        $useTypesOptions = !empty($options['types_options']);
+
         $resizeListener = new ResizePolyFormListener(
             $prototypes,
-            $options['options'],
+            $useTypesOptions === true ? $options['types_options'] :$options['options'],
             $options['allow_add'],
             $options['allow_delete'],
             $options['type_name'],
-            $options['index_property']
+            $options['index_property'],
+            $useTypesOptions
         );
 
         $builder->addEventSubscriber($resizeListener);
@@ -68,16 +71,26 @@ class PolyCollectionType extends AbstractType
     protected function buildPrototypes(FormBuilderInterface $builder, array $options)
     {
         $prototypes = array();
+        $useTypesOptions = !empty($options['types_options']);
+
         foreach ($options['types'] as $type) {
             if ($type instanceof FormTypeInterface) {
                 @trigger_error(sprintf('Passing type instances to PolyCollection is deprecated since version 1.0.5 and will not be supported in 2.0. Use the fully-qualified type class name instead (%s).', get_class($type)), E_USER_DEPRECATED);
+            }
+
+            $typeOptions = $options['options'];
+            if ($useTypesOptions) {
+                $typeOptions = [];
+                if(isset($options['types_options'][$type])){
+                    $typeOptions = $options['types_options'][$type];
+                }
             }
 
             $prototype = $this->buildPrototype(
                 $builder,
                 $options['prototype_name'],
                 $type,
-                $options['options']
+                $typeOptions
             );
 
             if (LegacyFormUtil::isFullClassNameRequired()) {
@@ -174,24 +187,28 @@ class PolyCollectionType extends AbstractType
             'prototype'      => true,
             'prototype_name' => '__name__',
             'type_name'      => '_type',
-            'options'        => array(),
+            'options'        => [],
+            'types_options'  => [],
             'index_property' => null,
         ));
 
         $resolver->setRequired(array(
             'types'
         ));
-
         // OptionsResolver 2.6+
         if (method_exists($resolver, 'setNormalizer')) {
             $resolver->setAllowedTypes('types', 'array');
             $resolver->setNormalizer('options', $this->getOptionsNormalizer());
+            $resolver->setNormalizer('types_options', $this->getTypesOptionsNormalizer());
         } else {
             $resolver->setAllowedTypes(array(
                 'types' => 'array'
             ));
             $resolver->setNormalizers(array(
                 'options' => $this->getOptionsNormalizer(),
+            ));
+            $resolver->setNormalizers(array(
+                'types_options' => $this->getTypesOptionsNormalizer(),
             ));
         }
     }
@@ -213,6 +230,18 @@ class PolyCollectionType extends AbstractType
         return function (Options $options, $value) {
             $value['block_name'] = 'entry';
 
+            return $value;
+        };
+    }
+
+    private function getTypesOptionsNormalizer()
+    {
+        return function (Options $options, $value) {
+            foreach($options['types'] as $type){
+                if (isset($value[$type])) {
+                    $value[$type]['block_name'] = 'entry';
+                }
+            }
             return $value;
         };
     }
