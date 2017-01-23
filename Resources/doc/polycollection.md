@@ -136,6 +136,14 @@ class InvoiceType extends AbstractType
                 InvoiceLineType::class,
                 InvoiceProductLineType::class,
             ),
+            'types_options' => array(
+                InvoiceLineType::class => array(
+                    // Here you can optionally define options for the InvoiceLineType
+                ),
+		InvoiceProductLineType::class => array(
+                    // Here you can optionally define options for the InvoiceProductLineType
+                )
+            )
             'allow_add' => true,
             'allow_delete' => true,
         ));
