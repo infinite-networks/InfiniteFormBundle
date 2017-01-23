@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
 use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @internal
@@ -24,11 +23,12 @@ use Symfony\Component\Form\FormTypeInterface;
 final class LegacyChoiceListUtil
 {
     /**
-     * @param EntityManager $em
-     * @param string $class
-     * @param string $labelPath
+     * @param EntityManager              $em
+     * @param string                     $class
+     * @param string                     $labelPath
      * @param EntityLoaderInterface|null $loader
-     * @param callable $valueCallback
+     * @param callable                   $valueCallback
+     *
      * @return ChoiceListInterface|EntityChoiceList
      */
     public static function createEntityChoiceList(
@@ -37,12 +37,11 @@ final class LegacyChoiceListUtil
         $labelPath,
         EntityLoaderInterface $loader = null,
         $valueCallback
-    )
-    {
+    ) {
         if (class_exists('Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory')) {
             // The constructor's arguments changed in 3.1.
-            // If the first argument's name is "factory" then it's the older version. 
-            
+            // If the first argument's name is "factory" then it's the older version.
+
             $factory = new PropertyAccessDecorator(new DefaultChoiceListFactory());
             $refl = new \ReflectionClass('Symfony\Bridge\Doctrine\Form\ChoiceList\DoctrineChoiceLoader');
             $constructor = $refl->getConstructor();

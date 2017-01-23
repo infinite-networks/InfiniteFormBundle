@@ -25,8 +25,8 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addType(new CheckboxGridType)
-            ->addType(new CheckboxRowType)
+            ->addType(new CheckboxGridType())
+            ->addType(new CheckboxRowType())
             ->getFormFactory();
     }
 
@@ -50,7 +50,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that all checkboxes are created correctly and checked when necessary
+     * Test that all checkboxes are created correctly and checked when necessary.
      */
     public function testSetData()
     {
@@ -85,7 +85,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test how bound data is mapped back (are the transformers being called correctly?)
+     * Test how bound data is mapped back (are the transformers being called correctly?).
      */
     public function testBind()
     {
@@ -110,7 +110,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that the cell_filter option prevents the checkboxes that we don't want
+     * Test that the cell_filter option prevents the checkboxes that we don't want.
      */
     public function testCellFilter()
     {
@@ -130,7 +130,7 @@ class CheckboxGridTest extends \PHPUnit_Framework_TestCase
         foreach ($view->children as $row) {
             foreach ($row->children as $cell) {
                 if (in_array('checkbox', $cell->vars['block_prefixes'])) {
-                    $checkboxCount++;
+                    ++$checkboxCount;
                 }
             }
         }

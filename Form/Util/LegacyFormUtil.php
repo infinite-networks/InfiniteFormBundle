@@ -43,6 +43,7 @@ final class LegacyFormUtil
 
     /**
      * @param string|FormTypeInterface $type
+     *
      * @return string
      */
     public static function getType($type)

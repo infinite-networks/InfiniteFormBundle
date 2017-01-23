@@ -11,30 +11,35 @@ abstract class Attachment implements AttachmentInterface
 {
     /**
      * @ORM\Column(type="string", length=100)
+     *
      * @var string
      */
     protected $filename;
 
     /**
      * @ORM\Column(type="string", length=40)
+     *
      * @var string
      */
     protected $fileHash;
 
     /**
      * @ORM\Column(type="integer")
-     * @var integer
+     *
+     * @var int
      */
     protected $fileSize;
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
      * @var string
      */
     protected $mimeType;
 
     /**
      * @ORM\Column(type="string", length=100)
+     *
      * @var string
      */
     protected $physicalName;

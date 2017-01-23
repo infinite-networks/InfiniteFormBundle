@@ -11,20 +11,21 @@ class Uploader
     public function __construct(Sanitiser $sanitiser, PathHelper $pathHelper)
     {
         $this->pathHelper = $pathHelper;
-        $this->sanitiser  = $sanitiser;
+        $this->sanitiser = $sanitiser;
     }
 
     /**
      * Accepts an uploaded file and fills out the details into an Attachment object.
      *
-     * @param UploadedFile $file
+     * @param UploadedFile        $file
      * @param AttachmentInterface $attachment
+     *
      * @return \Symfony\Component\HttpFoundation\File\File
      */
     public function acceptUpload(UploadedFile $file, AttachmentInterface $attachment)
     {
-        $hash     = sha1_file($file->getPathname());
-        $name     = $this->pathHelper->getName($file, $attachment, $hash);
+        $hash = sha1_file($file->getPathname());
+        $name = $this->pathHelper->getName($file, $attachment, $hash);
         $filename = $this->sanitiser->sanitiseFilename($file->getClientOriginalName());
         $mimeType = $this->sanitiser->sanitiseMimeType($file->getClientMimeType());
 

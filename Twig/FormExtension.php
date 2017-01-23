@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormView;
 use Twig_Extension;
 
 /**
- * Adds a helper function to determine if a form has errors
+ * Adds a helper function to determine if a form has errors.
  *
  * @author Tim Nagel <t.nagel@infinite.net.au>
  */
@@ -29,7 +29,8 @@ class FormExtension extends Twig_Extension
     /**
      * Tests if the FormView has errors.
      *
-     * @param  \Symfony\Component\Form\FormView $form
+     * @param \Symfony\Component\Form\FormView $form
+     *
      * @return bool
      */
     public function hasErrors(FormView $form)

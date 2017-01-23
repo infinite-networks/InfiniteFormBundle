@@ -20,7 +20,7 @@ class SanitiserTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sanitiser = new Sanitiser;
+        $this->sanitiser = new Sanitiser();
     }
 
     /**
@@ -39,7 +39,7 @@ class SanitiserTest extends \PHPUnit_Framework_TestCase
             array('file.zip', 'file.zip'),
             array('path/to/file.zip', 'file.zip'),
             array('file?.txt', 'file-.txt'),
-            array('', '_')
+            array('', '_'),
         );
     }
 

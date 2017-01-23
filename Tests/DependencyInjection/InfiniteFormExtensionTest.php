@@ -26,8 +26,8 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->container = new ContainerBuilder;
-        $this->extension = new InfiniteFormExtension;
+        $this->container = new ContainerBuilder();
+        $this->extension = new InfiniteFormExtension();
     }
 
     public function provideFeatures()
@@ -47,7 +47,7 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
     public function testFeatureLoaded($feature, $serviceId)
     {
         $config = array(
-            $feature => true
+            $feature => true,
         );
 
         $this->extension->load(array($config), $this->container);
@@ -61,7 +61,7 @@ class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
     public function testFeatureNotLoaded($feature, $serviceId)
     {
         $config = array(
-            $feature => false
+            $feature => false,
         );
 
         $this->extension->load(array($config), $this->container);

@@ -13,12 +13,14 @@ class Product
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
+     *
      * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @var string
      */
     protected $name;

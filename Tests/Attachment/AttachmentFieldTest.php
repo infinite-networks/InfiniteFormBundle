@@ -16,7 +16,6 @@ use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\Type\AttachmentType;
 use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
-use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -45,10 +44,10 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $schemaTool->createSchema($classes);
 
         // Prepare to create forms
-        $sanitiser = new Sanitiser;
+        $sanitiser = new Sanitiser();
         $pathHelper = new PathHelper($sanitiser, array(
             'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment' => array(
-                'dir'    => sys_get_temp_dir(),
+                'dir' => sys_get_temp_dir(),
                 'format' => 'test/{name}',
             ),
         ));
@@ -88,7 +87,7 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveAttachment()
     {
-        $att = new StandardAttachment;
+        $att = new StandardAttachment();
 
         $form = $this->makeAttachmentForm();
         $form->setData($att);
@@ -103,7 +102,7 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
 
     public function testKeepAttachment()
     {
-        $attachment1 = new StandardAttachment;
+        $attachment1 = new StandardAttachment();
         $this->uploader->acceptUpload($this->createFooUpload(), $attachment1);
 
         $this->em->persist($attachment1);
@@ -138,6 +137,7 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
     {
         $tempFilename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($tempFilename, 'foo');
+
         return new UploadedFile($tempFilename, 'test.txt', 'text/plain', 3, null, true);
     }
 }

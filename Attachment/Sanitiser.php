@@ -8,6 +8,7 @@ class Sanitiser
      * Sanitises a filename.
      *
      * @param string $filename
+     *
      * @return string
      */
     public function sanitiseFilename($filename)
@@ -18,10 +19,10 @@ class Sanitiser
 
         // Replace illegal file name characters with hyphens
         // Illegal chars are 00 to 1F and < > : " / \ | ? *
-        $filename =  preg_replace('/[\x00-\x1F\<\>\:\"\/\\\\|\?\*]/', '-', $filename);
+        $filename = preg_replace('/[\x00-\x1F\<\>\:\"\/\\\\|\?\*]/', '-', $filename);
 
         if ($filename == '' || $filename[0] == '.') {
-            $filename = '_' . $filename;
+            $filename = '_'.$filename;
         }
 
         return $filename;
@@ -31,6 +32,7 @@ class Sanitiser
      * Sanitises a mime type.
      *
      * @param string $mime
+     *
      * @return string
      */
     public function sanitiseMimeType($mime)

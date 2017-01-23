@@ -10,7 +10,6 @@
 namespace Infinite\FormBundle\Form\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\PersistentCollection;
 use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
@@ -41,21 +40,21 @@ class ResizePolyFormListener extends ResizeFormListener
     protected $classMap = array();
 
     /**
-     * Name of the hidden field identifying the type
+     * Name of the hidden field identifying the type.
      *
      * @var string
      */
     protected $typeFieldName;
 
     /**
-     * Name of the index field on the given entity
+     * Name of the index field on the given entity.
      *
      * @var null|string
      */
     protected $indexProperty;
 
     /**
-     * Property Accessor
+     * Property Accessor.
      *
      * @var \Symfony\Component\PropertyAccess\PropertyAccessor
      */
@@ -68,11 +67,11 @@ class ResizePolyFormListener extends ResizeFormListener
 
     /**
      * @param array<FormInterface> $prototypes
-     * @param array $options
-     * @param bool $allowAdd
-     * @param bool $allowDelete
-     * @param string $typeFieldName
-     * @param string $indexProperty
+     * @param array                $options
+     * @param bool                 $allowAdd
+     * @param bool                 $allowDelete
+     * @param string               $typeFieldName
+     * @param string               $indexProperty
      */
     public function __construct(array $prototypes, array $options = array(), $allowAdd = false, $allowDelete = false, $typeFieldName = '_type', $indexProperty = null, $useTypesOptions = false)
     {
@@ -85,7 +84,7 @@ class ResizePolyFormListener extends ResizeFormListener
         foreach ($prototypes as $key => $prototype) {
             /** @var FormInterface $prototype */
             $modelClass = $prototype->getConfig()->getOption('model_class');
-            $type       = $prototype->getConfig()->getType()->getInnerType();
+            $type = $prototype->getConfig()->getType()->getInnerType();
 
             if (null === $defaultType) {
                 $defaultType = $type;
@@ -102,7 +101,8 @@ class ResizePolyFormListener extends ResizeFormListener
      * Returns the form type for the supplied object. If a specific
      * form type is not found, it will return the default form type.
      *
-     * @param  object $object
+     * @param object $object
+     *
      * @return string
      */
     protected function getTypeForObject($object)
@@ -122,8 +122,10 @@ class ResizePolyFormListener extends ResizeFormListener
      * Checks the form data for a hidden _type field that indicates
      * the form type to use to process the data.
      *
-     * @param  array                     $data
+     * @param array $data
+     *
      * @return string|FormTypeInterface
+     *
      * @throws \InvalidArgumentException when _type is not present or is invalid
      */
     protected function getTypeForData(array $data)
@@ -137,9 +139,9 @@ class ResizePolyFormListener extends ResizeFormListener
 
     protected function getOptionsForType($type)
     {
-        if($this->useTypesOptions === true){
-            return isset($this->options[$type]) ? $this->options[$type] :[] ;
-        }else{
+        if ($this->useTypesOptions === true) {
+            return isset($this->options[$type]) ? $this->options[$type] : [];
+        } else {
             return $this->options;
         }
     }
@@ -191,12 +193,11 @@ class ResizePolyFormListener extends ResizeFormListener
 
         // Process entries by IndexProperty
         if (!is_null($this->indexProperty)) {
-
             // Reindex the submit data by given index
             $indexedData = array();
             $unindexedData = array();
             $finalData = array();
-            foreach($data as $item) {
+            foreach ($data as $item) {
                 if (isset($item[$this->indexProperty])) {
                     $indexedData[$item[$this->indexProperty]] = $item;
                 } else {
@@ -208,7 +209,6 @@ class ResizePolyFormListener extends ResizeFormListener
             $name = $form->count();
             foreach ($unindexedData as $item) {
                 if ($this->allowAdd) {
-
                     $type = $this->getTypeForData($item);
                     $form->add($name, $type, array_replace(array(
                         'property_path' => '['.$name.']',
@@ -217,13 +217,12 @@ class ResizePolyFormListener extends ResizeFormListener
 
                 // Add to final data array
                 $finalData[$name] = $item;
-                $name++;
+                ++$name;
             }
 
             // Remove all empty rows
             if ($this->allowDelete) {
                 foreach ($form as $name => $child) {
-
                     // New items will have null data. Skip these.
                     if (!is_null($child->getData())) {
                         $index = $this->propertyAccessor->getValue($child->getData(), $this->indexProperty);
@@ -238,9 +237,7 @@ class ResizePolyFormListener extends ResizeFormListener
 
             // Replace submitted data with new form order
             $event->setData($finalData);
-
         } else {
-
             // Remove all empty rows
             if ($this->allowDelete) {
                 foreach ($form as $name => $child) {

@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Provides a checkbox grid for Doctrine entities
+ * Provides a checkbox grid for Doctrine entities.
  */
 class EntityCheckboxGridType extends AbstractType
 {
@@ -49,6 +49,7 @@ class EntityCheckboxGridType extends AbstractType
         $defaultXClass = function (Options $options) {
             /** @var $em \Doctrine\ORM\EntityManager */
             $em = $options['em'];
+
             return $em->getClassMetadata($options['class'])->getAssociationTargetClass($options['x_path']);
         };
 
@@ -74,6 +75,7 @@ class EntityCheckboxGridType extends AbstractType
         $defaultYClass = function (Options $options) {
             /** @var $em \Doctrine\ORM\EntityManager */
             $em = $options['em'];
+
             return $em->getClassMetadata($options['class'])->getAssociationTargetClass($options['y_path']);
         };
 
@@ -128,23 +130,23 @@ class EntityCheckboxGridType extends AbstractType
         };
 
         $resolver->setDefaults(array(
-            'em'              => null,
+            'em' => null,
 
-            'x_class'         => $defaultXClass,
+            'x_class' => $defaultXClass,
             'x_query_builder' => null,
-            'x_loader'        => $defaultXLoader,
-            'x_choice_value'  => $defaultXChoiceValue,
-            'x_choice_list'   => $defaultXChoiceList,
-            'x_label_path'    => null,
+            'x_loader' => $defaultXLoader,
+            'x_choice_value' => $defaultXChoiceValue,
+            'x_choice_list' => $defaultXChoiceList,
+            'x_label_path' => null,
 
-            'y_class'         => $defaultYClass,
+            'y_class' => $defaultYClass,
             'y_query_builder' => null,
-            'y_loader'        => $defaultYLoader,
-            'y_choice_value'  => $defaultYChoiceValue,
-            'y_choice_list'   => $defaultYChoiceList,
-            'y_label_path'    => null,
+            'y_loader' => $defaultYLoader,
+            'y_choice_value' => $defaultYChoiceValue,
+            'y_choice_list' => $defaultYChoiceList,
+            'y_label_path' => null,
 
-            'cell_filter'     => null,
+            'cell_filter' => null,
         ));
 
         $resolver->setRequired(array(
@@ -168,13 +170,13 @@ class EntityCheckboxGridType extends AbstractType
     {
         $this->configureOptions($resolver);
     }
-    
+
     // BC for SF < 2.8
     public function getName()
     {
         return $this->getBlockPrefix();
     }
-    
+
     private function getEntityManagerNormalizer()
     {
         $registry = $this->registry; // for closures

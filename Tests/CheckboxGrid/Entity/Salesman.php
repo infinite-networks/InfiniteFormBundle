@@ -14,25 +14,28 @@ class Salesman
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
+     *
      * @var int
      */
     public $id;
 
     /**
      * @ORM\Column(type="string")
+     *
      * @var string
      */
     public $name;
 
     /**
      * @ORM\OneToMany(targetEntity="SalesmanProductArea", mappedBy="salesman", cascade={"all"}, orphanRemoval=true)
+     *
      * @var ArrayCollection
      */
     public $productAreas;
 
     public function __construct()
     {
-        $this->productAreas = new ArrayCollection;
+        $this->productAreas = new ArrayCollection();
     }
 
     public function getId()

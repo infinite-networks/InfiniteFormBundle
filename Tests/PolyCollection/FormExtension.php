@@ -19,7 +19,7 @@ use Infinite\FormBundle\Tests\PolyCollection\Type\SecondType;
 use Symfony\Component\Form\AbstractExtension;
 
 /**
- * Testing extension for the PolyCollection
+ * Testing extension for the PolyCollection.
  *
  * @author Tim Nagel <t.nagel@infinite.net.au>
  * */

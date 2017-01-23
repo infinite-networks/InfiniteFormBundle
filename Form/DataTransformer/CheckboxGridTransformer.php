@@ -16,7 +16,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
- * Transforms a 1D array of data objects into a 2D array of booleans
+ * Transforms a 1D array of data objects into a 2D array of booleans.
  */
 class CheckboxGridTransformer implements DataTransformerInterface
 {
@@ -105,7 +105,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
                         if ($this->class === null) {
                             $object = array();
                         } else {
-                            $object = new $this->class;
+                            $object = new $this->class();
                         }
                     } else {
                         $object = $checked;

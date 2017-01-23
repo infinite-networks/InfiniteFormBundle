@@ -40,18 +40,18 @@ class CheckboxRowType extends AbstractType
         $resolver->setDefaults(array(
             'cell_filter' => null,
             'choice_list' => null,
-            'label_path'  => null,
-            'row'         => null,
-            'row_label'   => null,
+            'label_path' => null,
+            'row' => null,
+            'row_label' => null,
         ));
     }
-    
+
     // BC for SF < 2.7
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $this->configureOptions($resolver);
     }
-    
+
     // BC for SF < 2.8
     public function getName()
     {

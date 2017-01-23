@@ -47,7 +47,7 @@ class TransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the transformer on a low level
+     * Test the transformer on a low level.
      */
     public function testForwardTransform()
     {

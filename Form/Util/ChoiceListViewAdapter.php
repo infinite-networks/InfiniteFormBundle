@@ -21,7 +21,7 @@ class ChoiceListViewAdapter extends ChoiceListView
     /**
      * BC for old form themes running on new Symfony.
      *
-     * @deprecated Use the public $choices property.
+     * @deprecated use the public $choices property
      */
     public function getRemainingViews()
     {

@@ -42,7 +42,7 @@ class EntitySearchTest extends \PHPUnit_Framework_TestCase
         $schemaTool->createSchema($classes);
 
         foreach (explode(' ', 'apple avocado banana durian orange pineapple') as $fruitName) {
-            $fruit = new Fruit;
+            $fruit = new Fruit();
             $fruit->name = $fruitName;
             $this->em->persist($fruit);
         }
@@ -105,7 +105,7 @@ class EntitySearchTest extends \PHPUnit_Framework_TestCase
     {
         return $this->factory->createBuilder(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntitySearchType'), null, array(
             'invalid_message' => 'Item not found',
-            'class'           => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
+            'class' => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
         ))->getForm();
     }
 }

@@ -19,11 +19,11 @@ class AttachmentTransformer implements DataTransformerInterface
 
     public function __construct($options, ObjectManager $om, PathHelper $pathHelper, Uploader $uploader)
     {
-        $this->dataClass  = $options['class'];
-        $this->om         = $om;
+        $this->dataClass = $options['class'];
+        $this->om = $om;
         $this->pathHelper = $pathHelper;
-        $this->secret     = $options['secret'];
-        $this->uploader   = $uploader;
+        $this->secret = $options['secret'];
+        $this->uploader = $uploader;
     }
 
     public function transform($value)
@@ -37,7 +37,7 @@ class AttachmentTransformer implements DataTransformerInterface
             // it might have been modified. (ObjectManager doesn't provide a hasChanged method.)
             $savedData = base64_encode(serialize($value));
             $mac = hash_hmac('sha1', $savedData, $this->secret);
-            $meta = $mac . '|' . $savedData;
+            $meta = $mac.'|'.$savedData;
         }
 
         $more = $value ? $value->getAdditionalFormData() : array();
@@ -88,7 +88,7 @@ class AttachmentTransformer implements DataTransformerInterface
 
             if ($file !== null) {
                 // File posted - create or update a record
-                $data = $data ?: new $this->dataClass;
+                $data = $data ?: new $this->dataClass();
 
                 // Accept the upload
                 $this->uploader->acceptUpload($file, $data);

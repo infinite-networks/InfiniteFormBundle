@@ -19,8 +19,8 @@ class AbstractTypeIdType extends BaseType
         $builder->add('text', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
 
         $builder->add('_type_id', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'), array(
-            'data'   => $this->getName(),
-            'mapped' => false
+            'data' => $this->getName(),
+            'mapped' => false,
         ));
     }
 
@@ -33,9 +33,9 @@ class AbstractTypeIdType extends BaseType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'  => $this->dataClass,
+            'data_class' => $this->dataClass,
             'model_class' => $this->dataClass,
-            'max_length'  => 50,
+            'max_length' => 50,
         ));
     }
 

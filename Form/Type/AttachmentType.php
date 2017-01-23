@@ -23,9 +23,9 @@ class AttachmentType extends AbstractType
     public function __construct($secret, ObjectManager $om, PathHelper $pathHelper, Uploader $uploader)
     {
         $this->defaultSecret = $secret;
-        $this->om            = $om;
-        $this->pathHelper    = $pathHelper;
-        $this->uploader      = $uploader;
+        $this->om = $om;
+        $this->pathHelper = $pathHelper;
+        $this->uploader = $uploader;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

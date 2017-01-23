@@ -2,7 +2,6 @@
 
 namespace Infinite\FormBundle\Attachment;
 
-use Infinite\FormBundle\Attachment\Sanitiser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -31,13 +30,13 @@ class Streamer
     public function __construct(Sanitiser $sanitiser, PathHelper $pathHelper)
     {
         $this->pathHelper = $pathHelper;
-        $this->sanitiser  = $sanitiser;
+        $this->sanitiser = $sanitiser;
     }
 
     public function stream(AttachmentInterface $attachment, Request $request = null, $disposition = null)
     {
         $fullPhysicalPath = $this->pathHelper->getFullPath($attachment);
-        $mimeType         = $this->sanitiser->sanitiseMimeType($attachment->getMimeType());
+        $mimeType = $this->sanitiser->sanitiseMimeType($attachment->getMimeType());
 
         if (!file_exists($fullPhysicalPath)) {
             return new NotFoundHttpException(sprintf(

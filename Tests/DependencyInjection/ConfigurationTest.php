@@ -65,11 +65,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected static function getBundleDefaultConfig()
     {
         return array(
-            'attachment'     => true,
-            'checkbox_grid'  => true,
-            'entity_search'  => true,
+            'attachment' => true,
+            'checkbox_grid' => true,
+            'entity_search' => true,
             'polycollection' => true,
-            'twig'           => true,
+            'twig' => true,
         );
     }
 }

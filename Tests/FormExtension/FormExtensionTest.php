@@ -28,7 +28,7 @@ class FormExtensionTest extends \PHPUnit_Framework_TestCase
     public function testInvalidTest()
     {
         $twig = new \Twig_Environment(new \Twig_Loader_Array(array('template' => '{{ form is invalid ? 1 : 0 }}')));
-        $twig->addExtension(new FormExtension);
+        $twig->addExtension(new FormExtension());
 
         $formWithError = $this->formFactory->create(LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
         $formWithError->addError(new FormError('test error'));

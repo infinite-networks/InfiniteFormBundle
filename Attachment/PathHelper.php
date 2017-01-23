@@ -2,7 +2,6 @@
 
 namespace Infinite\FormBundle\Attachment;
 
-use Infinite\FormBundle\Attachment\Sanitiser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class PathHelper
@@ -22,13 +21,14 @@ class PathHelper
     public function __construct(Sanitiser $sanitiser, array $config)
     {
         $this->sanitiser = $sanitiser;
-        $this->config    = $config;
+        $this->config = $config;
     }
 
     /**
      * Returns the full path to the attachment.
      *
      * @param AttachmentInterface $attachment
+     *
      * @return string
      */
     public function getFullPath(AttachmentInterface $attachment)
@@ -55,6 +55,7 @@ class PathHelper
      * Returns the root saving location for a specific attachment type.
      *
      * @param AttachmentInterface $attachment
+     *
      * @return string
      */
     public function getSaveDir(AttachmentInterface $attachment)
@@ -66,6 +67,7 @@ class PathHelper
 
     /**
      * @param AttachmentInterface $attachment
+     *
      * @return string
      */
     public function getFormat(AttachmentInterface $attachment)
@@ -78,15 +80,16 @@ class PathHelper
     /**
      * Gets the full path for a file.
      *
-     * @param UploadedFile $file
+     * @param UploadedFile        $file
      * @param AttachmentInterface $attachment
-     * @param string $hash
+     * @param string              $hash
+     *
      * @return string
      */
     public function getName(UploadedFile $file, AttachmentInterface $attachment, $hash)
     {
-        $format  = $this->getFormat($attachment);
-        $name    = $this->buildName($file, $hash, $format, $attachment);
+        $format = $this->getFormat($attachment);
+        $name = $this->buildName($file, $hash, $format, $attachment);
 
         return $name;
     }
@@ -94,11 +97,13 @@ class PathHelper
     /**
      * Builds a filename to be used.
      *
-     * @param UploadedFile $file
-     * @param string $hash
-     * @param string $format
+     * @param UploadedFile        $file
+     * @param string              $hash
+     * @param string              $format
      * @param AttachmentInterface $attachment
+     *
      * @return string
+     *
      * @throws \RuntimeException
      */
     protected function buildName(UploadedFile $file, $hash, $format, AttachmentInterface $attachment)
@@ -106,15 +111,15 @@ class PathHelper
         // Whether to rename files in case two files have the same name.
         // (Set to false if the format string contains the full hash. In that case it's OK to have the same file.)
         $renameDupes = true;
-        $sanitiser   = $this->sanitiser;
+        $sanitiser = $this->sanitiser;
 
         $name = preg_replace_callback(
             '/\{(\w+)(\((\d+)\.\.(\d+)\))?\}/',
             function ($match) use (&$renameDupes, $file, $format, $hash, $sanitiser) {
                 /** @var UploadedFile $file */
-                $partName    = $match[1];
+                $partName = $match[1];
                 $substrStart = count($match) >= 3 ? $match[3] : null;
-                $substrEnd   = count($match) >= 4 ? $match[4] : null;
+                $substrEnd = count($match) >= 4 ? $match[4] : null;
 
                 switch ($partName) {
                     case 'hash':
@@ -154,6 +159,7 @@ class PathHelper
     /**
      * @param AttachmentInterface $attachment
      * @param $name
+     *
      * @return string
      */
     protected function ensureUnique(AttachmentInterface $attachment, $name)
@@ -162,13 +168,13 @@ class PathHelper
 
         if (file_exists(sprintf('%s/%s', $saveDir, $name))) {
             $pathInfo = pathinfo($name);
-            $i        = 0;
-            $dotExt   = $pathInfo['extension'] !== '' ?
-                '.' . $pathInfo['extension'] :
+            $i = 0;
+            $dotExt = $pathInfo['extension'] !== '' ?
+                '.'.$pathInfo['extension'] :
                 '';
 
             do {
-                $i++;
+                ++$i;
                 $name = sprintf(
                     '%s/%s_%d%s',
                     $pathInfo['dirname'],

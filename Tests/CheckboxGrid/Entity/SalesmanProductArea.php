@@ -13,6 +13,7 @@ class SalesmanProductArea
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
+     *
      * @var int
      */
     protected $id;
@@ -20,6 +21,7 @@ class SalesmanProductArea
     /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Area")
+     *
      * @var Area
      */
     protected $areaServiced;
@@ -27,6 +29,7 @@ class SalesmanProductArea
     /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Product")
+     *
      * @var Product
      */
     protected $productSold;
@@ -34,6 +37,7 @@ class SalesmanProductArea
     /**
      * @ORM\JoinColumn(nullable=false)
      * @ORM\ManyToOne(targetEntity="Salesman", inversedBy="productAreas")
+     *
      * @var Salesman
      */
     protected $salesman;

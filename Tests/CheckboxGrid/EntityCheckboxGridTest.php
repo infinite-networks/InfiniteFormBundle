@@ -9,7 +9,6 @@
 
 namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
@@ -90,10 +89,10 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
         $this->emRegistry = $emRegistry = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
 
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addType(new CheckboxGridType)
-            ->addType(new CheckboxRowType)
+            ->addType(new CheckboxGridType())
+            ->addType(new CheckboxRowType())
             ->addType(new EntityCheckboxGridType($emRegistry))
-            ->addType(new SalesmanType)
+            ->addType(new SalesmanType())
             ->getFormFactory();
     }
 
@@ -109,13 +108,13 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that bound data is mapped back correctly
+     * Test that bound data is mapped back correctly.
      */
     public function testBind()
     {
         $this->expectSpa();
 
-        $salesman = new TestEntity\Salesman;
+        $salesman = new TestEntity\Salesman();
 
         $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
 
@@ -151,7 +150,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
         $spa->setAreaServiced($this->areas[2]);
         $spa->setProductSold($this->products[3]);
 
-        $salesman = new TestEntity\Salesman;
+        $salesman = new TestEntity\Salesman();
         $salesman->addProductArea($spa);
 
         $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
@@ -168,7 +167,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Query builders are allowed on both axes
+     * Query builders are allowed on both axes.
      */
     public function testQueryBuilder()
     {
@@ -193,7 +192,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
         foreach ($view->children['productAreas'] as $row) {
             foreach ($row->children as $cell) {
                 if (in_array('checkbox', $cell->vars['block_prefixes'])) {
-                    $checkboxCount++;
+                    ++$checkboxCount;
                 }
             }
         }
@@ -202,7 +201,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that we can specify a named entity manager
+     * Test that we can specify a named entity manager.
      */
     public function testNamedEntityManager()
     {

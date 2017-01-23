@@ -21,6 +21,7 @@ class StandardAttachment extends BaseAttachment
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
+     *
      * @var int
      */
     protected $id;

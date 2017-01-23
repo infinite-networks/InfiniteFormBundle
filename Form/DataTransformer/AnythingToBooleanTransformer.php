@@ -12,7 +12,7 @@ namespace Infinite\FormBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
- * Transforms a checkbox's posted value back into an arbitrary object
+ * Transforms a checkbox's posted value back into an arbitrary object.
  */
 class AnythingToBooleanTransformer implements DataTransformerInterface
 {

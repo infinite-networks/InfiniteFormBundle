@@ -31,7 +31,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
- * Provides a checkbox grid for non-Doctrine objects (rows and cols set by x/y_choices)
+ * Provides a checkbox grid for non-Doctrine objects (rows and cols set by x/y_choices).
  */
 class CheckboxGridType extends AbstractType
 {
@@ -70,13 +70,14 @@ class CheckboxGridType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      * @param $choice
      * @param $labelBase
      * @param $accessor
      * @param $value
      */
-    protected function buildRow(FormBuilderInterface $builder, array $options, $choice, $labelBase, PropertyAccessor $accessor, $value) {
+    protected function buildRow(FormBuilderInterface $builder, array $options, $choice, $labelBase, PropertyAccessor $accessor, $value)
+    {
         $rowOptions = array(
             'cell_filter' => $options['cell_filter'],
             'choice_list' => $options['x_choice_list'],
@@ -85,9 +86,8 @@ class CheckboxGridType extends AbstractType
             'row_label' => $options['y_label_path'] === null ? $labelBase : $accessor->getValue($choice, $options['y_label_path']),
         );
 
-        $builder->add($value, LegacyFormUtil::getType( 'Infinite\FormBundle\Form\Type\CheckboxRowType'), $rowOptions);
+        $builder->add($value, LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxRowType'), $rowOptions);
     }
-
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -109,7 +109,9 @@ class CheckboxGridType extends AbstractType
             // SF 2.7+: choice lists are not responsible for labels.
             // Strip the labels until we build the choice view later.
             if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-                return new ArrayChoiceList(array_keys($options['x_choices']), function ($choice) { return $choice; });
+                return new ArrayChoiceList(array_keys($options['x_choices']), function ($choice) {
+                    return $choice;
+                });
             }
 
             // BC < SF 2.7
@@ -124,7 +126,9 @@ class CheckboxGridType extends AbstractType
             // SF 2.7+: choice lists are not responsible for labels.
             // Strip the labels for now and look them up later.
             if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-                return new ArrayChoiceList(array_keys($options['y_choices']), function ($choice) { return $choice; });
+                return new ArrayChoiceList(array_keys($options['y_choices']), function ($choice) {
+                    return $choice;
+                });
             }
 
             // BC < SF 2.7
@@ -164,8 +168,9 @@ class CheckboxGridType extends AbstractType
 
     /**
      * @param ChoiceListInterface|LegacyChoiceListInterface $choiceList
-     * @param array|null $originalChoices
-     * @param string|PropertyPath|null $labelPath
+     * @param array|null                                    $originalChoices
+     * @param string|PropertyPath|null                      $labelPath
+     *
      * @return ChoiceListView|LegacyChoiceListInterface
      */
     protected function buildChoiceListView($choiceList, $originalChoices, $labelPath)
@@ -186,7 +191,7 @@ class CheckboxGridType extends AbstractType
             }
 
             if ($labelPath === null) {
-                return (string)$choice;
+                return (string) $choice;
             } else {
                 return $accessor->getValue($choice, $labelPath);
             }

@@ -36,15 +36,15 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
 
         $this->pathHelper = new PathHelper($sanitiser, array(
             'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment' => array(
-                'dir'    => sys_get_temp_dir(),
+                'dir' => sys_get_temp_dir(),
                 'format' => 'test/{hash(0..4)}/{name}',
             ),
             'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\FullHashAttachment' => array(
-                'dir'    => sys_get_temp_dir(),
+                'dir' => sys_get_temp_dir(),
                 'format' => 'test/{hash}.{ext}',
             ),
             'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\InvalidFormatAttachment' => array(
-                'dir'    => sys_get_temp_dir(),
+                'dir' => sys_get_temp_dir(),
                 'format' => 'test/{invalid}',
             ),
         ));
@@ -53,7 +53,7 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
 
     public function testAcceptUpload()
     {
-        $attachment1 = $this->uploadFooAttachment(new StandardAttachment);
+        $attachment1 = $this->uploadFooAttachment(new StandardAttachment());
 
         $this->assertEquals('test.txt', $attachment1->getFilename());
         $this->assertEquals(3, $attachment1->getFileSize());
@@ -65,8 +65,8 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
     public function testAcceptUploadWithRename()
     {
         // Multiple uploads with the same file name should usually be renamed.
-        $attachment1 = $this->uploadFooAttachment(new StandardAttachment);
-        $attachment2 = $this->uploadFooAttachment(new StandardAttachment);
+        $attachment1 = $this->uploadFooAttachment(new StandardAttachment());
+        $attachment2 = $this->uploadFooAttachment(new StandardAttachment());
 
         $this->assertNotEquals($attachment1->getPhysicalName(), $attachment2->getPhysicalName());
     }
@@ -75,8 +75,8 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
     {
         // If the format string contains the full hash of the file contents,
         // then multiple identical uploads can safely overwrite each other.
-        $attachment1 = $this->uploadFooAttachment(new FullHashAttachment);
-        $attachment2 = $this->uploadFooAttachment(new FullHashAttachment);
+        $attachment1 = $this->uploadFooAttachment(new FullHashAttachment());
+        $attachment2 = $this->uploadFooAttachment(new FullHashAttachment());
 
         $this->assertEquals('test/0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33.txt', $attachment1->getPhysicalName());
         $this->assertEquals('test/0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33.txt', $attachment2->getPhysicalName());
@@ -85,7 +85,7 @@ class UploaderTest extends \PHPUnit_Framework_TestCase
     public function testInvalidFormatString()
     {
         $this->setExpectedException('RuntimeException', 'Unknown name part: invalid');
-        $this->uploadFooAttachment(new InvalidFormatAttachment);
+        $this->uploadFooAttachment(new InvalidFormatAttachment());
     }
 
     private function uploadFooAttachment(AttachmentInterface $attachment)

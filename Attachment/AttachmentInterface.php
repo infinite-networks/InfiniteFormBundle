@@ -13,43 +13,48 @@ interface AttachmentInterface
     public function getId();
 
     /**
-     * The filename to be displayed to the user
+     * The filename to be displayed to the user.
      *
      * @return string
      */
     public function getFilename();
+
     public function setFilename($filename);
 
     /**
-     * SHA1 hash of the file's contents (for use as an Etag)
+     * SHA1 hash of the file's contents (for use as an Etag).
      *
      * @return string
      */
     public function getFileHash();
+
     public function setFileHash($fileHash);
 
     /**
-     * File size in bytes
+     * File size in bytes.
      *
-     * @return integer
+     * @return int
      */
     public function getFileSize();
+
     public function setFileSize($fileSize);
 
     /**
-     * The MIME type specified by the file uploader
+     * The MIME type specified by the file uploader.
      *
      * @return string
      */
     public function getMimeType();
+
     public function setMimeType($mimeType);
 
     /**
-     * The name of the saved file, relative to the upload path
+     * The name of the saved file, relative to the upload path.
      *
      * @return string
      */
     public function getPhysicalName();
+
     public function setPhysicalName($physicalName);
 
     /**

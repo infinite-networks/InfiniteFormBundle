@@ -17,7 +17,6 @@ use Infinite\FormBundle\Tests\PolyCollection\Model\Third;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\SecondSpecificOptionsType;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\VarDumper\VarDumper;
 
 class PolyCollectionTypeTest extends TypeTestCase
 {
@@ -39,7 +38,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             'types' => $this->getTestTypes(),
         ));
         $form->setData(array(
-            new \stdClass
+            new \stdClass(),
         ));
     }
 
@@ -48,13 +47,13 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->setExpectedException('InvalidArgumentException');
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
-            'allow_add' => true
+            'allow_add' => true,
         ));
         $form->submit(array(
             array(
                 '_type' => 'unknown_type',
-                'text' => 'Green'
-            )
+                'text' => 'Green',
+            ),
         ));
     }
 
@@ -72,9 +71,9 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => array(
                 LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType'),
-                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FourthType')
+                LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FourthType'),
             ),
-            'allow_add' => true
+            'allow_add' => true,
         ));
 
         $this->assertTrue($form->createView()->vars['multipart']);
@@ -84,7 +83,7 @@ class PolyCollectionTypeTest extends TypeTestCase
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
-            'allow_delete' => true
+            'allow_delete' => true,
         ));
         $form->submit(null);
 
@@ -95,7 +94,7 @@ class PolyCollectionTypeTest extends TypeTestCase
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
-            'allow_add' => true
+            'allow_add' => true,
         ));
 
         $form->setData(array(
@@ -104,13 +103,13 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->submit(array(
             array(
                 '_type' => 'abstract_type',
-                'text' => 'Green'
+                'text' => 'Green',
             ),
             array(
                 '_type' => 'first_type',
                 'text' => 'Red',
-                'text2' => 'Car'
-            )
+                'text2' => 'Car',
+            ),
         ));
 
         $this->assertTrue($form->has('0'));
@@ -135,7 +134,7 @@ class PolyCollectionTypeTest extends TypeTestCase
                 LegacyFormUtil::getType('Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType'),
             ),
             'type_name' => '_type_id',
-            'allow_add' => true
+            'allow_add' => true,
         ));
 
         $form->setData(array(
@@ -144,13 +143,13 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->submit(array(
             array(
                 '_type_id' => 'abstract_type_id_type',
-                'text' => 'Green'
+                'text' => 'Green',
             ),
             array(
                 '_type_id' => 'first_type_id_type',
                 'text' => 'Red',
-                'text2' => 'Car'
-            )
+                'text2' => 'Car',
+            ),
         ));
 
         $this->assertTrue($form->has('0'));
@@ -178,13 +177,13 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->submit(array(
             array(
                 '_type' => 'abstract_type',
-                'text' => 'Green'
+                'text' => 'Green',
             ),
             array(
                 '_type' => 'first_type',
                 'text' => 'Red',
-                'text2' => 'Car'
-            )
+                'text2' => 'Car',
+            ),
         ));
 
         $this->assertTrue($form->has('0'));
@@ -199,22 +198,22 @@ class PolyCollectionTypeTest extends TypeTestCase
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
-            'allow_delete' => true
+            'allow_delete' => true,
         ));
         $form->setData(array(
             new AbstractModel('Green'),
             new First('Red', 'Car'),
-            new Second('Blue', true)
+            new Second('Blue', true),
         ));
         $form->submit(array(
-            0=>array(
+            0 => array(
                 '_type' => 'abstract_type',
-                'text' => 'Green'
+                'text' => 'Green',
             ),
-            2=>array(
+            2 => array(
                 '_type' => 'second_type',
-                'checked' => 'true'
-            )
+                'checked' => 'true',
+            ),
         ));
 
         $this->assertTrue($form->has('0'));
@@ -238,18 +237,18 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form->setData(array(
             new AbstractModel('Green'),
             new First('Red', 'Car'),
-            new Second('Blue', true)
+            new Second('Blue', true),
         ));
         $form->submit(array(
             array(
                 '_type' => 'abstract_type',
-                'text' => 'Brown'
+                'text' => 'Brown',
             ),
             array(
                 '_type' => 'first_type',
                 'text' => 'Yellow',
-                'text2' => 'Bicycle'
-            )
+                'text2' => 'Bicycle',
+            ),
         ));
 
         $this->assertTrue($form->has('0'));
@@ -268,12 +267,12 @@ class PolyCollectionTypeTest extends TypeTestCase
             'types' => $this->getTestTypes(),
             'options' => array(
                 'max_length' => 20,
-            )
+            ),
         ));
         $form->setData(array(
             new AbstractModel('Green'),
             new First('Red', 'Car'),
-            new Second('Blue', true)
+            new Second('Blue', true),
         ));
 
         $this->assertCount(3, $form);
@@ -304,7 +303,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertEquals(20, $form[2]->getConfig()->getOption('max_length'));
 
         $form->setData(array(
-            new AbstractModel('Orange')
+            new AbstractModel('Orange'),
         ));
 
         $this->assertCount(1, $form);
@@ -320,24 +319,24 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
             'allow_delete' => true,
-            'index_property' => 'id'
+            'index_property' => 'id',
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
                 new First('Red', 'Car', 2),
-                new Second('Blue', true, 3)
+                new Second('Blue', true, 3),
             ));
         $form->submit(array(
                 array(
                     '_type' => 'abstract_type',
                     'text' => 'Green',
-                    'id'=>1
+                    'id' => 1,
                 ),
                 array(
                     '_type' => 'second_type',
                     'checked' => 'true',
-                    'id'=>3
-                )
+                    'id' => 3,
+                ),
             ));
 
         $this->assertTrue($form->has('0'));
@@ -358,7 +357,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
             'allow_add' => true,
-            'index_property' => 'id'
+            'index_property' => 'id',
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
@@ -367,13 +366,13 @@ class PolyCollectionTypeTest extends TypeTestCase
                 array(
                     '_type' => 'abstract_type',
                     'text' => 'Green',
-                    'id'=>1
+                    'id' => 1,
                 ),
                 array(
                     '_type' => 'second_type',
                     'text' => 'Blue',
-                    'checked' => 'true'
-                )
+                    'checked' => 'true',
+                ),
             ));
 
         $this->assertTrue($form->has('0'));
@@ -394,23 +393,23 @@ class PolyCollectionTypeTest extends TypeTestCase
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
             'allow_add' => true,
-            'index_property' => 'id'
+            'index_property' => 'id',
             ));
         $form->setData(array(
                 new AbstractModel('Green', 1),
-                new Second('Blue', false, 2)
+                new Second('Blue', false, 2),
             ));
         $form->submit(array(
                 array(
                     '_type' => 'second_type',
                     'checked' => 'true',
-                    'id'=>2
+                    'id' => 2,
                 ),
                 array(
                     '_type' => 'abstract_type',
                     'text' => 'Green',
-                    'id'=>1
-                )
+                    'id' => 1,
+                ),
             ));
 
         $this->assertTrue($form->has('0'));
@@ -450,52 +449,50 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->factory->create($this->getPolyCollectionType(), null, array());
     }
 
-
     public function testTypeLegacyOptions()
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypes(),
-            'options'=>[
-                'max_length'=>'30'
-            ]
+            'options' => [
+                'max_length' => '30',
+            ],
         ));
         $form->setData(array(
             new AbstractModel('Green', 1),
-            new Second('Blue', false, 2)
+            new Second('Blue', false, 2),
         ));
 
-        $this->assertEquals(30,$form->get(0)->getConfig()->getOptions()['max_length']);
-        $this->assertEquals(30,$form->get(1)->getConfig()->getOptions()['max_length']);
+        $this->assertEquals(30, $form->get(0)->getConfig()->getOptions()['max_length']);
+        $this->assertEquals(30, $form->get(1)->getConfig()->getOptions()['max_length']);
     }
 
     public function testTypesOptions()
     {
-
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
             'types' => $this->getTestTypesWithSpecificOptions(),
-            'types_options'=>[
-                FirstSpecificOptionsType::class=>[
-                    'first_option'=>888
+            'types_options' => [
+                FirstSpecificOptionsType::class => [
+                    'first_option' => 888,
                 ],
-                SecondSpecificOptionsType::class=>[
-                    'second_option'=>999
-                ]
-            ]
+                SecondSpecificOptionsType::class => [
+                    'second_option' => 999,
+                ],
+            ],
         ));
 
         $form->setData(array(
-            new First('Green',false),
-            new Second('Blue', false)
+            new First('Green', false),
+            new Second('Blue', false),
         ));
 
-        $this->assertEquals(888,$form->get(0)->getConfig()->getOption('first_option'));
-        $this->assertEquals(999,$form->get(1)->getConfig()->getOption('second_option'));
+        $this->assertEquals(888, $form->get(0)->getConfig()->getOption('first_option'));
+        $this->assertEquals(999, $form->get(1)->getConfig()->getOption('second_option'));
     }
 
     protected function getExtensions()
     {
         return array(
-            new FormExtension()
+            new FormExtension(),
         );
     }
 

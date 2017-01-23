@@ -15,7 +15,7 @@ class AttachmentObjectTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsImage()
     {
-        $attachment = new StandardAttachment;
+        $attachment = new StandardAttachment();
         $attachment->setMimeType('text/plain');
         $this->assertEquals(false, $attachment->isImage());
 

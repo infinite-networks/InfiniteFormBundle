@@ -33,9 +33,9 @@ class StreamerTest extends \PHPUnit_Framework_TestCase
 
         $this->pathHelper = new PathHelper($sanitiser, array(
             'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment' => array(
-                'dir'    => sys_get_temp_dir(),
+                'dir' => sys_get_temp_dir(),
                 'format' => 'test/{hash(0..4)}/{name}',
-            )
+            ),
         ));
 
         $this->streamer = new Streamer($sanitiser, $this->pathHelper);
@@ -43,7 +43,7 @@ class StreamerTest extends \PHPUnit_Framework_TestCase
 
     public function testStreamerNonExistantFile()
     {
-        $attachment = new StandardAttachment;
+        $attachment = new StandardAttachment();
         $attachment->setPhysicalName('/non/existant/path.txt');
 
         $response = $this->streamer->stream($attachment);
@@ -67,15 +67,15 @@ class StreamerTest extends \PHPUnit_Framework_TestCase
     public function testDisposition()
     {
         // The Streamer should choose a sensible default disposition for different attachment types
-        $normalRequest = new Request;
-        $oldIERequest = new Request;
+        $normalRequest = new Request();
+        $oldIERequest = new Request();
         $oldIERequest->headers->set('User-Agent', 'Mozilla/4.0 (compatible; MSIE 7.0b; Windows NT 6.0)');
 
         // text/plain is safe for inline display
         $attachment = $this->makeFooAttachment();
         $stream = $this->streamer->stream($attachment, $normalRequest);
         $stream->prepare($normalRequest);
-        $this->assertRegExp('/^inline/',  $stream->headers->get('Content-Disposition'));
+        $this->assertRegExp('/^inline/', $stream->headers->get('Content-Disposition'));
 
         // text/html is unsafe for inline display
         $attachment->setMimeType('text/html');
@@ -88,7 +88,7 @@ class StreamerTest extends \PHPUnit_Framework_TestCase
 
     private function makeFooAttachment($mime = 'text/plain')
     {
-        $attachment = new StandardAttachment;
+        $attachment = new StandardAttachment();
         $attachment->setPhysicalName('infinite-streamer-test.txt');
         $attachment->setFilename('test.txt');
         $attachment->setMimeType($mime);

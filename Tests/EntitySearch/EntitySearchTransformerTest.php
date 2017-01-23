@@ -54,7 +54,7 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testTransform()
     {
-        $fruit = new Fruit;
+        $fruit = new Fruit();
         $fruit->id = 42;
         $fruit->name = 'watermelon';
 
@@ -67,7 +67,7 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testReverseTransformById()
     {
-        $fruit = new Fruit;
+        $fruit = new Fruit();
         $fruit->id = 23;
         $fruit->name = 'coconut';
 
@@ -84,7 +84,7 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testReverseTransformByName()
     {
-        $fruit = new Fruit;
+        $fruit = new Fruit();
         $fruit->id = 34;
         $fruit->name = 'pear';
 
@@ -106,7 +106,7 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function testOverrideNameField()
     {
-        $fruit = new Fruit;
+        $fruit = new Fruit();
         $fruit->id = 48;
         $fruit->name = 'feijoa';
 
