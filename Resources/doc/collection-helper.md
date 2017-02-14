@@ -155,6 +155,21 @@ Properties provided on the event object:
 - `insertBefore`: if set by an event listener, the row will be inserted before this dom
                   element.
 
+### infinite_collection_added
+
+This event is fired when a new item has been added to a collection. It allows 
+functionality to work with the post-add dom without the need to add dom mutate observers.
+
+Properties provided on the event object:
+
+- `collection`: The window.infinite.Collection instance
+- `$triggeredPrototype`: this is the dom element that triggered the adding of an item to
+                         the collection. In the case of a normal collection type, the
+                         prototype will be the add button. In the case of the
+                         Polycollection, the prototype will be one of the prototype
+                         buttons.
+- `$row`: the jQuery wrapped DOM elements that was added to the collection.
+                  
 ### infinite_collection_remove
 
 This event is fired before a row is to be removed from the DOM. This event does not fire

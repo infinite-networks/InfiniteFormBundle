@@ -87,17 +87,24 @@
             var html = this._getPrototypeHtml($prototype, this.internalCount++),
                 $row = $($.parseHTML(html, document, this.options.keepScripts));
 
-            var event = this._createEvent('infinite_collection_add');
-            event.$triggeredPrototype = $prototype;
-            event.$row = $row;
-            event.insertBefore = null;
-            this.$collection.trigger(event);
+            var addEvent = this._createEvent('infinite_collection_add');
+            addEvent.$triggeredPrototype = $prototype;
+            addEvent.$row = $row;
+            addEvent.insertBefore = null;
 
-            if (!event.isDefaultPrevented()) {
+            this.$collection.trigger(addEvent);
+
+            var addedEvent = this._createEvent('infinite_collection_added');
+            addedEvent.$triggeredPrototype = $prototype;
+            addedEvent.$row = $row;
+
+            if (!addEvent.isDefaultPrevented()) {
                 if (event.insertBefore) {
                     $row.insertBefore(event.insertBefore);
+                    this.$collection.trigger(addedEvent);
                 } else {
                     this.$collection.append($row);
+                    this.$collection.trigger(addedEvent);
                 }
 
                 return $row;
