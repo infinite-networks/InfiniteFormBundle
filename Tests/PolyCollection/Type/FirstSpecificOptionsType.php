@@ -9,6 +9,11 @@ class FirstSpecificOptionsType extends FirstType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setRequired('first_option');
+        $resolver->setRequired(['first_option']);
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'first_type_specific';
     }
 }

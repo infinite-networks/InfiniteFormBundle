@@ -28,6 +28,7 @@ final class LegacyFormUtil
         'Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType' => 'infinite_form_test_salesman',
         'Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType' => 'abstract_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType' => 'abstract_type_id_type',
+        'Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType' => 'first_type_specific',
         'Infinite\FormBundle\Tests\PolyCollection\Type\FirstType' => 'first_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType' => 'first_type_id_type',
         'Infinite\FormBundle\Tests\PolyCollection\Type\SecondType' => 'second_type',

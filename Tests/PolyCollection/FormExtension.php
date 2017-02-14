@@ -12,6 +12,7 @@ namespace Infinite\FormBundle\Tests\PolyCollection;
 use Infinite\FormBundle\Form\Type\PolyCollectionType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\AbstractType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\AbstractTypeIdType;
+use Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FirstType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FirstTypeIdType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FourthType;
@@ -31,6 +32,7 @@ class FormExtension extends AbstractExtension
             new PolyCollectionType(),
             new AbstractType(),
             new AbstractTypeIdType(),
+            new FirstSpecificOptionsType(),
             new FirstType(),
             new FirstTypeIdType(),
             new SecondType(),
