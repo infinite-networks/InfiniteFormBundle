@@ -88,6 +88,7 @@
                 $row = $($.parseHTML(html, document, this.options.keepScripts));
 
             var addEvent = this._createEvent('infinite_collection_add');
+
             addEvent.$triggeredPrototype = $prototype;
             addEvent.$row = $row;
             addEvent.insertBefore = null;
@@ -95,8 +96,8 @@
             this.$collection.trigger(addEvent);
 
             if (!addEvent.isDefaultPrevented()) {
-                if (event.insertBefore) {
-                    $row.insertBefore(event.insertBefore);
+                if (addEvent.insertBefore) {
+                    $row.insertBefore(addEvent.insertBefore);
                 } else {
                     this.$collection.append($row);
                 }
