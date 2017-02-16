@@ -101,11 +101,11 @@
             if (!addEvent.isDefaultPrevented()) {
                 if (event.insertBefore) {
                     $row.insertBefore(event.insertBefore);
-                    this.$collection.trigger(addedEvent);
                 } else {
                     this.$collection.append($row);
-                    this.$collection.trigger(addedEvent);
                 }
+
+                this.$collection.trigger(addedEvent);
 
                 return $row;
             }

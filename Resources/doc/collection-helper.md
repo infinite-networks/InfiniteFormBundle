@@ -168,7 +168,7 @@ Properties provided on the event object:
                          prototype will be the add button. In the case of the
                          Polycollection, the prototype will be one of the prototype
                          buttons.
-- `$row`: the jQuery wrapped DOM elements that was added to the collection.
+- `$row`: the jQuery wrapped DOM elements that were added to the collection.
                   
 ### infinite_collection_remove
 
