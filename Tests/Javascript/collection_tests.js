@@ -162,7 +162,7 @@
     });
 
     test("Added Event", function () {
-        expect(2);
+        expect(1);
 
         var collection = setUpCollection('#markup .list-collection');
 
