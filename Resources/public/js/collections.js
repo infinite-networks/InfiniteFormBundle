@@ -94,16 +94,17 @@
 
             this.$collection.trigger(addEvent);
 
-            var addedEvent = this._createEvent('infinite_collection_added');
-            addedEvent.$triggeredPrototype = $prototype;
-            addedEvent.$row = $row;
-
             if (!addEvent.isDefaultPrevented()) {
                 if (event.insertBefore) {
                     $row.insertBefore(event.insertBefore);
                 } else {
                     this.$collection.append($row);
                 }
+
+                var addedEvent = this._createEvent('infinite_collection_added');
+
+                addedEvent.$triggeredPrototype = $prototype;
+                addedEvent.$row = $row;
 
                 this.$collection.trigger(addedEvent);
 
