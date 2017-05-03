@@ -167,6 +167,31 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that cell_filter tolerates existing data.
+     */
+    public function testCellFilter()
+    {
+        $this->expectSpa();
+
+        $salesman = new TestEntity\Salesman();
+
+        $salesman->addProductArea($spa = new TestEntity\SalesmanProductArea());
+        $spa->setProductSold($this->products[2]); // Desk
+        $spa->setAreaServiced($this->areas[1]); // North side
+
+        // This should run without throwing an error
+        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman, array(
+            'product_area_options' => array(
+                'cell_filter' => function (TestEntity\Product $x, TestEntity\Area $y) {
+                    return !(
+                        $x === $this->products[2] && $y === $this->areas[1]
+                    );
+                },
+            ),
+        ));
+    }
+
+    /**
      * Query builders are allowed on both axes.
      */
     public function testQueryBuilder()

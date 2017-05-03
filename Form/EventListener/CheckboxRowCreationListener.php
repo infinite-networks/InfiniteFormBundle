@@ -86,23 +86,25 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
     {
         if (isset($options['cell_filter']) && !$options['cell_filter']($choice, $options['row'])) {
             // Blank cell - put a dummy form control here
-            $form->add($value, LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType'), array());
+            $formType = LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType');
         } else {
-            $builder = $this->factory->createNamedBuilder(
-                $value,
-                LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType'),
-                isset($data[$value]),
-                array(
-                    'auto_initialize' => false,
-                    'required' => false,
-                )
-            );
-
-            if (isset($data[$value])) {
-                $builder->addViewTransformer(new AnythingToBooleanTransformer($data[$value]), true);
-            }
-
-            $form->add($builder->getForm());
+            $formType = LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType');
         }
+
+        $builder = $this->factory->createNamedBuilder(
+            $value,
+            $formType,
+            isset($data[$value]),
+            array(
+                'auto_initialize' => false,
+                'required' => false,
+            )
+        );
+
+        if (isset($data[$value])) {
+            $builder->addViewTransformer(new AnythingToBooleanTransformer($data[$value]), true);
+        }
+
+        $form->add($builder->getForm());
     }
 }
