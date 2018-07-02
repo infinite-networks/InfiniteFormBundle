@@ -94,7 +94,7 @@ class ResizePolyFormListener extends ResizeFormListener
             $this->classMap[$modelClass] = $type;
         }
 
-        parent::__construct($defaultType, $options, $allowAdd, $allowDelete);
+        parent::__construct(get_class($defaultType), $options, $allowAdd, $allowDelete);
     }
 
     /**
