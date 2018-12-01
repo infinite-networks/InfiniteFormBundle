@@ -18,7 +18,6 @@ all 4 types of `InvoiceLine` inside the same collection.
 Requirements and notes
 ----------------------
 
-* The PolyCollection type requires Symfony 2.2 or greater.
 * The object hierarchy must contain a common ancestor for the base form type.
 * Each object in the hierarchy must map to a form type.
 * If no form type is defined for a specific object, it defaults to the

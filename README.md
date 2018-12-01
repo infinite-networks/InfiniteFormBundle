@@ -1,10 +1,14 @@
 InfiniteFormBundle
 ==================
 
-A collection of useful form types and extensions for Symfony2.
+A collection of useful form types and extensions for Symfony.
 
 **Note:** Documenting these form types is an ongoing effort. We'd appreciate
 any feedback, corrections additions you can provide.
+
+See the [form demo project](https://github.com/infinite-networks/form-demo)
+for working examples of the collection helper, PolyCollection, and
+CheckboxGrid.
 
 Installation
 ------------

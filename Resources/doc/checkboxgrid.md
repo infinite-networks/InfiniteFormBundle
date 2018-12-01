@@ -33,7 +33,6 @@ products and the columns are areas (or vice versa!)
 Requirements and Notes
 ---------------------
 
-* The CheckboxGrid type requires Symfony 2.2 or greater.
 * For the entity checkbox grid, you will probably need to specify
   `cascade={"persist"}, orphanRemoval=true`. In the example below, it would
   go on Salesman::productAreas.
