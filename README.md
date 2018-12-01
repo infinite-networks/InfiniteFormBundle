@@ -1,8 +1,6 @@
 InfiniteFormBundle
 ==================
 
-[![Build Status](https://travis-ci.org/infinite-networks/InfiniteFormBundle.png?branch=master)](https://travis-ci.org/infinite-networks/InfiniteFormBundle)
-
 A collection of useful form types and extensions for Symfony2.
 
 **Note:** Documenting these form types is an ongoing effort. We'd appreciate
