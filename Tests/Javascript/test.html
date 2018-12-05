@@ -55,6 +55,57 @@
             &lt;a class=&quot;custom_remove_item&quot;&gt;Remove&lt;/a&gt;
         &lt;/div&gt;">Add</a>
     </div>
+    <div class="list-collection-different-html-structure">
+        <table class="collection">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="item input-append" data-original>
+                    <td><input type="email" name="formb[0]" id="formb_0" /></td>
+                    <td><a class="custom_remove_item">Remove</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a class="add_item" data-customprototype="&lt;tr class=&quot;customitem input-append&quot;&gt;
+            &lt;td&gt;&lt;input type=&quot;email&quot; name=&quot;formb[__customname__]&quot; id=&quot;formb___customname__&quot; /&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;a class=&quot;custom_remove_item&quot;&gt;Remove&lt;/a&gt;&lt;/td&gt;
+        &lt;/tr&gt;">Add</a>
+    </div>
+    <div class="list-collection-with-nested-collection">
+        <div class="collection">
+            <div class="item input-append" data-original>
+                <div class="child-collection">
+                    <div class="child-item input-append" data-original>
+                        <input type="email" name="forma[0]" id="forma_0" />
+                        <a class="remove_item">Remove</a>
+                    </div>
+                    <div class="child-item input-append" data-original>
+                        <input type="email" name="forma[1]" id="forma_1" />
+                        <a class="remove_item">Remove</a>
+                    </div>
+                    <div class="child-item input-append" data-original>
+                        <input type="email" name="forma[2]" id="forma_2" />
+                        <a class="remove_item">Remove</a>
+                        <div class="third-level-collection">
+                            <div class="item input-append" data-original>
+                                <input type="email" name="forma[2][0]" id="forma_2_0" />
+                                <a class="remove_item">Remove</a>
+                            </div>
+                            <div class="item input-append" data-original>
+                                <input type="email" name="forma[2][1]" id="forma_2_1" />
+                                <a class="remove_item">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
