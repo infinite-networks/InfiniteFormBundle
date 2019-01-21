@@ -161,6 +161,18 @@
             'Add item added another prototype to the collection');
     });
 
+    test("Added Event", function () {
+        expect(1);
+
+        var collection = setUpCollection('#markup .list-collection');
+
+        collection.$collection.on('infinite_collection_added', function (e) {
+            ok(true, 'Added event fired');
+        });
+
+        collection.$prototypes.click();
+    });
+
     test("Add Event Prevents adding", function () {
         var collection = setUpCollection('#markup .list-collection');
         collection.$collection.on('infinite_collection_add', function (e) {
