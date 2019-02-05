@@ -27,7 +27,7 @@ class Uploader
         $hash = sha1_file($file->getPathname());
         $name = $this->pathHelper->getName($file, $attachment, $hash);
         $filename = $this->sanitiser->sanitiseFilename($file->getClientOriginalName());
-        $mimeType = $this->sanitiser->sanitiseMimeType($file->getClientMimeType());
+        $mimeType = $this->sanitiser->sanitiseMimeType($file->getMimeType());
 
         $attachment->setFilename($filename);
         $attachment->setFileHash($hash);

@@ -41,16 +41,10 @@
 
         <service id="infinite_form.attachment.form_type" class="%infinite_form.attachment.attachment_type.class%">
             <argument>%infinite_form.attachment.default_secret%</argument>
-            <argument type="service" id="infinite_form.attachment.doctrine_manager" />
+            <argument type="service" id="doctrine" />
             <argument type="service" id="infinite_form.attachment.path_helper" />
             <argument type="service" id="infinite_form.attachment.uploader" />
             <tag name="form.type" alias="infinite_form_attachment" />
-        </service>
-
-        <service id="infinite_form.attachment.doctrine_manager" class="Doctrine\Common\Persistence\ObjectManager" public="false">
-            <!-- Added in extension class -->
-            <!--<factory service="doctrine" method="getManager"/>-->
-            <argument>%infinite_form.attachment.entity_manager%</argument>
         </service>
     </services>
 

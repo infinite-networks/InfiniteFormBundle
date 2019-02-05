@@ -10,8 +10,6 @@ namespace Infinite\FormBundle\Attachment;
  */
 interface AttachmentInterface
 {
-    public function getId();
-
     /**
      * The filename to be displayed to the user.
      *
@@ -40,7 +38,7 @@ interface AttachmentInterface
     public function setFileSize($fileSize);
 
     /**
-     * The MIME type specified by the file uploader.
+     * The MIME type of the file.
      *
      * @return string
      */
@@ -56,18 +54,4 @@ interface AttachmentInterface
     public function getPhysicalName();
 
     public function setPhysicalName($physicalName);
-
-    /**
-     * Gets an array of values to be passed to forms. Used by AttachmentTransformer.
-     *
-     * @return array
-     */
-    public function getAdditionalFormData();
-
-    /**
-     * Inverse of getAdditionalFormData. Used by AttachmentTransformer.
-     *
-     * @param array $data
-     */
-    public function setAdditionalFormData(array $data);
 }

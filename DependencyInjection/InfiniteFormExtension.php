@@ -32,14 +32,7 @@ class InfiniteFormExtension extends Extension
         if ($configs['attachment']) {
             $loader->load('attachment.xml');
 
-            $attachmentDefinition = $container->getDefinition('infinite_form.attachment.doctrine_manager');
-
-            if (method_exists($attachmentDefinition, 'setFactory')) {
-                $attachmentDefinition->setFactory(array(new Reference('doctrine'), 'getManager'));
-            } else {
-                $attachmentDefinition->setFactoryService('doctrine');
-                $attachmentDefinition->setFactoryMethod('getManager');
-            }
+            $container->setParameter('infinite_form.attachment.save_config', $configs['attachments']);
         }
 
         if ($configs['checkbox_grid']) {

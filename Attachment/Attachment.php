@@ -128,9 +128,4 @@ abstract class Attachment implements AttachmentInterface
     {
         return substr($this->mimeType, 0, 6) === 'image/';
     }
-
-    public function __sleep()
-    {
-        return array('id', 'filename', 'fileHash', 'fileSize', 'mimeType', 'physicalName');
-    }
 }

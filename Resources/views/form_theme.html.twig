@@ -39,14 +39,18 @@ file that was distributed with this source code.
 {% endblock infinite_form_entity_search_widget %}
 
 {% block infinite_form_attachment_widget %}
-{{ form_widget(form.meta) }}
-{% set att = form.get('attachment') %}
-<span{% if not att %} style="display: none"{% endif %}>{{ att ? att.filename : '' }}</span>
-<span{% if att %} style="display: none"{% endif %}>
-    {{ form_widget(form.file) }}
+{% set has_att = not not form.meta.vars.value %}
+{# If there was a file upload error, pretend there's no attachment #}
+{% if form.file.vars.errors|length %}
+    {% set has_att = false %}
+{% endif %}
+{{ form_widget(form.meta, has_att ? {} : {value: ''}) }}
+<span{% if not has_att %} style="display: none"{% endif %}>{{ value ? value.filename : '' }}</span>
+<span{% if has_att %} style="display: none"{% endif %}{% if form.file.vars.errors|length %} class="has-error"{% endif %}>
+    {{- form_widget(form.file, {attr: has_att ? {disabled: 'disabled'} : null}) -}}
+    {{- form_errors(form.file) -}}
 </span>
-{{ form_widget(form.removed, {value: ''}) }} {# Don't preserve 'removed' between posts #}
-{% if form.meta.get('value') %}
-    <input type="button" value="Remove" onclick="var x=$(this).hide().prev().val(1).prev().show().prev().hide()">
+{% if has_att %}
+    <input type="button" value="Remove" onclick="var p='previousSibling',x=this;x.style.display='none';x=x[p][p];x.style.display='';x.firstChild.disabled=false;x=x[p][p];x.style.display='none';x[p][p].value=''">
 {% endif %}
 {% endblock infinite_form_attachment_widget %}

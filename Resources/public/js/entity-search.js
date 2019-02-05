@@ -1,58 +1,42 @@
-$(function () {
-    $(document.body).on('focus', '.entity-search', function() {
-        var that = $(this);
+var autoComplete = require('js-autocomplete/auto-complete.min.js');
+var $ = require('jquery');
 
-        if (that.data('typeahead')) return;
+function htmlEscape(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
 
-        var url = that.attr('data-search-url');
-        var timeout = null;
-        var lastQuerySent = null;
+$(document.documentElement).on('focus', '.entity-search', function () {
+    var that = $(this);
 
-        that.typeahead({
-            source: function(typeahead, query) {
-                that.prev().val('');
+    if (that.data('autocomplete')) {
+        return;
+    }
 
-                if (timeout) clearTimeout(timeout);
-
-                // Don't send a query for a blank string
-                if (query == '') {
-                    return [];
-                }
-
-                // Don't re-send a query if already displaying the results for that same query
-                if (query == lastQuerySent && typeahead.shown) {
-                    return null;
-                }
-
-                // Wait briefly before sending the request
-                timeout = setTimeout(function() {
-                    lastQuerySent = query;
-
-                    $.ajax({
-                        url: url,
-                        data: {
-                            substitute_for: that.data('substitute_for'),
-                            query: query
-                        },
-                        success: function (data) {
-                            if (query != lastQuerySent) return; // Ignore AJAX responses to old queries
-
-                            for (var k in data.results) {
-                                data.results[k].list_text = data.results[k].list_text || data.results[k].name;
-                            }
-
-                            typeahead.process(data.results);
-                        }
-                    });
-                }, 150);
-            },
-            property: 'list_text',
-            matcher: function(item) { return true; },
-            onselect: function (selection) {
-                that.prev().val(selection.id);
-                that.val(selection.name);
-                that.trigger('entityselected', selection);
-            }
-        });
+    that.on('input', function () {
+        that.prev().val('');
     });
+
+    that.data('autocomplete', new autoComplete({
+        selector: this,
+        minChars: 2,
+        source: function source(query, callback) {
+            query = query.toLowerCase();
+            $.get(that.attr('data-search-url') + '?query=' + encodeURIComponent(query), function (response) {
+                callback(response.results);
+            });
+        },
+        renderItem: function renderItem(result, query) {
+            query = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            var re = new RegExp("(" + query.trim().split(' ').join('|') + ")", "gi");
+            return '<div class="autocomplete-suggestion" data-val="' + htmlEscape(result.name) + '" data-json="' + htmlEscape(JSON.stringify(result)) + '">' + htmlEscape(result.list_text || result.name).replace(re, "<b>$1</b>") + '</span>' + '</div>';
+        },
+        onSelect: function onSelect(e, search, suggestion) {
+            e.preventDefault(); // If the user pressed enter, don't submit the form
+
+            var term = JSON.parse($(suggestion).attr('data-json'));
+            that.prev().val(term.id);
+            that.val(term.name);
+            that.trigger('entityselected', term);
+        }
+    }));
 });

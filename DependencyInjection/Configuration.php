@@ -27,13 +27,27 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('infinite_form');
+        $treeBuilder = new TreeBuilder('infinite_form');
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC
+            $rootNode = $treeBuilder->root('infinite_form');
+        }
 
         $rootNode
             ->children()
                 ->booleanNode('attachment')
                     ->defaultTrue()
+                ->end()
+                ->arrayNode('attachments')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('dir')->end()
+                            ->scalarNode('format')->end()
+                        ->end()
+                    ->end()
                 ->end()
                 ->booleanNode('checkbox_grid')
                     ->defaultTrue()
