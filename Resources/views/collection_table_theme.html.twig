@@ -1,0 +1,73 @@
+{#
+
+(c) Infinite Networks <http://www.infinite.net.au>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{# A generic theme for collections that renders them as a table. #}
+{% block collection_widget %}
+    {%- set collectionForm = form -%}
+    {%- set classes = [attr.class|default(''), 'table collection'] -%}
+    {%- if auto_initialize is not defined or auto_initialize -%}{%- set classes = classes|merge(['collection-autoinitialize']) -%}{%- endif -%}
+    {%- set attr = attr|merge({class: classes | join(' ') | trim}) -%}
+    {%- if prototype_name is defined -%}
+        {%- set attr = attr|merge({'data-prototype-name': prototype_name}) -%}
+    {%- endif -%}
+    {%- if disabled -%}
+        {%- set attr = attr|merge({
+            'data-disabled': 1
+        }) -%}
+    {%- endif -%}
+
+    <table {{ block('widget_attributes') }}>
+        {{ cols | default('') }}
+        <thead><tr>
+            {% if prototype.vars.compound %}
+                {% for field in prototype %}
+                    <th>{{ form_label(field) | striptags }}</th>
+                {% endfor %}
+            {% else %}
+                <th>{{ label|default(form_label(collectionForm) | striptags) }}</th>
+            {% endif %}
+            {% if allow_delete %}
+                <th>Delete</th>
+            {% endif %}
+        </tr></thead>
+        <tbody class="items">
+        {%- for form in collectionForm -%}
+            {{ block('collection_entry_row') }}
+        {%- endfor -%}
+        </tbody>
+        {% if allow_add %}
+            {% set form = prototype %}
+            <tbody><tr>
+                <td colspan="{{ form.vars.compound ? form|length : 1 }}"></td>
+                <td><button class="btn btn-success add_item" type="button" data-prototype="{{ block('collection_entry_row') | escape }}">Add</button></td>
+            </tr></tbody>
+        {% endif %}
+    </table>
+{% endblock %}
+
+{% block collection_entry_row -%}
+    <tr class="item">
+        {% if form.vars.compound %}
+            {% for field in form %}
+                <td>
+                    {{ form_row(field, {label: false}) }}
+                </td>
+            {% endfor %}
+        {% else %}
+            <td>
+                {{ form_row(form, {label: false}) }}
+            </td>
+        {% endif %}
+        {% if form.parent.vars.allow_delete %}
+            <td>
+                <button class="btn btn-danger remove_item" type="button">Delete</button>
+            </td>
+        {% endif %}
+    </tr>
+{%- endblock %}
