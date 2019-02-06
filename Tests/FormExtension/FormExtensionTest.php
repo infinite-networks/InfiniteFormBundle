@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Forms;
 
-class FormExtensionTest extends \PHPUnit_Framework_TestCase
+class FormExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var FormFactory */
     private $formFactory;

@@ -11,7 +11,7 @@ namespace Infinite\FormBundle\Tests\Attachment;
 
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 
-class AttachmentObjectTest extends \PHPUnit_Framework_TestCase
+class AttachmentObjectTest extends \PHPUnit\Framework\TestCase
 {
     public function testIsImage()
     {

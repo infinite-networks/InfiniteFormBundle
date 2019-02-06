@@ -15,7 +15,7 @@ use Infinite\FormBundle\Attachment\Streamer;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Symfony\Component\HttpFoundation\Request;
 
-class StreamerTest extends \PHPUnit_Framework_TestCase
+class StreamerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Streamer

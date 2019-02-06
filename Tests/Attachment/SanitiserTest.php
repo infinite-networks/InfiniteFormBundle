@@ -11,7 +11,7 @@ namespace Infinite\FormBundle\Tests\Attachment;
 
 use Infinite\FormBundle\Attachment\Sanitiser;
 
-class SanitiserTest extends \PHPUnit_Framework_TestCase
+class SanitiserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Sanitiser

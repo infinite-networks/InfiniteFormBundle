@@ -3,12 +3,8 @@ InfiniteFormBundle
 
 A collection of useful form types and extensions for Symfony.
 
-**Note:** Documenting these form types is an ongoing effort. We'd appreciate
-any feedback, corrections additions you can provide.
-
 See the [form demo project](https://github.com/infinite-networks/form-demo)
-for working examples of the collection helper, PolyCollection, and
-CheckboxGrid.
+for working examples.
 
 Installation
 ------------
@@ -53,6 +49,24 @@ in areas. The salesman form needs a table of checkboxes where the rows are
 products and the columns are areas (or vice versa!)
 
 For more information see the [CheckboxGrid Documentation](Resources/doc/checkboxgrid.md).
+
+EntitySearch
+------------
+
+EntitySearchType is an alternative to Symfony's built-in EntityType. Instead of
+loading all entities into a drop-down list, it renders a single text field that
+loads autocomplete suggestions through an AJAX callback.
+
+AJAX callback not included.
+
+For more information see the [EntitySearch Documentation](Resources/doc/entitysearch.md).
+
+Attachment
+----------
+
+AttachmentType is an alternative to Symfony's built-in FileType.
+
+For more information see the [EntitySearch Documentation](Resources/doc/attachment.md).
 
 Twig Helper
 -----------

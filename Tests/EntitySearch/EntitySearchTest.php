@@ -18,7 +18,7 @@ use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 
-class EntitySearchTest extends \PHPUnit_Framework_TestCase
+class EntitySearchTest extends \PHPUnit\Framework\TestCase
 {
     /** @var EntityManager */
     private $em;
@@ -49,7 +49,7 @@ class EntitySearchTest extends \PHPUnit_Framework_TestCase
 
         $this->em->flush();
 
-        $this->emRegistry = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->emRegistry = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
         $this->emRegistry->expects($this->once())
             ->method('getManagerForClass')
             ->with($this->equalTo('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit'))

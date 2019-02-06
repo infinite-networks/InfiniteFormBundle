@@ -11,7 +11,7 @@ namespace Infinite\FormBundle\Tests;
 
 use Infinite\FormBundle\InfiniteFormBundle;
 
-class BundleTest extends \PHPUnit_Framework_TestCase
+class BundleTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateBundle()
     {

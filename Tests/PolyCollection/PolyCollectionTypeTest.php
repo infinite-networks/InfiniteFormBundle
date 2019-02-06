@@ -15,6 +15,7 @@ use Infinite\FormBundle\Tests\PolyCollection\Model\First;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Second;
 use Infinite\FormBundle\Tests\PolyCollection\Model\Third;
 use Infinite\FormBundle\Tests\PolyCollection\Type\FirstSpecificOptionsType;
+use Infinite\FormBundle\Tests\PolyCollection\Type\FirstType;
 use Infinite\FormBundle\Tests\PolyCollection\Type\SecondSpecificOptionsType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -427,7 +428,7 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testContainsNoChildByDefault()
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
-            'types' => array(),
+            'types' => array(FirstType::class),
         ));
 
         $this->assertCount(0, $form);
@@ -436,7 +437,7 @@ class PolyCollectionTypeTest extends TypeTestCase
     public function testThrowsExceptionIfObjectIsNotTraversable()
     {
         $form = $this->factory->create($this->getPolyCollectionType(), null, array(
-            'types' => array(),
+            'types' => array(FirstType::class),
         ));
         $this->setExpectedException('Symfony\Component\Form\Exception\UnexpectedTypeException');
         $form->setData(new \stdClass());

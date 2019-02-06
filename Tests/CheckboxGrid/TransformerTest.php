@@ -13,7 +13,7 @@ use Infinite\FormBundle\Form\DataTransformer\CheckboxGridTransformer;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 
-class TransformerTest extends \PHPUnit_Framework_TestCase
+class TransformerTest extends \PHPUnit\Framework\TestCase
 {
     protected function makeTransformer()
     {

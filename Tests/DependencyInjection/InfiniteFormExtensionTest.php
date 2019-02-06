@@ -12,7 +12,7 @@ namespace Infinite\FormBundle\Tests\DependencyInjection;
 use Infinite\FormBundle\DependencyInjection\InfiniteFormExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class InfiniteFormExtensionTest extends \PHPUnit_Framework_TestCase
+class InfiniteFormExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContainerBuilder

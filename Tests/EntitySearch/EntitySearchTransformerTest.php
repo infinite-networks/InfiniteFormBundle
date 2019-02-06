@@ -12,7 +12,7 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformer;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 
-class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
+class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $em;
@@ -21,8 +21,8 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->em = $this->getMock('Doctrine\\Common\\Persistence\\ObjectManager');
-        $mockMetadata = $this->getMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
+        $this->em = $this->createMock('Doctrine\\Common\\Persistence\\ObjectManager');
+        $mockMetadata = $this->createMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
 
         $this->em->expects($this->any())
             ->method('getClassMetadata')
@@ -154,7 +154,7 @@ class EntitySearchTransformerTest extends \PHPUnit_Framework_TestCase
 
     private function expectsGetRepository()
     {
-        $mockRepository = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $mockRepository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
 
         $this->em->expects($this->once())
             ->method('getRepository')

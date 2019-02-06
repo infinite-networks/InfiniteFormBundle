@@ -18,7 +18,7 @@ use Infinite\FormBundle\Tests\Attachment\Attachments\InvalidFormatAttachment;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UploaderTest extends \PHPUnit_Framework_TestCase
+class UploaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Uploader

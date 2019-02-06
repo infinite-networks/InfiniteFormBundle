@@ -1,3 +1,14 @@
+2.0.1 (06/02/2019)
+
+ * Fix EntitySearchType and AttachmentType
+ * Add a new collection theme and an auto-initialize option to the collection helper JS
+
+2.0.0 (01/12/2018)
+
+ * Add support for Symfony 4
+ * Drop support for Symfony 2
+ * AttachmentType and EntitySearchType currently broken
+
 1.0.6 (05/05/2016)
 
  * Move FormTypeInterface deprecation from ResizePolyFormListener to PolyCollectionType

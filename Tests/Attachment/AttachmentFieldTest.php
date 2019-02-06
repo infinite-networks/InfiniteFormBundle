@@ -9,6 +9,7 @@
 
 namespace Infinite\FormBundle\Tests\Attachment;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Attachment\PathHelper;
 use Infinite\FormBundle\Attachment\Sanitiser;
@@ -17,10 +18,12 @@ use Infinite\FormBundle\Form\Type\AttachmentType;
 use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
+use Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
+class AttachmentFieldTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \Doctrine\ORM\EntityManager */
     private $em;
@@ -36,9 +39,14 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         // Create a test database and table
         $this->em = DoctrineTestHelper::createTestEntityManager();
 
+        $this->doctrine = $this->createMock(ManagerRegistry::class);
+        $this->doctrine->expects($this->any())
+            ->method('getManager')
+            ->will($this->returnValue($this->em));
+
         $schemaTool = new SchemaTool($this->em);
         $classes = array(
-            $this->em->getClassMetadata('Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment'),
+            $this->em->getClassMetadata(StandardAttachment::class),
         );
 
         $schemaTool->createSchema($classes);
@@ -46,7 +54,7 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         // Prepare to create forms
         $sanitiser = new Sanitiser();
         $pathHelper = new PathHelper($sanitiser, array(
-            'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment' => array(
+            StandardAttachment::class => array(
                 'dir' => sys_get_temp_dir(),
                 'format' => 'test/{name}',
             ),
@@ -54,7 +62,8 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $this->uploader = new Uploader($sanitiser, $pathHelper);
 
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addType(new AttachmentType('foobar', $this->em, $pathHelper, $this->uploader))
+            ->addType(new AttachmentType('foobar', $this->doctrine, $pathHelper, $this->uploader))
+            ->addTypeExtension(new FormTypeHttpFoundationExtension())
             ->getFormFactory();
     }
 
@@ -64,12 +73,11 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
 
         $form1->submit(array(
             'file' => $this->createFooUpload(),
-            'removed' => false,
             'meta' => null,
         ));
 
         $attachment = $form1->getData();
-        $this->assertEquals('Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment', get_class($attachment));
+        $this->assertEquals(StandardAttachment::class, get_class($attachment));
         $this->assertNull($attachment->getId());
         $view1 = $form1->createView();
 
@@ -77,7 +85,6 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $form2 = $this->makeAttachmentForm();
         $form2->submit(array(
             'file' => null,
-            'removed' => false,
             'meta' => $view1->children['meta']->vars['value'],
         ));
 
@@ -93,7 +100,6 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $form->setData($att);
         $form->submit(array(
             'file' => null,
-            'removed' => true,
             'meta' => '',
         ));
 
@@ -116,21 +122,22 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $form2 = $this->makeAttachmentForm();
         $form2->submit(array(
             'file' => null,
-            'removed' => false,
             'meta' => $view1->children['meta']->vars['value'],
         ));
 
         $attachment2 = $form2->getData();
 
-        $this->assertEquals(1, $attachment2->getId());
+        $this->assertEquals('test.txt', $attachment2->getFilename());
+        $this->assertEquals('0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33', $attachment2->getFileHash());
         $this->assertEquals(3, $attachment2->getFilesize());
+        $this->assertEquals('text/plain', $attachment2->getMimeType());
     }
 
     private function makeAttachmentForm()
     {
-        return $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\AttachmentType'), null, array(
-            'class' => 'Infinite\\FormBundle\\Tests\\Attachment\\Attachments\\StandardAttachment',
-        ));
+        return $this->factory->create(AttachmentType::class, null, [
+            'data_class' => StandardAttachment::class,
+        ]);
     }
 
     private function createFooUpload()
@@ -138,6 +145,12 @@ class AttachmentFieldTest extends \PHPUnit_Framework_TestCase
         $tempFilename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($tempFilename, 'foo');
 
-        return new UploadedFile($tempFilename, 'test.txt', 'text/plain', 3, null, true);
+        $uploadedFileClass = new \ReflectionClass(UploadedFile::class);
+
+        if ($uploadedFileClass->getConstructor()->getParameters()[3]->getName() === 'error') {
+            return new UploadedFile($tempFilename, 'test.txt', 'text/plain', null, true);
+        } else {
+            return new UploadedFile($tempFilename, 'test.txt', 'text/plain', 3, null, true);
+        }
     }
 }

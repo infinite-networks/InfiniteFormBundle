@@ -19,7 +19,7 @@ use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 
-class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
+class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface
@@ -86,7 +86,7 @@ class EntityCheckboxGridTest extends \PHPUnit_Framework_TestCase
         $this->em->flush();
 
         // This mock registry returns the real entity manager created above
-        $this->emRegistry = $emRegistry = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->emRegistry = $emRegistry = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType(new CheckboxGridType())

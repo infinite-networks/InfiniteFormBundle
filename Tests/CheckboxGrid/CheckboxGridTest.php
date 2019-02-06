@@ -15,7 +15,7 @@ use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish;
 use Symfony\Component\Form\Forms;
 
-class CheckboxGridTest extends \PHPUnit_Framework_TestCase
+class CheckboxGridTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface

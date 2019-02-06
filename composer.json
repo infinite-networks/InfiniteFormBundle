@@ -21,9 +21,6 @@
         "symfony/symfony": "^3.0|^4.0",
         "doctrine/orm": "~2.3",
         "doctrine/doctrine-bundle": "~1.2",
-        "components/qunit": "~1.11",
-        "components/jquery": "~3.1",
-        "robloach/component-installer": "^0.2",
         "symfony/phpunit-bridge": "^2.7"
     },
     "conflict": {
