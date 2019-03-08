@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultTrue()
                 ->end()
                 ->arrayNode('attachments')
+                    ->useAttributeAsKey('class')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('dir')->end()
