@@ -66,7 +66,7 @@ Attachment
 
 AttachmentType is an alternative to Symfony's built-in FileType.
 
-For more information see the [EntitySearch Documentation](Resources/doc/attachment.md).
+For more information see the [Attachment Documentation](Resources/doc/attachment.md).
 
 Twig Helper
 -----------
