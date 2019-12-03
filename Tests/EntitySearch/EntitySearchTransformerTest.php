@@ -17,7 +17,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $em;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -36,19 +36,19 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testClassRequired()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->makeTransformer(array('class' => null));
     }
 
     public function testValidClassRequired()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $this->makeTransformer(array('class' => 'Infinite\\FormBundle\\ThisClassDoesNotExist'));
     }
 
     public function testCorrectClassRequired()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\UnexpectedTypeException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\UnexpectedTypeException');
         $this->makeTransformer()->transform('omglol');
     }
 
@@ -128,7 +128,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testObjectNotFoundById()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
 
         $this->expectsGetRepository()->expects($this->once())
             ->method('find')
@@ -141,7 +141,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testObjectNotFoundByName()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
 
         $this->expectsGetRepository()->expects($this->once())
             ->method('findOneBy')

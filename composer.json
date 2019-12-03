@@ -1,34 +1,31 @@
 {
     "name": "infinite-networks/form-bundle",
-    "description": "A collection of useful form types and extensions for Symfony2",
+    "description": "A collection of useful form types and extensions for Symfony",
     "license": "MIT",
     "authors": [
         {
-            "name": "Tim Nagel",
-            "email": "t.nagel@infinite.net.au"
+            "name": "Jonathan McLean"
         }
     ],
     "support": {
         "issues": "https://github.com/infinite-networks/InfiniteFormBundle/issues"
     },
     "require": {
-        "php": ">=5.6",
-        "doctrine/common": "~2.3",
-        "symfony/framework-bundle": "^3.0|^4.0",
-        "symfony/form": "^3.0|^4.0"
+        "php": ">=7.2",
+        "doctrine/common": "^2.3",
+        "symfony/framework-bundle": "^4.0|^5.0",
+        "symfony/form": "^4.0|^5.0"
     },
     "require-dev": {
-        "symfony/symfony": "^3.0|^4.0",
-        "doctrine/orm": "~2.3",
-        "doctrine/doctrine-bundle": "~1.2",
-        "symfony/phpunit-bridge": "^2.7"
-    },
-    "conflict": {
-        "twig/twig": "<1.12"
+        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/orm": "^2.3",
+        "phpunit/phpunit": "^7.0|^8.0",
+        "symfony/phpunit-bridge": "^4.0|^5.0",
+        "twig/twig": "^2.0"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1.x-dev"
+            "dev-master": "3.0.x-dev"
         }
     },
     "autoload": {

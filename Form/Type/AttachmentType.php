@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * (c) Infinite Networks <http://www.infinite.net.au>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Infinite\FormBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -8,7 +15,6 @@ use Infinite\FormBundle\Attachment\AttachmentInterface;
 use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\DataTransformer\AttachmentTransformer;
 use Infinite\FormBundle\Attachment\PathHelper;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

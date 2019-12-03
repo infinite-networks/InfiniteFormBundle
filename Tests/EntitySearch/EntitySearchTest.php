@@ -9,13 +9,15 @@
 
 namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
 use Infinite\FormBundle\Form\Type\EntitySearchType;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class EntitySearchTest extends \PHPUnit\Framework\TestCase
@@ -23,20 +25,20 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
     /** @var EntityManager */
     private $em;
 
-    /** @var \Symfony\Component\Form\FormFactoryInterface */
+    /** @var FormFactoryInterface */
     private $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject|ManagerRegistry */
     private $emRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // Create a test database, tables and a few rows
         $this->em = DoctrineTestHelper::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = array(
-            $this->em->getClassMetadata('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit'),
+            $this->em->getClassMetadata(Fruit::class),
         );
 
         $schemaTool->createSchema($classes);
@@ -49,10 +51,10 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
 
         $this->em->flush();
 
-        $this->emRegistry = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->emRegistry = $this->createMock(ManagerRegistry::class);
         $this->emRegistry->expects($this->once())
             ->method('getManagerForClass')
-            ->with($this->equalTo('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit'))
+            ->with($this->equalTo(Fruit::class))
             ->will($this->returnValue($this->em));
 
         // Prepare to create forms
@@ -72,7 +74,7 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
         ));
 
         $fruit = $form->getData();
-        $this->assertEquals('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit', get_class($fruit));
+        $this->assertEquals(Fruit::class, get_class($fruit));
         $this->assertEquals(2, $fruit->id);
     }
 
@@ -81,20 +83,20 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
         // This happens if someone clicks on the Javascript dropdown list.
         $form = $this->makeForm();
 
-        $form->submit(array(
+        $form->submit([
             'id' => '4',
             'name' => '', // (Ignored by the transformer since the ID is available)
-        ));
+        ]);
 
         $fruit = $form->getData();
-        $this->assertEquals('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit', get_class($fruit));
+        $this->assertEquals(Fruit::class, get_class($fruit));
         $this->assertEquals('durian', $fruit->name);
     }
 
     public function testFormView()
     {
         $form = $this->makeForm();
-        $form->setData($this->em->find('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit', 6));
+        $form->setData($this->em->find(Fruit::class, 6));
         $view = $form->createView();
 
         $this->assertEquals(6, $view->vars['value']['id']);
@@ -103,9 +105,9 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
 
     private function makeForm()
     {
-        return $this->factory->createBuilder(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntitySearchType'), null, array(
+        return $this->factory->createBuilder(EntitySearchType::class, null, [
             'invalid_message' => 'Item not found',
-            'class' => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
-        ))->getForm();
+            'class' => Fruit::class,
+        ])->getForm();
     }
 }

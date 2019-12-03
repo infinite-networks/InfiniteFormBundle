@@ -10,7 +10,6 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\EventListener\ResizePolyFormListener;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,8 +28,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * objects that have a common parent, like Doctrine's single or
  * multi table inheritance strategies by registering different
  * types for each class in the inheritance tree.
- *
- * @author Tim Nagel <t.nagel@infinite.net.au>
  */
 class PolyCollectionType extends AbstractType
 {
@@ -92,12 +89,7 @@ class PolyCollectionType extends AbstractType
                 $typeOptions
             );
 
-            if (LegacyFormUtil::isFullClassNameRequired()) {
-                // SF 2.8+
-                $key = $prototype->get($options['type_name'])->getData();
-            } else {
-                $key = $type instanceof FormTypeInterface ? $type->getName() : $type;
-            }
+            $key = $prototype->get($options['type_name'])->getData();
 
             if (array_key_exists($key, $prototypes)) {
                 throw new InvalidConfigurationException(sprintf(

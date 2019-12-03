@@ -24,7 +24,7 @@ class InfiniteFormExtensionTest extends \PHPUnit\Framework\TestCase
      */
     protected $extension;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new ContainerBuilder();
         $this->extension = new InfiniteFormExtension();
@@ -85,7 +85,7 @@ class InfiniteFormExtensionTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->container->hasDefinition($id) || $this->container->hasAlias($id));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->container = null;
     }

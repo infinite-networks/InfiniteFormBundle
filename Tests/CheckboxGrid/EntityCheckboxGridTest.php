@@ -13,11 +13,11 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
 {
@@ -46,34 +46,34 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
      */
     protected $emRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // Create a test database, tables and a few rows
         $this->em = DoctrineTestHelper::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
-        $classes = array(
+        $classes = [
             $this->em->getClassMetadata('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Area'),
             $this->em->getClassMetadata('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Product'),
             $this->em->getClassMetadata('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Salesman'),
             $this->em->getClassMetadata('Infinite\FormBundle\Tests\CheckboxGrid\Entity\SalesmanProductArea'),
-        );
+        ];
 
         $schemaTool->createSchema($classes);
 
         // The area/product arrays are keyed by their IDs
-        $this->areas = array(
+        $this->areas = [
             1 => new TestEntity\Area('North side'),
             2 => new TestEntity\Area('East side'),
             3 => new TestEntity\Area('Inner north'),
             4 => new TestEntity\Area('Inner south'),
-        );
+        ];
 
-        $this->products = array(
+        $this->products = [
             1 => new TestEntity\Product('Chair'),
             2 => new TestEntity\Product('Desk'),
             3 => new TestEntity\Product('Table'),
-        );
+        ];
 
         foreach ($this->areas as $area) {
             $this->em->persist($area);
@@ -116,25 +116,25 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
 
         $salesman = new TestEntity\Salesman();
 
-        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
+        $form = $this->factory->create(SalesmanType::class, $salesman);
 
-        $form->submit(array(
+        $form->submit([
             'name' => 'John Smith',
-            'productAreas' => array(
-                1 => array(1 => '1', 2 => '1'),
-                3 => array(1 => '1'),
-                5 => array(1 => '1'), // Invalid values should be ignored
-            ),
-        ));
+            'productAreas' => [
+                1 => [1 => '1', 2 => '1'],
+                3 => [1 => '1'],
+                5 => [1 => '1'], // Invalid values should be ignored
+            ],
+        ]);
 
         $this->assertEquals(
-            array(
-                array('area' => $this->areas[1], 'product' => $this->products[1]),
-                array('area' => $this->areas[1], 'product' => $this->products[2]),
-                array('area' => $this->areas[3], 'product' => $this->products[1]),
-            ),
+            [
+                ['area' => $this->areas[1], 'product' => $this->products[1]],
+                ['area' => $this->areas[1], 'product' => $this->products[2]],
+                ['area' => $this->areas[3], 'product' => $this->products[1]],
+            ],
             $salesman->getProductAreas()->map(function (TestEntity\SalesmanProductArea $spa) {
-                return array('area' => $spa->getAreaServiced(), 'product' => $spa->getProductSold());
+                return ['area' => $spa->getAreaServiced(), 'product' => $spa->getProductSold()];
             })->toArray()
         );
     }
@@ -153,14 +153,14 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
         $salesman = new TestEntity\Salesman();
         $salesman->addProductArea($spa);
 
-        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman);
+        $form = $this->factory->create(SalesmanType::class, $salesman);
 
-        $form->submit(array(
+        $form->submit([
             'name' => 'John Smith',
-            'productAreas' => array(
-                2 => array(3 => '1'),
-            ),
-        ));
+            'productAreas' => [
+                2 => [3 => '1'],
+            ],
+        ]);
 
         $this->assertCount(1, $salesman->getProductAreas());
         $this->assertSame($spa, $salesman->getProductAreas()->first());
@@ -180,15 +180,15 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
         $spa->setAreaServiced($this->areas[1]); // North side
 
         // This should run without throwing an error
-        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), $salesman, array(
-            'product_area_options' => array(
+        $form = $this->factory->create(SalesmanType::class, $salesman, [
+            'product_area_options' => [
                 'cell_filter' => function (TestEntity\Product $x, TestEntity\Area $y) {
                     return !(
                         $x === $this->products[2] && $y === $this->areas[1]
                     );
                 },
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -198,17 +198,17 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectSpa();
 
-        $productRepo = $this->em->getRepository('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Product');
-        $areaRepo = $this->em->getRepository('Infinite\FormBundle\Tests\CheckboxGrid\Entity\Area');
+        $productRepo = $this->em->getRepository(TestEntity\Product::class);
+        $areaRepo = $this->em->getRepository(TestEntity\Area::class);
 
-        $form = $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), null, array(
-            'product_area_options' => array(
+        $form = $this->factory->create(SalesmanType::class, null, [
+            'product_area_options' => [
                 'x_query_builder' => $productRepo->createQueryBuilder('p')
                         ->where('p.name <> \'Chair\''),
                 'y_query_builder' => $areaRepo->createQueryBuilder('a')
                         ->where('a.name NOT LIKE \'Inner%\''),
-            ),
-        ));
+            ],
+        ]);
 
         $view = $form->createView();
 
@@ -235,11 +235,11 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
             ->with($this->equalTo('salesman_em'))
             ->will($this->returnValue($this->em));
 
-        $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType'), null, array(
-            'product_area_options' => array(
+        $this->factory->create(SalesmanType::class, null, [
+            'product_area_options' => [
                 'em' => 'salesman_em',
-            ),
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -248,17 +248,17 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
      */
     public function testExpectsDoctrineObject()
     {
-        $this->setExpectedException('Symfony\\Component\\OptionsResolver\\Exception\\InvalidOptionsException');
+        $this->expectException(InvalidOptionsException::class);
 
         $this->emRegistry->expects($this->once())
             ->method('getManagerForClass')
             ->with($this->equalTo('stdClass'))
             ->will($this->returnValue(null));
 
-        $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\EntityCheckboxGridType'), array(), array(
+        $this->factory->create(EntityCheckboxGridType::class, [], [
             'class' => 'stdClass',
             'x_path' => 'productSold',
             'y_path' => 'areaServiced',
-        ));
+        ]);
     }
 }

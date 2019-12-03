@@ -2,18 +2,19 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
+use Infinite\FormBundle\Tests\PolyCollection\Model\Fourth;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class FourthType extends AbstractType
 {
-    protected $dataClass = 'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\Fourth';
+    protected $dataClass = Fourth::class;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('file', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FileType'), array('required' => false));
+        $builder->add('file', FileType::class, ['required' => false]);
     }
 
     public function getBlockPrefix()

@@ -113,14 +113,14 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testTransformerExpectsArray()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
 
         $this->makeTransformer()->transform('not an array');
     }
 
     public function testReverseTransformerExpectsArray()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
 
         $this->makeTransformer()->reverseTransform('not an array');
         $this->makeTransformer()->reverseTransform(array('not a 2D array'));
@@ -128,7 +128,7 @@ class TransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testReverseTransformerExpects2DArray()
     {
-        $this->setExpectedException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
+        $this->expectException('Symfony\\Component\\Form\\Exception\\TransformationFailedException');
 
         $this->makeTransformer()->reverseTransform(array('not a 2D array'));
     }

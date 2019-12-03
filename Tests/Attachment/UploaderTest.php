@@ -30,7 +30,7 @@ class UploaderTest extends \PHPUnit\Framework\TestCase
      */
     public $pathHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $sanitiser = new Sanitiser();
 
@@ -84,7 +84,7 @@ class UploaderTest extends \PHPUnit\Framework\TestCase
 
     public function testInvalidFormatString()
     {
-        $this->setExpectedException('RuntimeException', 'Unknown name part: invalid');
+        $this->expectException('RuntimeException', 'Unknown name part: invalid');
         $this->uploadFooAttachment(new InvalidFormatAttachment());
     }
 
@@ -92,7 +92,7 @@ class UploaderTest extends \PHPUnit\Framework\TestCase
     {
         $tempFilename = tempnam(sys_get_temp_dir(), 'test');
         file_put_contents($tempFilename, 'foo');
-        $file = new UploadedFile($tempFilename, 'test.txt', 'text/plain', 3, null, true);
+        $file = new UploadedFile($tempFilename, 'test.txt', 'text/plain', null, true);
         $this->uploader->acceptUpload($file, $attachment);
 
         return $attachment;

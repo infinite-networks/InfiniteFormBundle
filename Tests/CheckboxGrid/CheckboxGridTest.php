@@ -11,7 +11,6 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish;
 use Symfony\Component\Form\Forms;
 
@@ -22,7 +21,7 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
      */
     protected $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType(new CheckboxGridType())
@@ -32,21 +31,21 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
 
     protected function makeForm($data, $options)
     {
-        return $this->factory->create(LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxGridType'), $data, $options + array(
-            'x_choices' => array(
+        return $this->factory->create(CheckboxGridType::class, $data, $options + [
+            'x_choices' => [
                 'white' => 'white',
                 'beige' => 'beige',
                 'yellow' => 'yellow',
-            ),
+            ],
             'x_path' => '[color]',
-            'y_choices' => array(
+            'y_choices' => [
                 'matte' => 'matte',
                 'satin' => 'satin',
                 'gloss' => 'gloss',
                 'high_gloss' => 'high gloss',
-            ),
+            ],
             'y_path' => '[finish]',
-        ));
+        ]);
     }
 
     /**
@@ -55,17 +54,17 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
     public function testSetData()
     {
         $form = $this->makeForm(
-            array(
-                array('color' => 'beige', 'finish' => 'matte'),
-                array('color' => 'beige', 'finish' => 'satin'),
-                array('color' => 'white', 'finish' => 'gloss'),
-                array('color' => 'yellow', 'finish' => 'gloss'),
-            ),
-            array()
+            [
+                ['color' => 'beige', 'finish' => 'matte'],
+                ['color' => 'beige', 'finish' => 'satin'],
+                ['color' => 'white', 'finish' => 'gloss'],
+                ['color' => 'yellow', 'finish' => 'gloss'],
+            ],
+            []
         );
 
         $view = $form->createView();
-        $checkboxViewData = array();
+        $checkboxViewData = [];
 
         foreach ($view as $rowView) {
             foreach ($rowView as $checkbox) {
@@ -74,12 +73,12 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals(
-            array(
-                'matte' => array('white' => false, 'beige' => true, 'yellow' => false),
-                'satin' => array('white' => false, 'beige' => true, 'yellow' => false),
-                'gloss' => array('white' => true, 'beige' => false, 'yellow' => true),
-                'high_gloss' => array('white' => false, 'beige' => false, 'yellow' => false),
-            ),
+            [
+                'matte' => ['white' => false, 'beige' => true, 'yellow' => false],
+                'satin' => ['white' => false, 'beige' => true, 'yellow' => false],
+                'gloss' => ['white' => true, 'beige' => false, 'yellow' => true],
+                'high_gloss' => ['white' => false, 'beige' => false, 'yellow' => false],
+            ],
             $checkboxViewData
         );
     }
@@ -89,22 +88,22 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
      */
     public function testBind()
     {
-        $form = $this->makeForm(array(), array());
+        $form = $this->makeForm([], []);
 
-        $form->submit(array(
-            'satin' => array('beige' => '1'),
-            'gloss' => array('yellow' => '1', 'white' => '1'),
-            'matte' => array('beige' => '1'),
-            'invalid' => array('invalid' => '1'), // Invalid values should be ignored
-        ));
+        $form->submit([
+            'satin' => ['beige' => '1'],
+            'gloss' => ['yellow' => '1', 'white' => '1'],
+            'matte' => ['beige' => '1'],
+            'invalid' => ['invalid' => '1'], // Invalid values should be ignored
+        ]);
 
         $this->assertEquals(
-            array(
-                array('color' => 'beige', 'finish' => 'matte'),
-                array('color' => 'beige', 'finish' => 'satin'),
-                array('color' => 'white', 'finish' => 'gloss'),
-                array('color' => 'yellow', 'finish' => 'gloss'),
-            ),
+            [
+                ['color' => 'beige', 'finish' => 'matte'],
+                ['color' => 'beige', 'finish' => 'satin'],
+                ['color' => 'white', 'finish' => 'gloss'],
+                ['color' => 'yellow', 'finish' => 'gloss'],
+            ],
             $form->getData()
         );
     }
@@ -114,14 +113,14 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
      */
     public function testCellFilter()
     {
-        $form = $this->makeForm(array(), array(
+        $form = $this->makeForm([], [
             'cell_filter' => function ($x, $y) {
                 return !(
                     $x == 'beige' && $y == 'gloss' ||
                     $x == 'white' && $y == 'high_gloss'
                 );
             },
-        ));
+        ]);
 
         $view = $form->createView();
 
@@ -145,17 +144,17 @@ class CheckboxGridTest extends \PHPUnit\Framework\TestCase
     {
         $originalObject = new ColorFinish('white', 'satin');
 
-        $initial = array($originalObject);
+        $initial = [$originalObject];
 
-        $form = $this->makeForm($initial, array(
-            'class' => 'Infinite\FormBundle\Tests\CheckboxGrid\Model\ColorFinish',
+        $form = $this->makeForm($initial, [
+            'class' => ColorFinish::class,
             'x_path' => 'color',
             'y_path' => 'finish',
-        ));
+        ]);
 
-        $form->submit(array(
-            'satin' => array('white' => '1'),
-        ));
+        $form->submit([
+            'satin' => ['white' => '1'],
+        ]);
 
         $data = $form->getData();
 

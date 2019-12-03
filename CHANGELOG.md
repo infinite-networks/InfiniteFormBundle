@@ -1,3 +1,8 @@
+3.0.0 (04/12/2019)
+
+ * Add support for Symfony 5
+ * Drop support for Symfony 3
+
 2.0.1 (06/02/2019)
 
  * Fix EntitySearchType and AttachmentType

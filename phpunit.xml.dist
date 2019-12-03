@@ -8,8 +8,7 @@
      convertNoticesToExceptions  = "true"
      convertWarningsToExceptions = "true"
      processIsolation            = "false"
-     stopOnFailure               = "false"
-     syntaxCheck                 = "false">
+     stopOnFailure               = "false">
     <php>
         <ini name="xdebug.max_nesting_level" value="200" />
     </php>

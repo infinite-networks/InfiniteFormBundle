@@ -18,7 +18,7 @@ class SanitiserTest extends \PHPUnit\Framework\TestCase
      */
     public $sanitiser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->sanitiser = new Sanitiser();
     }

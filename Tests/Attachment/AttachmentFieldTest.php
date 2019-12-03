@@ -15,7 +15,6 @@ use Infinite\FormBundle\Attachment\PathHelper;
 use Infinite\FormBundle\Attachment\Sanitiser;
 use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\Type\AttachmentType;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
@@ -34,7 +33,7 @@ class AttachmentFieldTest extends \PHPUnit\Framework\TestCase
     /** @var Uploader */
     private $uploader;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         // Create a test database and table
         $this->em = DoctrineTestHelper::createTestEntityManager();

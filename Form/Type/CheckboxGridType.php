@@ -11,21 +11,17 @@ namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\DataTransformer\CheckboxGridTransformer;
 use Infinite\FormBundle\Form\Util\ChoiceListViewAdapter;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
 use Symfony\Component\Form\ChoiceList\View\ChoiceListView;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface as LegacyChoiceListInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -39,30 +35,19 @@ class CheckboxGridType extends AbstractType
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
-        /** @var ChoiceListInterface|LegacyChoiceListInterface $yChoiceList */
+        /** @var ChoiceListInterface $yChoiceList */
         $yChoiceList = $options['y_choice_list'];
 
-        if ($yChoiceList instanceof LegacyChoiceListInterface) {
-            // LegacyChoiceList is repsonsible for providing labels.
-            foreach ($yChoiceList->getRemainingViews() as $view) {
-                $labelBase = $view->label;
-                $value = $view->value;
-                $choice = $view->data;
+        foreach ($yChoiceList->getChoices() as $value => $choice) {
+            // The $choice object itself can be used as a label if it has __toString or a label path
+            $labelBase = $choice;
 
-                $this->buildRow($builder, $options, $choice, $labelBase, $accessor, $value);
+            // Although if we're using y_choices then look up the label there.
+            if ($options['y_choices'] !== null && array_key_exists($choice, $options['y_choices'])) {
+                $labelBase = $options['y_choices'][$choice];
             }
-        } else {
-            foreach ($yChoiceList->getChoices() as $value => $choice) {
-                // The $choice object itself can be used as a label if it has __toString or a label path
-                $labelBase = $choice;
 
-                // Although if we're using y_choices then look up the label there.
-                if ($options['y_choices'] !== null && array_key_exists($choice, $options['y_choices'])) {
-                    $labelBase = $options['y_choices'][$choice];
-                }
-
-                $this->buildRow($builder, $options, $choice, $labelBase, $accessor, $value);
-            }
+            $this->buildRow($builder, $options, $choice, $labelBase, $accessor, $value);
         }
 
         $builder->addViewTransformer(new CheckboxGridTransformer($options));
@@ -86,7 +71,7 @@ class CheckboxGridType extends AbstractType
             'row_label' => $options['y_label_path'] === null ? $labelBase : $accessor->getValue($choice, $options['y_label_path']),
         );
 
-        $builder->add($value, LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxRowType'), $rowOptions);
+        $builder->add($value, CheckboxRowType::class, $rowOptions);
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
@@ -106,16 +91,11 @@ class CheckboxGridType extends AbstractType
                 throw new InvalidOptionsException('You must provide the x_choices option.');
             }
 
-            // SF 2.7+: choice lists are not responsible for labels.
+            // Choice lists are not responsible for labels.
             // Strip the labels until we build the choice view later.
-            if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-                return new ArrayChoiceList(array_keys($options['x_choices']), function ($choice) {
-                    return $choice;
-                });
-            }
-
-            // BC < SF 2.7
-            return new SimpleChoiceList($options['x_choices']);
+            return new ArrayChoiceList(array_keys($options['x_choices']), function ($choice) {
+                return $choice;
+            });
         };
 
         $defaultYChoiceList = function (Options $options) {
@@ -123,16 +103,10 @@ class CheckboxGridType extends AbstractType
                 throw new InvalidOptionsException('You must provide the y_choices option.');
             }
 
-            // SF 2.7+: choice lists are not responsible for labels.
-            // Strip the labels for now and look them up later.
-            if (class_exists('Symfony\Component\Form\ChoiceList\ArrayChoiceList')) {
-                return new ArrayChoiceList(array_keys($options['y_choices']), function ($choice) {
-                    return $choice;
-                });
-            }
-
-            // BC < SF 2.7
-            return new SimpleChoiceList($options['y_choices']);
+            // Choice lists are not responsible for labels.
+            return new ArrayChoiceList(array_keys($options['y_choices']), function ($choice) {
+                return $choice;
+            });
         };
 
         $resolver->setDefaults(array(
@@ -154,32 +128,15 @@ class CheckboxGridType extends AbstractType
         ));
     }
 
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    // BC for SF < 2.8
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
     /**
-     * @param ChoiceListInterface|LegacyChoiceListInterface $choiceList
+     * @param ChoiceListInterface $choiceList
      * @param array|null                                    $originalChoices
      * @param string|PropertyPath|null                      $labelPath
      *
-     * @return ChoiceListView|LegacyChoiceListInterface
+     * @return ChoiceListView
      */
     protected function buildChoiceListView($choiceList, $originalChoices, $labelPath)
     {
-        // BC for SF < 2.7
-        if ($choiceList instanceof LegacyChoiceListInterface) {
-            return $choiceList;
-        }
-
         // Build the choice list view the usual way.
         $accessor = PropertyAccess::createPropertyAccessor();
 

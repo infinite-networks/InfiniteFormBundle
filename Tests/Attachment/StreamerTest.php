@@ -27,7 +27,7 @@ class StreamerTest extends \PHPUnit\Framework\TestCase
      */
     public $pathHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $sanitiser = new Sanitiser();
 

@@ -11,14 +11,12 @@ namespace Infinite\FormBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Form\Util\LegacyChoiceListUtil;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\ORMQueryBuilderLoader;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Provides a checkbox grid for Doctrine entities.
@@ -39,8 +37,7 @@ class EntityCheckboxGridType extends AbstractType
 
     public function getParent()
     {
-        // BC for SF < 2.8
-        return LegacyFormUtil::getType('Infinite\FormBundle\Form\Type\CheckboxGridType');
+        return CheckboxGridType::class;
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -55,7 +52,7 @@ class EntityCheckboxGridType extends AbstractType
 
         $defaultXLoader = function (Options $options) {
             if ($options['x_query_builder'] !== null) {
-                return new ORMQueryBuilderLoader($options['x_query_builder'], $options['em'], $options['x_class']);
+                return new ORMQueryBuilderLoader($options['x_query_builder']);
             }
 
             return null;
@@ -81,7 +78,7 @@ class EntityCheckboxGridType extends AbstractType
 
         $defaultYLoader = function (Options $options) {
             if ($options['y_query_builder'] !== null) {
-                return new ORMQueryBuilderLoader($options['y_query_builder'], $options['em'], $options['y_class']);
+                return new ORMQueryBuilderLoader($options['y_query_builder']);
             }
 
             return null;
@@ -155,26 +152,7 @@ class EntityCheckboxGridType extends AbstractType
             'y_path',
         ));
 
-        // OptionsResolver 2.6+
-        if (method_exists($resolver, 'setNormalizer')) {
-            $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
-        } else {
-            $resolver->setNormalizers(array(
-                'em' => $this->getEntityManagerNormalizer(),
-            ));
-        }
-    }
-
-    // BC for SF < 2.7
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    // BC for SF < 2.8
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        $resolver->setNormalizer('em', $this->getEntityManagerNormalizer());
     }
 
     private function getEntityManagerNormalizer()

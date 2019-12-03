@@ -11,7 +11,6 @@ namespace Infinite\FormBundle\Form\Util;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\DoctrineChoiceLoader;
-use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use Symfony\Bridge\Doctrine\Form\ChoiceList\EntityLoaderInterface;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
@@ -29,50 +28,20 @@ final class LegacyChoiceListUtil
      * @param EntityLoaderInterface|null $loader
      * @param callable                   $valueCallback
      *
-     * @return ChoiceListInterface|EntityChoiceList
+     * @return ChoiceListInterface
      */
     public static function createEntityChoiceList(
         EntityManager $em,
         $class,
         $labelPath,
-        EntityLoaderInterface $loader = null,
+        ?EntityLoaderInterface $loader,
         $valueCallback
     ) {
-        if (class_exists('Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory')) {
-            // The constructor's arguments changed in 3.1.
-            // If the first argument's name is "factory" then it's the older version.
+        $factory = new PropertyAccessDecorator(new DefaultChoiceListFactory());
 
-            $factory = new PropertyAccessDecorator(new DefaultChoiceListFactory());
-            $refl = new \ReflectionClass('Symfony\Bridge\Doctrine\Form\ChoiceList\DoctrineChoiceLoader');
-            $constructor = $refl->getConstructor();
-
-            if ($constructor->getParameters()[0]->getName() == 'factory') {
-                // BC < 3.1
-                return $factory->createListFromLoader(
-                    new DoctrineChoiceLoader(
-                        $factory,
-                        $em,
-                        $class,
-                        null,
-                        $loader
-                    ),
-                    $valueCallback
-                );
-            }
-
-            // 3.1+
-            return $factory->createListFromLoader(
-                new DoctrineChoiceLoader($em, $class, null, $loader),
-                $valueCallback
-            );
-        }
-
-        // Older BC
-        return new EntityChoiceList(
-            $em,
-            $class,
-            $labelPath,
-            $loader
+        return $factory->createListFromLoader(
+            new DoctrineChoiceLoader($em, $class, null, $loader),
+            $valueCallback
         );
     }
 

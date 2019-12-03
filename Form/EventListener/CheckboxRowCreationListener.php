@@ -10,9 +10,8 @@
 namespace Infinite\FormBundle\Form\EventListener;
 
 use Infinite\FormBundle\Form\DataTransformer\AnythingToBooleanTransformer;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
-use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface as LegacyChoiceListInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -60,18 +59,8 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
 
         // Now that we have data available, create the checkboxes for the form. For every box that should
         // be checked, attach a transformer that will convert between its data object and a boolean.
-
-        /** @var ChoiceListInterface|LegacyChoiceListInterface $yChoiceList */
-        $choiceList = $options['choice_list'];
-
-        if ($choiceList instanceof LegacyChoiceListInterface) {
-            foreach ($choiceList->getRemainingViews() as $view) {
-                $this->addCheckbox($options, $view->data, $form, $view->value, $data);
-            }
-        } else {
-            foreach ($options['choice_list']->getChoices() as $value => $choice) {
-                $this->addCheckbox($options, $choice, $form, $value, $data);
-            }
+        foreach ($options['choice_list']->getChoices() as $value => $choice) {
+            $this->addCheckbox($options, $choice, $form, $value, $data);
         }
     }
 
@@ -86,9 +75,9 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
     {
         if (isset($options['cell_filter']) && !$options['cell_filter']($choice, $options['row'])) {
             // Blank cell - put a dummy form control here
-            $formType = LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\FormType');
+            $formType = FormType::class;
         } else {
-            $formType = LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\CheckboxType');
+            $formType = CheckboxType::class;
         }
 
         $builder = $this->factory->createNamedBuilder(

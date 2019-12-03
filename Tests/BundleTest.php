@@ -16,5 +16,6 @@ class BundleTest extends \PHPUnit\Framework\TestCase
     public function testCreateBundle()
     {
         new InfiniteFormBundle();
+        $this->assertTrue(true);
     }
 }

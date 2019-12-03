@@ -9,32 +9,34 @@
 
 namespace Infinite\FormBundle\Tests\FormExtension;
 
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Infinite\FormBundle\Twig\FormExtension;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Forms;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class FormExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var FormFactory */
     private $formFactory;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->formFactory = Forms::createFormFactory();
     }
 
     public function testInvalidTest()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Array(array('template' => '{{ form is invalid ? 1 : 0 }}')));
+        $twig = new Environment(new ArrayLoader(['template' => '{{ form is invalid ? 1 : 0 }}']));
         $twig->addExtension(new FormExtension());
 
-        $formWithError = $this->formFactory->create(LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
+        $formWithError = $this->formFactory->create(TextType::class);
         $formWithError->addError(new FormError('test error'));
-        $this->assertEquals('1', $twig->render('template', array('form' => $formWithError->createView())));
+        $this->assertEquals('1', $twig->render('template', ['form' => $formWithError->createView()]));
 
-        $formWithoutError = $this->formFactory->create(LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'));
-        $this->assertEquals('0', $twig->render('template', array('form' => $formWithoutError->createView())));
+        $formWithoutError = $this->formFactory->create(TextType::class);
+        $this->assertEquals('0', $twig->render('template', ['form' => $formWithoutError->createView()]));
     }
 }

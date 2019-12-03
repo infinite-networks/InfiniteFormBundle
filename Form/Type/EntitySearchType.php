@@ -3,13 +3,13 @@
 namespace Infinite\FormBundle\Form\Type;
 
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EntitySearchType extends AbstractType
 {
@@ -26,8 +26,8 @@ class EntitySearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\HiddenType'))
-            ->add('name', LegacyFormUtil::getType('Symfony\Component\Form\Extension\Core\Type\TextType'), array('required' => $options['required']))
+            ->add('id', HiddenType::class)
+            ->add('name', TextType::class, ['required' => $options['required']])
             ->setAttribute('search_route', $options['search_route'])
             ->addModelTransformer($this->transformerFactory->createFromOptions($options))
         ;
@@ -45,16 +45,16 @@ class EntitySearchType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'allow_not_found' => false,
             'error_bubbling' => false,
             'invalid_message' => 'Item not found',
             'name' => null,
             'search_route' => null,
-        ));
+        ]);
 
-        $resolver->setRequired(array(
+        $resolver->setRequired([
             'class',
-        ));
+        ]);
     }
 }

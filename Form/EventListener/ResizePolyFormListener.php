@@ -10,7 +10,6 @@
 namespace Infinite\FormBundle\Form\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
-use Infinite\FormBundle\Form\Util\LegacyFormUtil;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\FormEvent;
@@ -90,8 +89,8 @@ class ResizePolyFormListener extends ResizeFormListener
                 $defaultType = $type;
             }
 
-            $this->typeMap[$key] = $type;
-            $this->classMap[$modelClass] = $type;
+            $this->typeMap[$key] = get_class($type);
+            $this->classMap[$modelClass] = get_class($type);
         }
 
         parent::__construct(get_class($defaultType), $options, $allowAdd, $allowDelete);
@@ -115,7 +114,7 @@ class ResizePolyFormListener extends ResizeFormListener
             $type = $this->classMap[$class];
         }
 
-        return LegacyFormUtil::getType($type);
+        return $type;
     }
 
     /**
@@ -134,7 +133,7 @@ class ResizePolyFormListener extends ResizeFormListener
             throw new \InvalidArgumentException('Unable to determine the Type for given data');
         }
 
-        return LegacyFormUtil::getType($this->typeMap[$data[$this->typeFieldName]]);
+        return $this->typeMap[$data[$this->typeFieldName]];
     }
 
     protected function getOptionsForType($type)
