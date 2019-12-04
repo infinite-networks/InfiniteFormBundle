@@ -10,19 +10,20 @@
 namespace Infinite\FormBundle\Twig;
 
 use Symfony\Component\Form\FormView;
-use Twig_Extension;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigTest;
 
 /**
  * Adds a helper function to determine if a form has errors.
  *
  * @author Tim Nagel <t.nagel@infinite.net.au>
  */
-class FormExtension extends Twig_Extension
+class FormExtension extends AbstractExtension
 {
     public function getTests()
     {
         return array(
-            new \Twig_SimpleTest('invalid', array($this, 'hasErrors')),
+            new TwigTest('invalid', array($this, 'hasErrors')),
         );
     }
 
@@ -36,10 +37,5 @@ class FormExtension extends Twig_Extension
     public function hasErrors(FormView $form)
     {
         return array_key_exists('errors', $form->vars) and count($form->vars['errors']);
-    }
-
-    public function getName()
-    {
-        return 'infinite_form';
     }
 }
