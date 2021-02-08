@@ -9,13 +9,13 @@
 
 namespace Infinite\FormBundle\Tests\Attachment;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Attachment\PathHelper;
 use Infinite\FormBundle\Attachment\Sanitiser;
 use Infinite\FormBundle\Attachment\Uploader;
 use Infinite\FormBundle\Form\Type\AttachmentType;
 use Infinite\FormBundle\Tests\Attachment\Attachments\StandardAttachment;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension;

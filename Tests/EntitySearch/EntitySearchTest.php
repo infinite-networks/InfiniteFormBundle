@@ -9,13 +9,13 @@
 
 namespace Infinite\FormBundle\Tests\CheckboxGrid;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
 use Infinite\FormBundle\Form\Type\EntitySearchType;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;

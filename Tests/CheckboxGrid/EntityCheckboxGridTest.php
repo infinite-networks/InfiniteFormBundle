@@ -86,7 +86,7 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
         $this->em->flush();
 
         // This mock registry returns the real entity manager created above
-        $this->emRegistry = $emRegistry = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->emRegistry = $emRegistry = $this->createMock('Symfony\\Bridge\\Doctrine\\ManagerRegistry');
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType(new CheckboxGridType())

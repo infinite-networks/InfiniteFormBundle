@@ -1,7 +1,5 @@
-components
-composer.phar
-composer.lock
-phpunit.xml
-vendor
-cache.properties
-.phpunit.result.cache
+/composer.phar
+/composer.lock
+/phpunit.xml
+/vendor
+/.phpunit.result.cache

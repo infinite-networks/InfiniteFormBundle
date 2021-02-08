@@ -75,15 +75,15 @@ class StreamerTest extends \PHPUnit\Framework\TestCase
         $attachment = $this->makeFooAttachment();
         $stream = $this->streamer->stream($attachment, $normalRequest);
         $stream->prepare($normalRequest);
-        $this->assertRegExp('/^inline/', $stream->headers->get('Content-Disposition'));
+        $this->assertMatchesRegularExpression('/^inline/', $stream->headers->get('Content-Disposition'));
 
         // text/html is unsafe for inline display
         $attachment->setMimeType('text/html');
-        $this->assertRegExp('/^attachment/', $this->streamer->stream($attachment, $normalRequest)->headers->get('Content-Disposition'));
+        $this->assertMatchesRegularExpression('/^attachment/', $this->streamer->stream($attachment, $normalRequest)->headers->get('Content-Disposition'));
 
         // Old IE versions try to sniff the MIME type, which is unsafe for inline display
         $attachment->setMimeType('text/plain');
-        $this->assertRegExp('/^attachment/', $this->streamer->stream($attachment, $oldIERequest)->headers->get('Content-Disposition'));
+        $this->assertMatchesRegularExpression('/^attachment/', $this->streamer->stream($attachment, $oldIERequest)->headers->get('Content-Disposition'));
     }
 
     private function makeFooAttachment($mime = 'text/plain')

@@ -21,8 +21,8 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->em = $this->createMock('Doctrine\\Common\\Persistence\\ObjectManager');
-        $mockMetadata = $this->createMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata');
+        $this->em = $this->createMock('Doctrine\\ORM\\EntityManager');
+        $mockMetadata = $this->createMock('Doctrine\\Persistence\\Mapping\\ClassMetadata');
 
         $this->em->expects($this->any())
             ->method('getClassMetadata')
@@ -154,7 +154,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 
     private function expectsGetRepository()
     {
-        $mockRepository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $mockRepository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
 
         $this->em->expects($this->once())
             ->method('getRepository')

@@ -2,7 +2,7 @@
 
 namespace Infinite\FormBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -17,7 +17,7 @@ class EntitySearchTransformer implements DataTransformerInterface
     private $accessor;
     private $allowNotFound = false;
 
-    public function __construct(ObjectManager $om, array $options)
+    public function __construct(EntityManager $om, array $options)
     {
         $this->om = $om;
 

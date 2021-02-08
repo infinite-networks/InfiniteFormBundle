@@ -59,7 +59,7 @@ class UploaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3, $attachment1->getFileSize());
         $this->assertEquals('text/plain', $attachment1->getMimeType());
         $this->assertEquals('0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33', $attachment1->getFileHash());
-        $this->assertRegExp('#^test/0bee/test(_\d*)?.txt$#', $attachment1->getPhysicalName());
+        $this->assertMatchesRegularExpression('#^test/0bee/test(_\d*)?.txt$#', $attachment1->getPhysicalName());
     }
 
     public function testAcceptUploadWithRename()

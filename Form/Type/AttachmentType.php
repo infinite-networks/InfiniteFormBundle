@@ -9,12 +9,10 @@
 
 namespace Infinite\FormBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use Infinite\FormBundle\Attachment\AttachmentInterface;
 use Infinite\FormBundle\Attachment\Uploader;
-use Infinite\FormBundle\Form\DataTransformer\AttachmentTransformer;
 use Infinite\FormBundle\Attachment\PathHelper;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -26,13 +24,13 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AttachmentType extends AbstractType
 {
     protected $defaultSecret;
     protected $doctrine;
     protected $pathHelper;
+    protected $uploader;
 
     public function __construct($secret, ManagerRegistry $doctrine, PathHelper $pathHelper, Uploader $uploader)
     {

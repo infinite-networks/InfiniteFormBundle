@@ -2,7 +2,7 @@
 
 namespace Infinite\FormBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 /**
  * A quick class to create EntitySearchTransformers from options.
