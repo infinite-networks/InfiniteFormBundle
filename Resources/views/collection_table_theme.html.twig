@@ -38,20 +38,20 @@ file that was distributed with this source code.
         </tr></thead>
         <tbody class="items">
         {%- for form in collectionForm -%}
-            {{ block('collection_entry_row') }}
+            {{ block('collection_item') }}
         {%- endfor -%}
         </tbody>
         {% if allow_add %}
             {% set form = prototype %}
             <tbody><tr>
                 <td colspan="{{ form.vars.compound ? form|length : 1 }}"></td>
-                <td><button class="btn btn-success add_item" type="button" data-prototype="{{ block('collection_entry_row') | escape }}">Add</button></td>
+                <td><button class="btn btn-success add_item" type="button" data-prototype="{{ block('collection_item') | escape }}">Add</button></td>
             </tr></tbody>
         {% endif %}
     </table>
 {% endblock %}
 
-{% block collection_entry_row -%}
+{% block collection_item -%}
     <tr class="item">
         {% if form.vars.compound %}
             {% for field in form %}
