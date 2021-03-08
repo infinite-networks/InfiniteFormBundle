@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Infinite\FormBundle\Tests\CheckboxGrid;
+namespace Infinite\FormBundle\Tests\EntitySearch;
 
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformer;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
