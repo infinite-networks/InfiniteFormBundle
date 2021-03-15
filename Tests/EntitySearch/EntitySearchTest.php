@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Infinite\FormBundle\Tests\CheckboxGrid;
+namespace Infinite\FormBundle\Tests\EntitySearch;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
