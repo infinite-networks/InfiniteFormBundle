@@ -13,9 +13,9 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\Type\CheckboxGridType;
 use Infinite\FormBundle\Form\Type\CheckboxRowType;
 use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
+use Infinite\FormBundle\Tests\BundleTest;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
-use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
@@ -49,7 +49,7 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         // Create a test database, tables and a few rows
-        $this->em = DoctrineTestHelper::createTestEntityManager();
+        $this->em = BundleTest::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = [
