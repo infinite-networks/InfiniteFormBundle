@@ -13,10 +13,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\SchemaTool;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory;
 use Infinite\FormBundle\Form\Type\EntitySearchType;
+use Infinite\FormBundle\Tests\BundleTest;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
@@ -34,7 +34,7 @@ class EntitySearchTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         // Create a test database, tables and a few rows
-        $this->em = DoctrineTestHelper::createTestEntityManager();
+        $this->em = BundleTest::createTestEntityManager();
 
         $schemaTool = new SchemaTool($this->em);
         $classes = array(

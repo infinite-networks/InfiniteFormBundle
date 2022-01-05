@@ -3,6 +3,7 @@
 namespace Infinite\FormBundle\Attachment;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Streamer
