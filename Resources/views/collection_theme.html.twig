@@ -15,7 +15,7 @@ of the collection.js helper.
 #}
 
 {% block collection_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% set attr = attr|merge({
         'data-form-widget': 'collection',
     }) %}
@@ -29,5 +29,5 @@ of the collection.js helper.
     {% if prototype is defined %}
         <a class="btn" data-prototype="{{ form_row(prototype) | escape }}"><i class="icon-plus"></i> Add</a>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock collection_widget %}
