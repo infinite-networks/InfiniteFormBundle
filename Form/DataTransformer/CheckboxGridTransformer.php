@@ -44,6 +44,9 @@ class CheckboxGridTransformer implements DataTransformerInterface
         $this->class = $options['class'];
     }
 
+    /**
+     * @return mixed
+     */
     public function transform($value)
     {
         if ($value === null) {
@@ -77,6 +80,9 @@ class CheckboxGridTransformer implements DataTransformerInterface
         return $vals;
     }
 
+    /**
+     * @return mixed
+     */
     public function reverseTransform($value)
     {
         if (!is_array($value)) {

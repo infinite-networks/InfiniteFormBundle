@@ -23,11 +23,14 @@ class AnythingToBooleanTransformer implements DataTransformerInterface
         $this->anythingValue = $anythingValue;
     }
 
-    public function transform($value)
+    public function transform($value): bool
     {
         return $value !== null;
     }
 
+    /**
+     * @return mixed
+     */
     public function reverseTransform($value)
     {
         return empty($value) ? null : $this->anythingValue;

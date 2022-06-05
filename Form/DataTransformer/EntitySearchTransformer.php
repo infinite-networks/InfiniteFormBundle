@@ -50,7 +50,7 @@ class EntitySearchTransformer implements DataTransformerInterface
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    public function transform($object)
+    public function transform($object): ?array
     {
         if ($object === null) {
             return null;
@@ -66,6 +66,9 @@ class EntitySearchTransformer implements DataTransformerInterface
         );
     }
 
+    /**
+     * @return mixed
+     */
     public function reverseTransform($value)
     {
         if (!isset($value['id'])) {

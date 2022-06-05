@@ -79,7 +79,7 @@ class CheckboxGridType extends AbstractType
         $view->vars['headers'] = $this->buildChoiceListView($options['x_choice_list'], $options['x_choices'], $options['x_label_path']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'infinite_form_checkbox_grid';
     }

@@ -17,7 +17,7 @@ class EntitySearchTransformerFactory
         $this->registry = $registry;
     }
 
-    public function createFromOptions($options)
+    public function createFromOptions($options): EntitySearchTransformer
     {
         $manager = $this->registry->getManagerForClass($options['class']);
 

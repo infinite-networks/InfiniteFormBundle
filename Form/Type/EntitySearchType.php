@@ -38,7 +38,7 @@ class EntitySearchType extends AbstractType
         $view->vars['search_route'] = $form->getConfig()->getAttribute('search_route');
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'infinite_form_entity_search';
     }

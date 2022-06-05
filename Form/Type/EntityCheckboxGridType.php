@@ -30,12 +30,12 @@ class EntityCheckboxGridType extends AbstractType
         $this->registry = $registry;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'infinite_form_entity_checkbox_grid';
     }
 
-    public function getParent()
+    public function getParent(): string
     {
         return CheckboxGridType::class;
     }

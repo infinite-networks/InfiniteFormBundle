@@ -39,7 +39,7 @@ class CheckboxRowCreationListener implements EventSubscriberInterface
         $this->factory = $factory;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',

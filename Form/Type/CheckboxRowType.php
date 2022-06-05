@@ -30,7 +30,7 @@ class CheckboxRowType extends AbstractType
         $view->vars['label'] = $options['row_label'];
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'infinite_form_checkbox_row';
     }
