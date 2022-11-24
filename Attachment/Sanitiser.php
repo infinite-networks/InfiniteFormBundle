@@ -44,4 +44,18 @@ class Sanitiser
 
         return $mime;
     }
+
+    function applyMaxLength($filename, $maxLength)
+    {
+        if (!preg_match('~^(.*?)([^/]+?)((\.[^/.]*?)?)$~', $filename, $matches)) {
+            return substr($filename, 0, $maxLength);
+        }
+        list(, $path, $basename, $ext) = $matches;
+
+        if (strlen($path) + strlen($ext) >= $maxLength) {
+            return substr($filename, 0, $maxLength);
+        }
+
+        return $path . substr($basename, 0, $maxLength - strlen($path) - strlen($ext)) . $ext;
+    }
 }

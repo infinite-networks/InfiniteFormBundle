@@ -25,8 +25,8 @@ class Uploader
     public function acceptUpload(UploadedFile $file, AttachmentInterface $attachment)
     {
         $hash = sha1_file($file->getPathname());
-        $name = $this->pathHelper->getName($file, $attachment, $hash);
-        $filename = $this->sanitiser->sanitiseFilename($file->getClientOriginalName());
+        $name = $this->sanitiser->applyMaxLength($this->pathHelper->getName($file, $attachment, $hash), 100);
+        $filename = $this->sanitiser->applyMaxLength($this->sanitiser->sanitiseFilename($file->getClientOriginalName()), 100);
         $mimeType = $this->sanitiser->sanitiseMimeType($file->getMimeType());
 
         $attachment->setFilename($filename);
