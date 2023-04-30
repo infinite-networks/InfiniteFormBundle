@@ -14,6 +14,7 @@ abstract class Attachment implements AttachmentInterface
      *
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 100)]
     protected $filename;
 
     /**
@@ -21,6 +22,7 @@ abstract class Attachment implements AttachmentInterface
      *
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 40)]
     protected $fileHash;
 
     /**
@@ -28,6 +30,7 @@ abstract class Attachment implements AttachmentInterface
      *
      * @var int
      */
+    #[ORM\Column(type: 'integer')]
     protected $fileSize;
 
     /**
@@ -35,6 +38,7 @@ abstract class Attachment implements AttachmentInterface
      *
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 100)]
     protected $mimeType;
 
     /**
@@ -42,6 +46,7 @@ abstract class Attachment implements AttachmentInterface
      *
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 100)]
     protected $physicalName;
 
     /**
