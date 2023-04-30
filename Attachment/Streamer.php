@@ -53,7 +53,7 @@ class Streamer
             // Unless it's Internet Explorer prior to version 8, which can try
             // to guess the MIME type (dangerous!). A user-agent check is the
             // only real option here.
-            $userAgent = $request->headers->get('User-Agent');
+            $userAgent = $request->headers->get('User-Agent', '');
             if (preg_match('/MSIE [1-7]\./', $userAgent) && !preg_match('/\) Opera/', $userAgent)) {
                 $disposition = 'attachment';
             }

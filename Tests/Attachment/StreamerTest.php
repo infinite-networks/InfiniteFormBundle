@@ -41,10 +41,10 @@ class StreamerTest extends \PHPUnit\Framework\TestCase
         $this->streamer = new Streamer($sanitiser, $this->pathHelper);
     }
 
-    public function testStreamerNonExistantFile()
+    public function testStreamerNonExistentFile()
     {
         $attachment = new StandardAttachment();
-        $attachment->setPhysicalName('/non/existant/path.txt');
+        $attachment->setPhysicalName('/non/existent/path.txt');
 
         $response = $this->streamer->stream($attachment);
         $this->assertInstanceOf('Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException', $response);

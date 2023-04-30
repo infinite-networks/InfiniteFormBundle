@@ -38,7 +38,7 @@ class Sanitiser
     public function sanitiseMimeType($mime)
     {
         // Mime types are foo/bar, where foo and bar can contain anything except 00 to 20 and ()<>@,::\"/[]?=
-        if (!preg_match('/^[!#$%&\'*+\-.0-9A-Z\^_`a-z\{|\}~]+\/[!#$%&\'*+\-.0-9A-Z\^_`a-z\{|\}~]+$/', $mime)) {
+        if (!preg_match('/^[!#$%&\'*+\-.0-9A-Z\^_`a-z\{|\}~]+\/[!#$%&\'*+\-.0-9A-Z\^_`a-z\{|\}~]+$/', $mime ?? '')) {
             return 'application/octet-stream';
         }
 

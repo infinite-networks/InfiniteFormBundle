@@ -20,7 +20,7 @@ use Twig\TwigTest;
  */
 class FormExtension extends AbstractExtension
 {
-    public function getTests()
+    public function getTests(): array
     {
         return array(
             new TwigTest('invalid', array($this, 'hasErrors')),
