@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Uploader
 {
+    private $pathHelper;
     private $sanitiser;
 
     public function __construct(Sanitiser $sanitiser, PathHelper $pathHelper)
