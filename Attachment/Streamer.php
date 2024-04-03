@@ -24,6 +24,11 @@ class Streamer
     );
 
     /**
+     * @var PathHelper
+     */
+    private $pathHelper;
+
+    /**
      * @var Sanitiser
      */
     private $sanitiser;
