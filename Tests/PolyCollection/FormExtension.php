@@ -26,7 +26,7 @@ use Symfony\Component\Form\AbstractExtension;
  * */
 class FormExtension extends AbstractExtension
 {
-    protected function loadTypes()
+    protected function loadTypes(): array
     {
         return array(
             new PolyCollectionType(),

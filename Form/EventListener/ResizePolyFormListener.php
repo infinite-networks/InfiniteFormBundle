@@ -64,6 +64,11 @@ class ResizePolyFormListener extends ResizeFormListener
      */
     protected $useTypesOptions;
 
+    private string $_type;
+    private array $_options;
+    private bool $_allowAdd;
+    private bool $_allowDelete;
+
     /**
      * @param array<FormInterface> $prototypes
      * @param array                $options
@@ -93,7 +98,12 @@ class ResizePolyFormListener extends ResizeFormListener
             $this->classMap[$modelClass] = get_class($type);
         }
 
-        parent::__construct(get_class($defaultType), $options, $allowAdd, $allowDelete);
+        $this->_type = get_class($defaultType);
+        $this->_options = $options;
+        $this->_allowAdd = $allowAdd;
+        $this->_allowDelete = $allowDelete;
+
+        parent::__construct($this->_type, $this->_options, $this->_allowAdd, $this->_allowDelete);
     }
 
     /**
@@ -108,7 +118,7 @@ class ResizePolyFormListener extends ResizeFormListener
     {
         $class = get_class($object);
         $class = ClassUtils::getRealClass($class);
-        $type = $this->type;
+        $type = $this->_type;
 
         if (array_key_exists($class, $this->classMap)) {
             $type = $this->classMap[$class];
@@ -139,13 +149,13 @@ class ResizePolyFormListener extends ResizeFormListener
     protected function getOptionsForType($type)
     {
         if ($this->useTypesOptions === true) {
-            return isset($this->options[$type]) ? $this->options[$type] : [];
+            return isset($this->_options[$type]) ? $this->_options[$type] : [];
         } else {
-            return $this->options;
+            return $this->_options;
         }
     }
 
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData();
@@ -177,7 +187,7 @@ class ResizePolyFormListener extends ResizeFormListener
         $this->preSubmit($event);
     }
 
-    public function preSubmit(FormEvent $event)
+    public function preSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData();
@@ -207,7 +217,7 @@ class ResizePolyFormListener extends ResizeFormListener
             // Add all additional rows to the end of the array
             $name = $form->count();
             foreach ($unindexedData as $item) {
-                if ($this->allowAdd) {
+                if ($this->_allowAdd) {
                     $type = $this->getTypeForData($item);
                     $form->add($name, $type, array_replace(array(
                         'property_path' => '['.$name.']',
@@ -220,7 +230,7 @@ class ResizePolyFormListener extends ResizeFormListener
             }
 
             // Remove all empty rows
-            if ($this->allowDelete) {
+            if ($this->_allowDelete) {
                 foreach ($form as $name => $child) {
                     // New items will have null data. Skip these.
                     if (!is_null($child->getData())) {
@@ -238,7 +248,7 @@ class ResizePolyFormListener extends ResizeFormListener
             $event->setData($finalData);
         } else {
             // Remove all empty rows
-            if ($this->allowDelete) {
+            if ($this->_allowDelete) {
                 foreach ($form as $name => $child) {
                     if (!isset($data[$name])) {
                         $form->remove($name);
@@ -247,7 +257,7 @@ class ResizePolyFormListener extends ResizeFormListener
             }
 
             // Add all additional rows
-            if ($this->allowAdd) {
+            if ($this->_allowAdd) {
                 foreach ($data as $name => $value) {
                     if (!$form->has($name)) {
                         $type = $this->getTypeForData($value);

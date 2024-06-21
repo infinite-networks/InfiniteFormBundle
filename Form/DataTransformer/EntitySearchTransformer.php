@@ -50,26 +50,23 @@ class EntitySearchTransformer implements DataTransformerInterface
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    public function transform($object): ?array
+    public function transform(mixed $value): ?array
     {
-        if ($object === null) {
+        if ($value === null) {
             return null;
         }
 
-        if (!$object instanceof $this->class) {
-            throw new UnexpectedTypeException($object, $this->class);
+        if (!$value instanceof $this->class) {
+            throw new UnexpectedTypeException($value, $this->class);
         }
 
         return array(
-            'id' => $this->accessor->getValue($object, $this->idField),
-            'name' => $this->accessor->getValue($object, $this->nameField),
+            'id' => $this->accessor->getValue($value, $this->idField),
+            'name' => $this->accessor->getValue($value, $this->nameField),
         );
     }
 
-    /**
-     * @return mixed
-     */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (!isset($value['id'])) {
             $value['id'] = '';

@@ -9,8 +9,8 @@
 
 namespace Infinite\FormBundle\Form\DataTransformer;
 
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyPath;
@@ -44,10 +44,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
         $this->class = $options['class'];
     }
 
-    /**
-     * @return mixed
-     */
-    public function transform($value)
+    public function transform(mixed $value): array
     {
         if ($value === null) {
             return array();
@@ -80,10 +77,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
         return $vals;
     }
 
-    /**
-     * @return mixed
-     */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (!is_array($value)) {
             throw new TransformationFailedException('Checkbox grid reverse-transformer needs an array as input');

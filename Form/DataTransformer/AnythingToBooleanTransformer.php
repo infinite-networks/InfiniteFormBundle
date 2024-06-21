@@ -16,11 +16,10 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class AnythingToBooleanTransformer implements DataTransformerInterface
 {
-    protected $anythingValue;
-
-    public function __construct($anythingValue)
+    public function __construct(
+        protected mixed $anythingValue
+    )
     {
-        $this->anythingValue = $anythingValue;
     }
 
     public function transform($value): bool
@@ -28,10 +27,7 @@ class AnythingToBooleanTransformer implements DataTransformerInterface
         return $value !== null;
     }
 
-    /**
-     * @return mixed
-     */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value): mixed
     {
         return empty($value) ? null : $this->anythingValue;
     }
