@@ -31,7 +31,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
  */
 class CheckboxGridType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $accessor = PropertyAccess::createPropertyAccessor();
 
@@ -74,7 +74,7 @@ class CheckboxGridType extends AbstractType
         $builder->add($value, CheckboxRowType::class, $rowOptions);
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['headers'] = $this->buildChoiceListView($options['x_choice_list'], $options['x_choices'], $options['x_label_path']);
     }
@@ -84,7 +84,7 @@ class CheckboxGridType extends AbstractType
         return 'infinite_form_checkbox_grid';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $defaultXChoiceList = function (Options $options) {
             if (!isset($options['x_choices'])) {

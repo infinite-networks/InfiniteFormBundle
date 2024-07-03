@@ -37,8 +37,8 @@ class AttachmentFieldTest extends \PHPUnit\Framework\TestCase
         // Create a test database and table
         $this->em = BundleTest::createTestEntityManager();
 
-        $this->doctrine = $this->createMock(ManagerRegistry::class);
-        $this->doctrine->expects($this->any())
+        $doctrine = $this->createMock(ManagerRegistry::class);
+        $doctrine->expects($this->any())
             ->method('getManager')
             ->will($this->returnValue($this->em));
 
@@ -60,7 +60,7 @@ class AttachmentFieldTest extends \PHPUnit\Framework\TestCase
         $this->uploader = new Uploader($sanitiser, $pathHelper);
 
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addType(new AttachmentType('foobar', $this->doctrine, $pathHelper, $this->uploader))
+            ->addType(new AttachmentType('foobar', $doctrine, $pathHelper, $this->uploader))
             ->addTypeExtension(new FormTypeHttpFoundationExtension())
             ->getFormFactory();
     }

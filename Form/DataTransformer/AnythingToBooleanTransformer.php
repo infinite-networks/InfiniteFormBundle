@@ -22,7 +22,7 @@ class AnythingToBooleanTransformer implements DataTransformerInterface
     {
     }
 
-    public function transform($value): bool
+    public function transform(mixed $value): bool
     {
         return $value !== null;
     }

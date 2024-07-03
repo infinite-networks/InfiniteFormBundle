@@ -77,7 +77,7 @@ class CheckboxGridTransformer implements DataTransformerInterface
         return $vals;
     }
 
-    public function reverseTransform(mixed $value): mixed
+    public function reverseTransform(mixed $value): array
     {
         if (!is_array($value)) {
             throw new TransformationFailedException('Checkbox grid reverse-transformer needs an array as input');

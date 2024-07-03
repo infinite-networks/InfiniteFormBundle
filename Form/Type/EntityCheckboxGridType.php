@@ -40,7 +40,7 @@ class EntityCheckboxGridType extends AbstractType
         return CheckboxGridType::class;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         // X Axis defaults
         $defaultXClass = function (Options $options) {

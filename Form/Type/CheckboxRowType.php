@@ -19,13 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CheckboxRowType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Rows added by listener (need the data to be available before creating checkboxes)
         $builder->addEventSubscriber(new CheckboxRowCreationListener($builder->getFormFactory()));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['label'] = $options['row_label'];
     }
@@ -35,7 +35,7 @@ class CheckboxRowType extends AbstractType
         return 'infinite_form_checkbox_row';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'cell_filter' => null,

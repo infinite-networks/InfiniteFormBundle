@@ -38,6 +38,7 @@ class PolyCollectionTypeTest extends TypeTestCase
             new AbstractModel('Green'),
             new Third('Brown'),
         ));
+        $this->assertTrue(true);
     }
 
     public function testInvalidObject()

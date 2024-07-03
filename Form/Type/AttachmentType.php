@@ -40,7 +40,7 @@ class AttachmentType extends AbstractType
         $this->uploader = $uploader;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('file', FileType::class,   ['required' => $options['required'], 'mapped' => false])
@@ -97,7 +97,7 @@ class AttachmentType extends AbstractType
         FormView $view,
         FormInterface $form,
         array $options
-    ) {
+    ): void {
         $attachment = $view->vars['value'];
 
         if ($attachment && $attachment->getPhysicalName()) {
@@ -122,7 +122,7 @@ class AttachmentType extends AbstractType
         return 'infinite_form_attachment';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(array('data_class'));
         $resolver->setDefaults(array(
