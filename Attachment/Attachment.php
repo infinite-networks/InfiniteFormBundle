@@ -19,11 +19,11 @@ abstract class Attachment implements AttachmentInterface
     protected $filename;
 
     /**
-     * @ORM\Column(type="string", length=40)
+     * @ORM\Column(type="string", length=64)
      *
      * @var string
      */
-    #[ORM\Column(type: 'string', length: 40)]
+    #[ORM\Column(type: 'string', length: 64)]
     protected $fileHash;
 
     /**
