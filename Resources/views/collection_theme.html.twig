@@ -14,20 +14,18 @@ of the collection.js helper.
 
 #}
 
-{% block collection_widget %}
-{% apply spaceless %}
+{% block collection_widget -%}
     {% set attr = attr|merge({
         'data-form-widget': 'collection',
     }) %}
     {% if disabled %}
-    {% set attr = attr|merge({
-        'data-disabled': 1
-    }) %}
+        {% set attr = attr|merge({
+            'data-disabled': 1
+        }) %}
     {% endif %}
 
     {{ block('form_widget') }}
     {% if prototype is defined %}
         <a class="btn" data-prototype="{{ form_row(prototype) | escape }}"><i class="icon-plus"></i> Add</a>
     {% endif %}
-{% endapply %}
-{% endblock collection_widget %}
+{%- endblock collection_widget %}
