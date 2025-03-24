@@ -39,7 +39,7 @@ class Streamer
         $this->sanitiser = $sanitiser;
     }
 
-    public function stream(AttachmentInterface $attachment, Request $request = null, $disposition = null)
+    public function stream(AttachmentInterface $attachment, ?Request $request = null, $disposition = null)
     {
         $fullPhysicalPath = $this->pathHelper->getFullPath($attachment);
         $mimeType = $this->sanitiser->sanitiseMimeType($attachment->getMimeType());
