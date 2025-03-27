@@ -68,6 +68,7 @@ class PolyCollectionType extends AbstractType
     {
         $prototypes = array();
         $useTypesOptions = !empty($options['types_options']);
+        $useTypesPrototypeData = !empty($options['types_prototype_data']);
 
         foreach ($options['types'] as $type) {
             if ($type instanceof FormTypeInterface) {
@@ -79,6 +80,12 @@ class PolyCollectionType extends AbstractType
                 $typeOptions = [];
                 if (isset($options['types_options'][$type])) {
                     $typeOptions = $options['types_options'][$type];
+                }
+            }
+
+            if ($useTypesPrototypeData) {
+                if (isset($options['types_prototype_data'][$type])) {
+                    $typeOptions['data'] = $options['types_prototype_data'][$type];
                 }
             }
 
@@ -176,6 +183,7 @@ class PolyCollectionType extends AbstractType
             'allow_add' => false,
             'allow_delete' => false,
             'prototype' => true,
+            'types_prototype_data' => [],
             'prototype_name' => '__name__',
             'type_name' => '_type',
             'options' => [],
