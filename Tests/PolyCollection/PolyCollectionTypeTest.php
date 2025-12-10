@@ -499,19 +499,19 @@ class PolyCollectionTypeTest extends TypeTestCase
         $this->assertEquals(999, $form->get(1)->getConfig()->getOption('second_option'));
     }
 
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return array(
             new FormExtension(),
         );
     }
 
-    private function getPolyCollectionType()
+    private function getPolyCollectionType(): string
     {
         return PolyCollectionType::class;
     }
 
-    private function getTestTypes()
+    private function getTestTypes(): array
     {
         return array(
             AbstractType::class,
@@ -520,7 +520,7 @@ class PolyCollectionTypeTest extends TypeTestCase
         );
     }
 
-    private function getTestTypesWithSpecificOptions()
+    private function getTestTypesWithSpecificOptions(): array
     {
         return array(
             AbstractType::class,

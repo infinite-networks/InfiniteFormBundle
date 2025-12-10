@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesmanType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $productAreaOptions = $options['product_area_options'];
 
@@ -24,12 +24,12 @@ class SalesmanType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'infinite_form_test_salesman';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Salesman::class,

@@ -9,13 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AbstractTypeIdType extends BaseType
 {
-    protected $dataClass = AbstractModel::class;
+    protected string $dataClass = AbstractModel::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('id', NumberType::class);
 
@@ -27,7 +26,7 @@ class AbstractTypeIdType extends BaseType
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => $this->dataClass,
@@ -36,7 +35,7 @@ class AbstractTypeIdType extends BaseType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'abstract_type_id_type';
     }

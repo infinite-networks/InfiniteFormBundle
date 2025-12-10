@@ -1,0 +1,22 @@
+# (c) Infinite Networks <http://www.infinite.net.au>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+services:
+    infinite_form.form_type.checkbox_grid_type:
+        class: 'Infinite\FormBundle\Form\Type\CheckboxGridType'
+        tags:
+            - { name: 'form.type', alias: 'infinite_form_checkbox_grid' }
+
+    infinite_form.form_type.checkbox_row_type:
+        class: 'Infinite\FormBundle\Form\Type\CheckboxRowType'
+        tags:
+            - { name: 'form.type', alias: 'infinite_form_checkbox_row' }
+
+    infinite_form.form_type.entity_checkbox_grid_type:
+        class: 'Infinite\FormBundle\Form\Type\EntityCheckboxGridType'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: 'form.type', alias: 'infinite_form_entity_checkbox_grid' }

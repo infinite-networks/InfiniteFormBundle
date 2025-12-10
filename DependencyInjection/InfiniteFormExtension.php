@@ -11,8 +11,8 @@ namespace Infinite\FormBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Configures the DI container for InfiniteFormBundle.
@@ -26,28 +26,28 @@ class InfiniteFormExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $configs = $this->processConfiguration($configuration, $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         if ($configs['attachment']) {
-            $loader->load('attachment.xml');
+            $loader->load('attachment.yaml');
 
             $container->setParameter('infinite_form.attachment.save_config', $configs['attachments']);
         }
 
         if ($configs['checkbox_grid']) {
-            $loader->load('checkbox_grid.xml');
+            $loader->load('checkbox_grid.yaml');
         }
 
         if ($configs['entity_search']) {
-            $loader->load('entity_search.xml');
+            $loader->load('entity_search.yaml');
         }
 
         if ($configs['polycollection']) {
-            $loader->load('polycollection.xml');
+            $loader->load('polycollection.yaml');
         }
 
         if ($configs['twig']) {
-            $loader->load('twig.xml');
+            $loader->load('twig.yaml');
         }
     }
 }

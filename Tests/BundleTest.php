@@ -10,9 +10,11 @@
 namespace Infinite\FormBundle\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Infinite\FormBundle\InfiniteFormBundle;
 
 class BundleTest extends \PHPUnit\Framework\TestCase
@@ -30,14 +32,21 @@ class BundleTest extends \PHPUnit\Framework\TestCase
         $config->setAutoGenerateProxyClasses(true);
         $config->setProxyDir(sys_get_temp_dir());
         $config->setProxyNamespace('SymfonyTests\Doctrine');
-        $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        $config->enableNativeLazyObjects(true);
+        if (class_exists(AttributeDriver::class)) {
+            $config->setMetadataDriverImpl(new AttributeDriver([
+                __DIR__,
+                __DIR__.'/../src/Attachment',
+            ]));
+        } else {
+            $config->setMetadataDriverImpl(new AnnotationDriver(new AnnotationReader()));
+        }
 
-        return EntityManager::create(
-            [
-                'driver' => 'pdo_sqlite',
-                'memory' => true,
-            ],
-            $config
-        );
+        $conn = DriverManager::getConnection([
+            'driver' => 'pdo_sqlite',
+            'memory' => true,
+        ]);
+
+        return new EntityManager($conn, $config);
     }
 }

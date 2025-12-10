@@ -1,0 +1,13 @@
+# (c) Infinite Networks <http://www.infinite.net.au>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+parameters:
+    infinite_form.polycollection.form_type.class: 'Infinite\FormBundle\Form\Type\PolyCollectionType'
+
+services:
+    infinite_form.polycollection.form_type:
+        class: '%infinite_form.polycollection.form_type.class%'
+        tags:
+            - { name: 'form.type', alias: 'infinite_form_polycollection' }

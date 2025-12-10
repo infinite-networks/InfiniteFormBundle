@@ -8,16 +8,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FourthType extends AbstractType
 {
-    protected $dataClass = Fourth::class;
+    protected string $dataClass = Fourth::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder->add('file', FileType::class, ['required' => false]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'fourth_type';
     }

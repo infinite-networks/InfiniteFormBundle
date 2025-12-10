@@ -9,6 +9,9 @@
 
 namespace Infinite\FormBundle\Tests\EntitySearch;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformer;
 use Infinite\FormBundle\Tests\EntitySearch\Entity\Fruit;
 
@@ -21,12 +24,12 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->em = $this->createMock('Doctrine\\ORM\\EntityManager');
-        $mockMetadata = $this->createMock('Doctrine\\Persistence\\Mapping\\ClassMetadata');
+        $this->em = $this->createMock(EntityManager::class);
+        $mockMetadata = $this->createMock(ClassMetadata::class);
 
         $this->em->expects($this->any())
             ->method('getClassMetadata')
-            ->with($this->equalTo('Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit'))
+            ->with($this->equalTo(Fruit::class))
             ->will($this->returnValue($mockMetadata));
 
         $mockMetadata->expects($this->any())
@@ -154,7 +157,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
 
     private function expectsGetRepository()
     {
-        $mockRepository = $this->createMock('Doctrine\\Persistence\\ObjectRepository');
+        $mockRepository = $this->createMock(EntityRepository::class);
 
         $this->em->expects($this->once())
             ->method('getRepository')
@@ -166,7 +169,7 @@ class EntitySearchTransformerTest extends \PHPUnit\Framework\TestCase
     private function makeTransformer($options = array())
     {
         return new EntitySearchTransformer($this->em, $options + array(
-            'class' => 'Infinite\\FormBundle\\Tests\\EntitySearch\\Entity\\Fruit',
+            'class' => Fruit::class,
         ));
     }
 }

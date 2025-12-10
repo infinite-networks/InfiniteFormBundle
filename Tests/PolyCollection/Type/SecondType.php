@@ -8,16 +8,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SecondType extends AbstractType
 {
-    protected $dataClass = Second::class;
+    protected string $dataClass = Second::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder->add('checked', CheckboxType::class, ['required' => false]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'second_type';
     }

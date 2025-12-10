@@ -14,17 +14,18 @@
         "php": ">=8.0",
         "ext-json": "*",
         "doctrine/common": "^2.3 || ^3.0",
-        "symfony/framework-bundle": "^4.0 || ^5.0  || ^6.0 || ^7.0",
-        "symfony/form": "^4.0 || ^5.0  || ^6.0 || ^7.0",
+        "symfony/framework-bundle": "^4.0 || ^5.0  || ^6.0 || ^7.0 || ^8.0",
+        "symfony/form": "^4.0 || ^5.0  || ^6.0 || ^7.0 || ^8.0",
+        "symfony/yaml": "^4.0 || ^5.0  || ^6.0 || ^7.0 || ^8.0",
         "twig/twig": "^2.7 || ^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/annotations": "^2.0",
-        "doctrine/orm": "^2.3",
+        "doctrine/orm": "^2.3 || ^3.0",
         "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-        "symfony/mime": "^4.0 || ^5.0  || ^6.0 || ^7.0",
-        "symfony/phpunit-bridge": "^4.0 || ^5.0  || ^6.0 || ^7.0"
+        "symfony/mime": "^4.0 || ^5.0  || ^6.0 || ^7.0 || ^8.0",
+        "symfony/phpunit-bridge": "^4.0 || ^5.0  || ^6.0 || ^7.0 || ^8.0"
     },
     "extra": {
         "branch-alias": {

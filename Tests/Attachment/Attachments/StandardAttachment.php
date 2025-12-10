@@ -12,18 +12,15 @@ namespace Infinite\FormBundle\Tests\Attachment\Attachments;
 use Doctrine\ORM\Mapping as ORM;
 use Infinite\FormBundle\Attachment\Attachment as BaseAttachment;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class StandardAttachment extends BaseAttachment
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @ORM\Id
-     *
      * @var int
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     public function getId()

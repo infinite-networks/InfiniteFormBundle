@@ -2,6 +2,7 @@
 
 namespace Infinite\FormBundle\Tests\PolyCollection\Type;
 
+use Infinite\FormBundle\Tests\PolyCollection\Model\AbstractModel;
 use Symfony\Component\Form\AbstractType as BaseType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -11,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AbstractType extends BaseType
 {
-    protected $dataClass = 'Infinite\\FormBundle\\Tests\\PolyCollection\\Model\\AbstractModel';
+    protected string $dataClass = AbstractModel::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('id', NumberType::class);
 
@@ -25,7 +26,7 @@ class AbstractType extends BaseType
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => $this->dataClass,
@@ -34,7 +35,7 @@ class AbstractType extends BaseType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'abstract_type';
     }

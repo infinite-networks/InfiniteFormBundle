@@ -1,0 +1,20 @@
+# (c) Infinite Networks <http://www.infinite.net.au>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+
+parameters:
+    infinite_form.entity_search.type.class: 'Infinite\FormBundle\Form\Type\EntitySearchType'
+
+services:
+    infinite_form.entity_search.type:
+        class: '%infinite_form.entity_search.type.class%'
+        arguments:
+            - '@infinite_form.entity_search.transformer_factory'
+        tags:
+            - { name: 'form.type', alias: 'infinite_form_entity_search' }
+
+    infinite_form.entity_search.transformer_factory:
+        class: 'Infinite\FormBundle\Form\DataTransformer\EntitySearchTransformerFactory'
+        arguments:
+            - '@doctrine'

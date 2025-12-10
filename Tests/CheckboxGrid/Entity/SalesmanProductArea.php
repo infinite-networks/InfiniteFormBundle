@@ -4,42 +4,36 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class SalesmanProductArea
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @ORM\Id
-     *
      * @var int
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\ManyToOne(targetEntity="Area")
-     *
      * @var Area
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Area::class)]
     protected $areaServiced;
 
     /**
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\ManyToOne(targetEntity="Product")
-     *
      * @var Product
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Product::class)]
     protected $productSold;
 
     /**
-     * @ORM\JoinColumn(nullable=false)
-     * @ORM\ManyToOne(targetEntity="Salesman", inversedBy="productAreas")
-     *
      * @var Salesman
      */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Salesman::class, inversedBy: 'productAreas')]
     protected $salesman;
 
     public function getId()

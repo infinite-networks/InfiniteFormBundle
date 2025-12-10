@@ -5,32 +5,27 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Salesman
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @ORM\Id
-     *
      * @var int
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     public $id;
 
     /**
-     * @ORM\Column(type="string")
-     *
      * @var string
      */
+    #[ORM\Column(type: 'string')]
     public $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="SalesmanProductArea", mappedBy="salesman", cascade={"all"}, orphanRemoval=true)
-     *
      * @var ArrayCollection
      */
+    #[ORM\OneToMany(targetEntity: SalesmanProductArea::class, mappedBy: 'salesman', cascade: ['all'], orphanRemoval: true)]
     public $productAreas;
 
     public function __construct()

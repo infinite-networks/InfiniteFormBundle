@@ -8,16 +8,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FirstTypeIdType extends AbstractTypeIdType
 {
-    protected $dataClass = First::class;
+    protected string $dataClass = First::class;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
         $builder->add('text2', TextType::class);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'first_type_id_type';
     }

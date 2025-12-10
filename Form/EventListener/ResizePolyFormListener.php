@@ -10,9 +10,10 @@
 namespace Infinite\FormBundle\Form\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -22,7 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  *
  * @author Tim Nagel <tim@nagel.com.au>
  */
-class ResizePolyFormListener extends ResizeFormListener
+class ResizePolyFormListener implements EventSubscriberInterface
 {
     /**
      * Stores an array of Types with the Type name as the key.
@@ -102,8 +103,16 @@ class ResizePolyFormListener extends ResizeFormListener
         $this->_options = $options;
         $this->_allowAdd = $allowAdd;
         $this->_allowDelete = $allowDelete;
+    }
 
-        parent::__construct($this->_type, $this->_options, $this->_allowAdd, $this->_allowDelete);
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            FormEvents::PRE_SET_DATA => ['preSetData', 255],
+            'form.bind' => 'preSubmit',
+            FormEvents::PRE_SUBMIT => 'preSubmit',
+            FormEvents::SUBMIT => ['onSubmit', 50],
+        ];
     }
 
     /**
@@ -180,11 +189,6 @@ class ResizePolyFormListener extends ResizeFormListener
                 'property_path' => '['.$name.']',
             ), $this->getOptionsForType($type)));
         }
-    }
-
-    public function preBind(FormEvent $event)
-    {
-        $this->preSubmit($event);
     }
 
     public function preSubmit(FormEvent $event): void
@@ -268,5 +272,27 @@ class ResizePolyFormListener extends ResizeFormListener
                 }
             }
         }
+    }
+
+    public function onSubmit(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        $data = $event->getData() ?? [];
+
+        if (!\is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
+            throw new UnexpectedTypeException($data, 'array or (\Traversable and \ArrayAccess)');
+        }
+
+        if ($this->_allowDelete) {
+            $toDelete = [];
+
+            foreach ($data as $name => $child) {
+                if (!$form->has($name)) {
+                    unset($data[$name]);
+                }
+            }
+        }
+
+        $event->setData($data);
     }
 }

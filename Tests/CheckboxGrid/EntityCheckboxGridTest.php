@@ -16,6 +16,7 @@ use Infinite\FormBundle\Form\Type\EntityCheckboxGridType;
 use Infinite\FormBundle\Tests\BundleTest;
 use Infinite\FormBundle\Tests\CheckboxGrid\Entity as TestEntity;
 use Infinite\FormBundle\Tests\CheckboxGrid\Type\SalesmanType;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
@@ -86,7 +87,7 @@ class EntityCheckboxGridTest extends \PHPUnit\Framework\TestCase
         $this->em->flush();
 
         // This mock registry returns the real entity manager created above
-        $this->emRegistry = $emRegistry = $this->createMock('Symfony\\Bridge\\Doctrine\\ManagerRegistry');
+        $this->emRegistry = $emRegistry = $this->createMock(ManagerRegistry::class);
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType(new CheckboxGridType())

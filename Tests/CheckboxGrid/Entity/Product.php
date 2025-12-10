@@ -4,25 +4,21 @@ namespace Infinite\FormBundle\Tests\CheckboxGrid\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class Product
 {
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @ORM\Id
-     *
      * @var int
      */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    #[ORM\Id]
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
-     *
      * @var string
      */
+    #[ORM\Column(type: 'string')]
     protected $name;
 
     public function __construct($name)
